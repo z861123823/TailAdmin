@@ -31,55 +31,58 @@
     @apply relative flex max-h-[90vh] w-full flex-col overflow-y-auto rounded-2xl bg-white p-6 shadow-theme-xl sm:p-8 dark:bg-gray-900;
   }
 
-  /* 表格固定列：不透明底色需与表格卡片表面一致，避免横向滚动时内容透出；悬停时随行变色 */
+  /* 表格固定列：底色与表格/卡片一致，仅用边框与投影区分固定区；悬停随行变色 */
+  :root {
+    --ta-fixed-surface: #ffffff;
+    --ta-fixed-surface-hover: #f9fafb;
+    --ta-col-divider: #c9d1dc;
+    --ta-fixed-divider: #8f9cb0;
+    --ta-sticky-shadow: rgba(16, 24, 40, 0.35);
+    --ta-sticky-shadow-strong: rgba(16, 24, 40, 0.52);
+  }
+
+  .dark {
+    --ta-fixed-surface: #17202e;
+    --ta-fixed-surface-hover: #1a2231;
+    --ta-col-divider: #35465e;
+    --ta-fixed-divider: #526784;
+    --ta-sticky-shadow: rgba(0, 0, 0, 0.62);
+    --ta-sticky-shadow-strong: rgba(0, 0, 0, 0.82);
+  }
+
   .ta-sticky-cell {
-    background-color: #ffffff;
+    background-color: var(--ta-fixed-surface);
     background-clip: padding-box;
   }
 
-  .dark .ta-sticky-cell {
-    background-color: #17202e;
-  }
-
   .group:hover .ta-sticky-cell {
-    background-color: #f9fafb;
+    background-color: var(--ta-fixed-surface-hover);
   }
 
-  .dark .group:hover .ta-sticky-cell {
-    background-color: #1a2231;
+  /* 列间竖向分隔线（inset 阴影绘制，随 sticky 单元格移动，不改变列宽） */
+  .ta-col-border {
+    box-shadow: inset -1px 0 0 var(--ta-col-divider);
   }
 
-  /* 固定区与滚动区分界：静止时也有柔和阴影，滚动可继续时加强；左右两侧都覆盖，明暗主题分别调色 */
+  .ta-col-border-left {
+    box-shadow: inset 1px 0 0 var(--ta-col-divider);
+  }
+
+  /* 固定区与滚动区分界：2px 实线 + 投影，静止即可见，滚动时投影加强 */
   .ta-sticky-edge-left {
-    box-shadow: 8px 0 8px -8px rgba(16, 24, 40, 0.12);
+    box-shadow: inset -2px 0 0 var(--ta-fixed-divider), 10px 0 18px -8px var(--ta-sticky-shadow);
   }
 
   .ta-sticky-edge-right {
-    box-shadow: -8px 0 8px -8px rgba(16, 24, 40, 0.12);
-  }
-
-  .dark .ta-sticky-edge-left {
-    box-shadow: 8px 0 8px -8px rgba(0, 0, 0, 0.5);
-  }
-
-  .dark .ta-sticky-edge-right {
-    box-shadow: -8px 0 8px -8px rgba(0, 0, 0, 0.5);
+    box-shadow: inset 2px 0 0 var(--ta-fixed-divider), -10px 0 18px -8px var(--ta-sticky-shadow);
   }
 
   .can-scroll-left .ta-sticky-edge-left {
-    box-shadow: 8px 0 12px -8px rgba(16, 24, 40, 0.32);
+    box-shadow: inset -2px 0 0 var(--ta-fixed-divider), 12px 0 22px -6px var(--ta-sticky-shadow-strong);
   }
 
   .can-scroll-right .ta-sticky-edge-right {
-    box-shadow: -8px 0 12px -8px rgba(16, 24, 40, 0.32);
-  }
-
-  .dark .can-scroll-left .ta-sticky-edge-left {
-    box-shadow: 8px 0 12px -8px rgba(0, 0, 0, 0.75);
-  }
-
-  .dark .can-scroll-right .ta-sticky-edge-right {
-    box-shadow: -8px 0 12px -8px rgba(0, 0, 0, 0.75);
+    box-shadow: inset 2px 0 0 var(--ta-fixed-divider), -12px 0 22px -6px var(--ta-sticky-shadow-strong);
   }
 
   .ta-toast-host {

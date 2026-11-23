@@ -205,7 +205,7 @@ export function createTaTable(Ta) {
       },
 
       cellClass(column) {
-        const classes = ['border-r border-gray-200 dark:border-gray-800', this.alignClass(column), column.cellClass || ''];
+        const classes = ['ta-col-border', this.alignClass(column), column.cellClass || ''];
         if (column.fixed === 'left' || column.fixed === 'right') {
           classes.push('sticky z-10 ta-sticky-cell');
         }

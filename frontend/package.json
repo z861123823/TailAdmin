@@ -1,7 +1,7 @@
 {
   "name": "tailadmin-admin-web",
   "private": true,
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "TailAdmin 通用后台模板前端构建清单（仅构建期使用，运行时不依赖 Node）",
   "scripts": {
     "build:brand": "node scripts/gen-brand-css.mjs",

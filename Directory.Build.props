@@ -3,7 +3,7 @@
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <VersionPrefix>1.1.6</VersionPrefix>
+    <VersionPrefix>1.1.7</VersionPrefix>
     <Deterministic>true</Deterministic>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <Company>Internal</Company>
