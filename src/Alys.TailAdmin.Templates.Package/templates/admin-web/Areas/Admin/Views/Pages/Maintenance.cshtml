@@ -1,0 +1,17 @@
+@{
+    Layout = "~/Views/Shared/_AlysAdminAuthLayout.cshtml";
+}
+<div class="text-center">
+    <span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-500 dark:bg-amber-500/15 dark:text-amber-400">
+        <partial name="_Icon" model="@("settings")" />
+    </span>
+    <h1 class="mt-4 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">系統維護中</h1>
+    <p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">
+        我們正在進行例行維護，預計 30 分鐘後恢復，給你帶來不便敬請諒解。
+    </p>
+    <button type="button"
+            class="mt-6 inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-5 py-3 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            onclick="location.reload()">
+        重新整理
+    </button>
+</div>

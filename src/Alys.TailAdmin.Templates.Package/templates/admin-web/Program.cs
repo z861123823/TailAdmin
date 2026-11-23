@@ -66,6 +66,20 @@ builder.Services.Configure<AdminUiOptions>(options =>
             new() { Key = "ui-pagination", Title = "分頁", Area = "Admin", Controller = "UiElements", Action = "Pagination", Permission = "ui-elements" }
         }
     });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "pages",
+        Title = "頁面",
+        Icon = "menu",
+        Permission = "pages",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "page-blank", Title = "空白頁", Area = "Admin", Controller = "Pages", Action = "Blank", Permission = "pages" },
+            new() { Key = "page-404", Title = "404 頁面", Area = "Admin", Controller = "Pages", Action = "Error404", Permission = "pages" },
+            new() { Key = "page-coming-soon", Title = "即將上線", Area = "Admin", Controller = "Pages", Action = "ComingSoon", Permission = "pages" },
+            new() { Key = "page-maintenance", Title = "系統維護", Area = "Admin", Controller = "Pages", Action = "Maintenance", Permission = "pages" }
+        }
+    });
 });
 #endif
 

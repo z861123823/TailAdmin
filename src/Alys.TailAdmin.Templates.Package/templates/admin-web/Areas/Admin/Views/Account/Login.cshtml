@@ -1,12 +1,13 @@
 @{
     Layout = "~/Views/Shared/_AlysAdminAuthLayout.cshtml";
     var error = ViewData["Error"] as string;
+    var message = ViewData["Message"] as string;
     var returnUrl = ViewData["ReturnUrl"] as string;
     var userName = ViewData["UserName"] as string;
 }
 <div class="mb-5 sm:mb-8">
     <h1 class="mb-2 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">登入</h1>
-    <p class="text-theme-sm text-gray-500 dark:text-gray-400">輸入帳號與密碼以進入管理後台</p>
+    <p class="text-theme-sm text-gray-500 dark:text-gray-400">輸入帳號與密碼以進入商城運營後台</p>
 </div>
 
 @if (!string.IsNullOrWhiteSpace(error))
@@ -17,6 +18,15 @@
             <path d="M10 6.667V10m0 3.333h.008M18.333 10a8.333 8.333 0 11-16.667 0 8.333 8.333 0 0116.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
         <span>@error</span>
+    </div>
+}
+
+@if (!string.IsNullOrWhiteSpace(message))
+{
+    <div class="mb-5 flex items-start gap-3 rounded-xl border border-green-500/60 bg-green-50 p-4 text-theme-sm text-gray-700 dark:border-green-500/30 dark:bg-green-500/10 dark:text-gray-300"
+         role="status">
+        <span class="mt-0.5 size-2 shrink-0 rounded-full bg-green-500"></span>
+        <span>@message</span>
     </div>
 }
 
@@ -46,9 +56,19 @@
     </div>
 </form>
 
+<div class="mt-5 flex items-center justify-between text-theme-sm">
+    <a asp-area="Admin" asp-controller="Account" asp-action="ResetPassword"
+       class="text-gray-500 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">忘記密碼？</a>
+    <a asp-area="Admin" asp-controller="Account" asp-action="SignUp"
+       class="font-medium text-brand-500 transition-colors hover:text-brand-600 dark:text-brand-400">建立帳號</a>
+</div>
+
 <div class="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-white/[0.03]">
     <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">演示帳號</p>
-    <p class="mt-2 text-theme-xs leading-5 text-gray-500 dark:text-gray-400">admin / 123456</p>
+    <div class="mt-2 space-y-1 text-theme-xs leading-5 text-gray-500 dark:text-gray-400">
+        <p><span class="font-medium text-gray-700 dark:text-gray-300">admin / 123456</span>：全部菜單</p>
+        <p><span class="font-medium text-gray-700 dark:text-gray-300">operator / 123456</span>：儀表盤與商品管理</p>
+    </div>
 </div>
 
 <p class="mt-8 text-center text-theme-sm text-gray-500 dark:text-gray-400">

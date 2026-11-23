@@ -60,8 +60,10 @@
           "exclude": [
             "Areas/Admin/Controllers/GoodsController.cs",
             "Areas/Admin/Controllers/UiElementsController.cs",
+            "Areas/Admin/Controllers/PagesController.cs",
             "Areas/Admin/Views/Goods/**",
-            "Areas/Admin/Views/UiElements/**"
+            "Areas/Admin/Views/UiElements/**",
+            "Areas/Admin/Views/Pages/**"
           ]
         }
       ]

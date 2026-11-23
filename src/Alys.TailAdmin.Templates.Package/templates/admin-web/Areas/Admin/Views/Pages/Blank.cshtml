@@ -1,0 +1,11 @@
+@{
+    var card = new TaCardModel
+    {
+        Title = "空白頁",
+        Subtitle = "此頁面僅保留佈局與標題，內容區域可自由填充。",
+        Text = "適用於需要自定義排版的頁面，或作為新頁面的起點。"
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6">
+    <partial name="_TaCard" model="card" />
+</div>
