@@ -79,6 +79,46 @@ public sealed class UiElementsController : Controller
     [HttpGet]
     public IActionResult Pagination() => Render("Pagination", "分頁", "ui-pagination", "Pagination：頁碼、上一頁與下一頁");
 
+    /// <summary>进度条 Progress。</summary>
+    /// <returns>进度条示例视图。</returns>
+    [HttpGet]
+    public IActionResult Progress() => Render("Progress", "進度條", "ui-progress", "Progress：線性、環形、尺寸與色彩");
+
+    /// <summary>标签页 Tabs。</summary>
+    /// <returns>标签页示例视图。</returns>
+    [HttpGet]
+    public IActionResult Tabs() => Render("Tabs", "標籤頁", "ui-tabs", "Tabs：下劃線、膠囊與圖標樣式");
+
+    /// <summary>工具提示 Tooltip。</summary>
+    /// <returns>工具提示示例视图。</returns>
+    [HttpGet]
+    public IActionResult Tooltips() => Render("Tooltips", "工具提示", "ui-tooltips", "Tooltip：四個方向與色彩變體");
+
+    /// <summary>弹出层 Popover。</summary>
+    /// <returns>弹出层示例视图。</returns>
+    [HttpGet]
+    public IActionResult Popovers() => Render("Popovers", "彈出層", "ui-popovers", "Popover：點擊觸發、帶標題與操作");
+
+    /// <summary>加载指示 Spinner。</summary>
+    /// <returns>加载指示示例视图。</returns>
+    [HttpGet]
+    public IActionResult Spinners() => Render("Spinners", "加載指示", "ui-spinners", "Spinner：圓環、點狀、條狀與按鈕加載");
+
+    /// <summary>角标 Ribbon。</summary>
+    /// <returns>角标示例视图。</returns>
+    [HttpGet]
+    public IActionResult Ribbons() => Render("Ribbons", "角標", "ui-ribbons", "Ribbon：卡片角標與促銷標記");
+
+    /// <summary>视频 Video。</summary>
+    /// <returns>视频示例视图。</returns>
+    [HttpGet]
+    public IActionResult Videos() => Render("Videos", "影片", "ui-videos", "Video：播放器、封面與縮略圖");
+
+    /// <summary>通知 Notification。</summary>
+    /// <returns>通知示例视图。</returns>
+    [HttpGet]
+    public IActionResult Notifications() => Render("Notifications", "通知", "ui-notifications", "Notification：列表、未讀與浮層提示");
+
     private IActionResult Render(string viewName, string title, string menuKey, string subtitle)
     {
         ViewData["Title"] = title;
@@ -88,3 +128,4 @@ public sealed class UiElementsController : Controller
         return View(viewName);
     }
 }
+

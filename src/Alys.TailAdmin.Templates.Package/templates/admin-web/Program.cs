@@ -63,7 +63,15 @@ builder.Services.Configure<AdminUiOptions>(options =>
             new() { Key = "ui-links", Title = "連結", Area = "Admin", Controller = "UiElements", Action = "Links", Permission = "ui-elements" },
             new() { Key = "ui-lists", Title = "列表", Area = "Admin", Controller = "UiElements", Action = "Lists", Permission = "ui-elements" },
             new() { Key = "ui-modals", Title = "彈窗", Area = "Admin", Controller = "UiElements", Action = "Modals", Permission = "ui-elements" },
-            new() { Key = "ui-pagination", Title = "分頁", Area = "Admin", Controller = "UiElements", Action = "Pagination", Permission = "ui-elements" }
+            new() { Key = "ui-pagination", Title = "分頁", Area = "Admin", Controller = "UiElements", Action = "Pagination", Permission = "ui-elements" },
+            new() { Key = "ui-progress", Title = "進度條", Area = "Admin", Controller = "UiElements", Action = "Progress", Permission = "ui-elements" },
+            new() { Key = "ui-tabs", Title = "標籤頁", Area = "Admin", Controller = "UiElements", Action = "Tabs", Permission = "ui-elements" },
+            new() { Key = "ui-tooltips", Title = "工具提示", Area = "Admin", Controller = "UiElements", Action = "Tooltips", Permission = "ui-elements" },
+            new() { Key = "ui-popovers", Title = "彈出層", Area = "Admin", Controller = "UiElements", Action = "Popovers", Permission = "ui-elements" },
+            new() { Key = "ui-spinners", Title = "加載指示", Area = "Admin", Controller = "UiElements", Action = "Spinners", Permission = "ui-elements" },
+            new() { Key = "ui-ribbons", Title = "角標", Area = "Admin", Controller = "UiElements", Action = "Ribbons", Permission = "ui-elements" },
+            new() { Key = "ui-videos", Title = "影片", Area = "Admin", Controller = "UiElements", Action = "Videos", Permission = "ui-elements" },
+            new() { Key = "ui-notifications", Title = "通知", Area = "Admin", Controller = "UiElements", Action = "Notifications", Permission = "ui-elements" }
         }
     });
     options.Menu.Items.Add(new AdminMenuItem

@@ -1,0 +1,61 @@
+<div class="space-y-4 md:space-y-6">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]" x-data="{ tab: 'overview' }">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">下劃線樣式</h3>
+        <div class="mt-4 flex gap-6 border-b border-gray-100 dark:border-gray-800">
+            <button type="button" class="border-b-2 pb-3 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'overview' ? 'border-brand-500 text-brand-600 dark:text-brand-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'"
+                    x-on:click="tab = 'overview'">概覽</button>
+            <button type="button" class="border-b-2 pb-3 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'orders' ? 'border-brand-500 text-brand-600 dark:text-brand-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'"
+                    x-on:click="tab = 'orders'">訂單</button>
+            <button type="button" class="border-b-2 pb-3 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'settings' ? 'border-brand-500 text-brand-600 dark:text-brand-400' : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'"
+                    x-on:click="tab = 'settings'">設定</button>
+        </div>
+        <div class="pt-4">
+            <div x-show="tab === 'overview'" class="text-theme-sm leading-6 text-gray-600 dark:text-gray-400">概覽面板：展示本月銷售、轉化與庫存摘要。</div>
+            <div x-show="tab === 'orders'" x-cloak class="text-theme-sm leading-6 text-gray-600 dark:text-gray-400">訂單面板：共 36 筆訂單，其中 3 筆待發貨。</div>
+            <div x-show="tab === 'settings'" x-cloak class="text-theme-sm leading-6 text-gray-600 dark:text-gray-400">設定面板：可調整通知、權限與整合。</div>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]" x-data="{ tab: 'all' }">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">膠囊樣式</h3>
+        <div class="mt-4 inline-flex items-center gap-1 rounded-lg bg-gray-100 p-1 dark:bg-gray-900">
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'all' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                    x-on:click="tab = 'all'">全部</button>
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'unread' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                    x-on:click="tab = 'unread'">未讀 3</button>
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'archived' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                    x-on:click="tab = 'archived'">已歸檔</button>
+        </div>
+        <div class="mt-4 rounded-xl bg-gray-50 p-4 text-theme-sm text-gray-600 dark:bg-white/5 dark:text-gray-400">
+            <span x-show="tab === 'all'">顯示全部 18 條記錄。</span>
+            <span x-show="tab === 'unread'" x-cloak>顯示 3 條未讀記錄。</span>
+            <span x-show="tab === 'archived'" x-cloak>顯示 9 條已歸檔記錄。</span>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]" x-data="{ tab: 'profile' }">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帶圖標</h3>
+        <div class="mt-4 flex flex-wrap gap-2">
+            <button type="button" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'profile' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="tab = 'profile'"><partial name="_Icon" model="@("user")" />個人資料</button>
+            <button type="button" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'security' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="tab = 'security'"><partial name="_Icon" model="@("settings")" />安全設定</button>
+            <button type="button" class="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="tab === 'notice' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="tab = 'notice'"><partial name="_Icon" model="@("bell")" />通知</button>
+        </div>
+        <div class="mt-4 text-theme-sm text-gray-600 dark:text-gray-400">
+            <span x-show="tab === 'profile'">個人資料內容</span>
+            <span x-show="tab === 'security'" x-cloak>安全設定內容</span>
+            <span x-show="tab === 'notice'" x-cloak>通知偏好內容</span>
+        </div>
+    </section>
+</div>
