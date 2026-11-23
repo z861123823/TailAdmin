@@ -64,12 +64,20 @@
             "Areas/Admin/Controllers/FormsController.cs",
             "Areas/Admin/Controllers/TablesController.cs",
             "Areas/Admin/Controllers/ChartsController.cs",
+            "Areas/Admin/Controllers/CalendarController.cs",
+            "Areas/Admin/Controllers/ProfileController.cs",
+            "Areas/Admin/Controllers/EmptyStateController.cs",
+            "Areas/Admin/Controllers/OnboardingController.cs",
             "Areas/Admin/Views/Goods/**",
             "Areas/Admin/Views/UiElements/**",
             "Areas/Admin/Views/Pages/**",
             "Areas/Admin/Views/Forms/**",
             "Areas/Admin/Views/Tables/**",
-            "Areas/Admin/Views/Charts/**"
+            "Areas/Admin/Views/Charts/**",
+            "Areas/Admin/Views/Calendar/**",
+            "Areas/Admin/Views/Profile/**",
+            "Areas/Admin/Views/EmptyState/**",
+            "Areas/Admin/Views/Onboarding/**"
           ]
         }
       ]

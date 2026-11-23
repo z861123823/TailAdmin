@@ -1,0 +1,64 @@
+@{
+    var noData = new EmptyStateModel
+    {
+        Title = "暫無商品",
+        Description = "新增第一個商品後，這裡會顯示商品列表。",
+        ActionText = "新增商品",
+        ActionUrl = "#"
+    };
+    var noOrder = new EmptyStateModel
+    {
+        Title = "暫無訂單",
+        Description = "當有新的訂單產生時，會即時顯示在這裡。"
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="border-b border-gray-100 px-5 py-4 text-base font-semibold text-gray-800 md:px-6 dark:border-gray-800 dark:text-white/90">無數據（帶操作）</h3>
+        <partial name="_EmptyState" model="noData" />
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="border-b border-gray-100 px-5 py-4 text-base font-semibold text-gray-800 md:px-6 dark:border-gray-800 dark:text-white/90">無數據（僅說明）</h3>
+        <partial name="_EmptyState" model="noOrder" />
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">搜索無結果</h3>
+        <div class="mt-6 flex flex-col items-center justify-center px-4 py-10 text-center">
+            <span class="flex size-14 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-white/5 dark:text-gray-500">
+                <partial name="_Icon" model="@("search")" />
+            </span>
+            <p class="mt-4 text-theme-sm font-medium text-gray-800 dark:text-white/90">找不到匹配結果</p>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">試試更換關鍵字，或清除目前的篩選條件。</p>
+            <button type="button"
+                    class="mt-5 inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    onclick="Ta.toast.info('已清除篩選（演示）')">清除篩選</button>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">加載失敗</h3>
+        <div class="mt-6 flex flex-col items-center justify-center px-4 py-10 text-center">
+            <span class="flex size-14 items-center justify-center rounded-full bg-red-50 text-red-500 dark:bg-red-500/15 dark:text-red-400">
+                <partial name="_Icon" model="@("alert")" />
+            </span>
+            <p class="mt-4 text-theme-sm font-medium text-gray-800 dark:text-white/90">數據加載失敗</p>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">網絡異常或服務暫時不可用，請稍後重試。</p>
+            <button type="button"
+                    class="mt-5 inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+                    onclick="Ta.toast.success('已重新加載（演示）')">
+                <partial name="_Icon" model="@("refresh")" />
+                重試
+            </button>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">表格內空態</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">`_TaTable` 自帶骨架屏、錯誤重試與空態，這裡演示嵌入卡片的獨立空態。</p>
+        <div class="mt-4 overflow-hidden rounded-xl border border-dashed border-gray-300 dark:border-gray-700">
+            <partial name="_EmptyState" model="noData" />
+        </div>
+    </section>
+</div>

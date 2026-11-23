@@ -117,6 +117,46 @@ builder.Services.Configure<AdminUiOptions>(options =>
             new() { Key = "chart-pie", Title = "圓餅圖", Area = "Admin", Controller = "Charts", Action = "Pie", Permission = "charts" }
         }
     });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "calendar",
+        Title = "日曆",
+        Icon = "calendar",
+        Area = "Admin",
+        Controller = "Calendar",
+        Action = "Index",
+        Permission = "calendar"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "profile",
+        Title = "個人資料",
+        Icon = "user",
+        Area = "Admin",
+        Controller = "Profile",
+        Action = "Index",
+        Permission = "profile"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "empty-state",
+        Title = "空狀態",
+        Icon = "empty",
+        Area = "Admin",
+        Controller = "EmptyState",
+        Action = "Index",
+        Permission = "empty-state"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "onboarding",
+        Title = "引導流程",
+        Icon = "check",
+        Area = "Admin",
+        Controller = "Onboarding",
+        Action = "Index",
+        Permission = "onboarding"
+    });
 });
 #endif
 

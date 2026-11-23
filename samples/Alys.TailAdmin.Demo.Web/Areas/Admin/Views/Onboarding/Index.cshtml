@@ -1,0 +1,83 @@
+@{
+    Layout = "~/Views/Shared/_AlysAdminAuthLayout.cshtml";
+    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
+    const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
+}
+<div x-data="{ step: 1, total: 3 }">
+    <div class="mb-6">
+        <div class="flex items-center justify-between text-theme-xs font-medium text-gray-500 dark:text-gray-400">
+            <span>引導設定</span>
+            <span x-text="'第 ' + step + ' / ' + total + ' 步'"></span>
+        </div>
+        <div class="mt-2 h-2 w-full overflow-hidden rounded-full bg-gray-100 dark:bg-white/10">
+            <div class="h-2 rounded-full bg-brand-500 transition-all duration-300" x-bind:style="'width:' + (step / total * 100) + '%'"></div>
+        </div>
+    </div>
+
+    <div x-show="step === 1">
+        <div class="text-center">
+            <span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
+                <partial name="_Icon" model="@("components")" />
+            </span>
+            <h1 class="mt-4 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">歡迎使用 Alys.TailAdmin</h1>
+            <p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">
+                接下來只需兩步，即可完成帳號與工作區的基本設定。
+            </p>
+        </div>
+        <button type="button"
+                class="mt-8 flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+                x-on:click="step = 2">開始設定</button>
+    </div>
+
+    <div x-show="step === 2" x-cloak>
+        <h1 class="text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">完善個人資料</h1>
+        <p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">這些資訊會顯示在團隊成員列表中。</p>
+        <div class="mt-5 space-y-4">
+            <div>
+                <label class="@labelClass" for="onboard-name">姓名</label>
+                <input id="onboard-name" type="text" class="@inputClass" placeholder="請輸入姓名" />
+            </div>
+            <div>
+                <label class="@labelClass" for="onboard-email">工作郵箱</label>
+                <input id="onboard-email" type="email" class="@inputClass" placeholder="you@example.com" />
+            </div>
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="@labelClass" for="onboard-company">公司</label>
+                    <input id="onboard-company" type="text" class="@inputClass" placeholder="公司名稱" />
+                </div>
+                <div>
+                    <label class="@labelClass" for="onboard-role">職位</label>
+                    <input id="onboard-role" type="text" class="@inputClass" placeholder="例如：運營" />
+                </div>
+            </div>
+        </div>
+        <div class="mt-6 flex gap-3">
+            <button type="button"
+                    class="inline-flex flex-1 items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    x-on:click="step = 1">上一步</button>
+            <button type="button"
+                    class="inline-flex flex-1 items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+                    x-on:click="step = 3">下一步</button>
+        </div>
+    </div>
+
+    <div x-show="step === 3" x-cloak>
+        <div class="text-center">
+            <span class="mx-auto flex size-14 items-center justify-center rounded-2xl bg-green-50 text-green-500 dark:bg-green-500/15 dark:text-green-400">
+                <partial name="_Icon" model="@("check")" />
+            </span>
+            <h1 class="mt-4 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">設定完成</h1>
+            <p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">
+                你的工作區已就緒，現在可以開始管理商品與訂單。
+            </p>
+        </div>
+        <a href="/Admin"
+           class="mt-8 flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+            進入儀表盤
+        </a>
+        <button type="button"
+                class="mt-3 flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-3 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                x-on:click="step = 2">返回修改</button>
+    </div>
+</div>
