@@ -1,23 +1,166 @@
 @model string
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-3 md:gap-6">
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">今日訂單</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">128</p>
-    </div>
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">銷售額</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">$12,480</p>
-    </div>
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">待處理工單</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">6</p>
-    </div>
+@{
+    var kpis = new (string Label, string Value, string Trend, string Icon, string Tone)[]
+    {
+        ("今日訂單", "128", "+12.5%", "order", "brand"),
+        ("銷售額", "$12,480", "+8.2%", "chart", "green"),
+        ("新增客戶", "36", "+4.1%", "user", "amber"),
+        ("待處理工單", "6", "-2.3%", "alert", "red")
+    };
+    string ToneBg(string tone) => tone switch
+    {
+        "green" => "bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400",
+        "amber" => "bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
+        "red" => "bg-red-50 text-red-600 dark:bg-red-500/15 dark:text-red-400",
+        _ => "bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400"
+    };
+    string TrendClass(string trend) => trend.StartsWith('-')
+        ? "text-red-600 dark:text-red-400"
+        : "text-green-600 dark:text-green-400";
+
+    var bars = new (string Month, string Height, bool Active)[]
+    {
+        ("1月", "h-24", false),
+        ("2月", "h-32", false),
+        ("3月", "h-28", false),
+        ("4月", "h-36", false),
+        ("5月", "h-32", false),
+        ("6月", "h-40", false),
+        ("7月", "h-28", false),
+        ("8月", "h-44", true),
+        ("9月", "h-36", false),
+        ("10月", "h-40", false),
+        ("11月", "h-32", false),
+        ("12月", "h-44", false)
+    };
+    var orders = new (string No, string Customer, string Amount, string Status)[]
+    {
+        ("#TA-2048", "林雅婷", "$1,280", "已付款"),
+        ("#TA-2047", "陳志明", "$860", "待付款"),
+        ("#TA-2046", "王思穎", "$2,450", "已發貨"),
+        ("#TA-2045", "李俊傑", "$540", "已付款"),
+        ("#TA-2044", "張美玲", "$1,920", "已發貨")
+    };
+}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    @foreach (var kpi in kpis)
+    {
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-theme-sm text-gray-500 dark:text-gray-400">@kpi.Label</p>
+                    <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">@kpi.Value</p>
+                </div>
+                <span class="inline-flex size-11 items-center justify-center rounded-xl @ToneBg(kpi.Tone)">
+                    <partial name="_Icon" model="@kpi.Icon" />
+                </span>
+            </div>
+            <p class="mt-3 flex items-center gap-1 text-theme-xs @TrendClass(kpi.Trend)">
+                <span class="font-medium">@kpi.Trend</span>
+                <span class="text-gray-500 dark:text-gray-400">較上週</span>
+            </p>
+        </div>
+    }
 </div>
 
-<div class="mt-4 rounded-2xl border border-gray-200 bg-white p-5 md:mt-6 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-    <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">佈局說明</h3>
-    <p class="mt-2 text-theme-sm leading-6 text-gray-600 dark:text-gray-400">@Model</p>
-    <p class="mt-2 text-theme-sm leading-6 text-gray-500 dark:text-gray-400">
-        佈局由 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs dark:bg-white/10">_AlysAdminLayout</code> 的 ViewData 開關控制，僅影響當前頁面，不改變全域設定。
-    </p>
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-3">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div>
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">月度銷售</h3>
+                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">近 12 個月成交金額走勢（示意）</p>
+            </div>
+            <span class="rounded-full bg-brand-50 px-3 py-1 text-theme-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">2026 年</span>
+        </div>
+        <div class="mt-6 flex h-56 items-end gap-1.5 sm:gap-3">
+            @foreach (var bar in bars)
+            {
+                <div class="flex flex-1 flex-col items-center gap-2">
+                    <div class="flex h-44 w-full items-end">
+                        <div class="w-full rounded-t-md transition-colors @(bar.Active ? "bg-brand-500" : "bg-brand-500/20 dark:bg-brand-500/25") @bar.Height"></div>
+                    </div>
+                    <span class="text-[10px] text-gray-500 sm:text-theme-xs dark:text-gray-400">@bar.Month</span>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">佈局說明</h3>
+        <p class="mt-2 text-theme-sm leading-6 text-gray-600 dark:text-gray-400">@Model</p>
+        <div class="mt-4 rounded-xl bg-gray-50 p-4 dark:bg-white/[0.03]">
+            <p class="text-theme-xs leading-5 text-gray-500 dark:text-gray-400">
+                佈局由 <code class="rounded bg-white px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/10 dark:text-gray-300">_AlysAdminLayout</code> 的 ViewData 開關控制，僅影響當前頁面，不改變全域設定。
+            </p>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+            <span class="rounded-md bg-gray-100 px-2.5 py-1 text-theme-xs font-medium text-gray-600 dark:bg-white/5 dark:text-gray-400">卡片化</span>
+            <span class="rounded-md bg-gray-100 px-2.5 py-1 text-theme-xs font-medium text-gray-600 dark:bg-white/5 dark:text-gray-400">響應式</span>
+            <span class="rounded-md bg-gray-100 px-2.5 py-1 text-theme-xs font-medium text-gray-600 dark:bg-white/5 dark:text-gray-400">深色模式</span>
+        </div>
+    </section>
+</div>
+
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-3">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">最近訂單</h3>
+            <a asp-area="Admin" asp-controller="Tables" asp-action="Basic"
+               class="text-theme-sm font-medium text-brand-500 transition-colors hover:text-brand-600 dark:text-brand-400">查看全部</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50 dark:bg-white/[0.02]">
+                    <tr>
+                        <th class="px-5 py-3 text-theme-xs font-medium text-gray-500 md:px-6 dark:text-gray-400">訂單號</th>
+                        <th class="px-5 py-3 text-theme-xs font-medium text-gray-500 md:px-6 dark:text-gray-400">客戶</th>
+                        <th class="px-5 py-3 text-theme-xs font-medium text-gray-500 md:px-6 dark:text-gray-400">金額</th>
+                        <th class="px-5 py-3 text-theme-xs font-medium text-gray-500 md:px-6 dark:text-gray-400">狀態</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var order in orders)
+                    {
+                        var badge = order.Status switch
+                        {
+                            "已付款" => "bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400",
+                            "已發貨" => "bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400",
+                            _ => "bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400"
+                        };
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                            <td class="px-5 py-3.5 text-theme-sm font-medium text-gray-800 md:px-6 dark:text-white/90">@order.No</td>
+                            <td class="px-5 py-3.5 text-theme-sm text-gray-600 md:px-6 dark:text-gray-400">@order.Customer</td>
+                            <td class="px-5 py-3.5 text-theme-sm text-gray-600 md:px-6 dark:text-gray-400">@order.Amount</td>
+                            <td class="px-5 py-3.5 md:px-6">
+                                <span class="inline-flex rounded-full px-2.5 py-1 text-theme-xs font-medium @badge">@order.Status</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">快速設定</h3>
+        <div class="mt-4 space-y-4">
+            <div>
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="layout-demo-name">店鋪名稱</label>
+                <input id="layout-demo-name" type="text" value="Alys 旗艦店"
+                       class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+            </div>
+            <label class="flex items-center justify-between gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
+                開啟訂單通知
+                <input type="checkbox" class="peer sr-only" checked />
+                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+            </label>
+            <label class="flex items-center justify-between gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
+                自動同步庫存
+                <input type="checkbox" class="peer sr-only" />
+                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+            </label>
+            <button type="button" class="w-full rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+                    onclick="Ta.toast.success('設定已保存（演示）')">保存設定</button>
+        </div>
+    </section>
 </div>

@@ -2,6 +2,43 @@
     const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
     const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
     const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
+
+    var countrySelect = new TaSelectModel
+    {
+        Name = "layout-country",
+        Id = "layout-country",
+        Value = "台灣",
+        Options = new()
+        {
+            new() { Value = "台灣", Text = "台灣" },
+            new() { Value = "香港", Text = "香港" },
+            new() { Value = "新加坡", Text = "新加坡" }
+        }
+    };
+    var statusSelect = new TaSelectModel
+    {
+        Name = "layout-status",
+        Id = "layout-status",
+        Value = "已發佈",
+        Options = new()
+        {
+            new() { Value = "已發佈", Text = "已發佈" },
+            new() { Value = "草稿", Text = "草稿" },
+            new() { Value = "已下架", Text = "已下架" }
+        }
+    };
+    var inlineStatusSelect = new TaSelectModel
+    {
+        Name = "inline-status",
+        Id = "inline-status",
+        Value = "全部",
+        Options = new()
+        {
+            new() { Value = "全部", Text = "全部" },
+            new() { Value = "已付款", Text = "已付款" },
+            new() { Value = "待付款", Text = "待付款" }
+        }
+    };
 }
 <form class="grid grid-cols-12 gap-4 md:gap-6"
       onsubmit="event.preventDefault(); Ta.toast.success('已保存（演示）')">
@@ -33,11 +70,7 @@
             <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-6">
                 <div class="sm:col-span-2">
                     <label class="@labelClass" for="layout-country">國家 / 地區</label>
-                    <select id="layout-country" class="@inputClass">
-                        <option>台灣</option>
-                        <option>香港</option>
-                        <option>新加坡</option>
-                    </select>
+                    <partial name="_TaSelect" model="countrySelect" />
                 </div>
                 <div class="sm:col-span-2">
                     <label class="@labelClass" for="layout-city">城市</label>
@@ -61,11 +94,7 @@
             <div class="mt-4 space-y-4">
                 <div>
                     <label class="@labelClass" for="layout-status">狀態</label>
-                    <select id="layout-status" class="@inputClass">
-                        <option>已發佈</option>
-                        <option>草稿</option>
-                        <option>已下架</option>
-                    </select>
+                    <partial name="_TaSelect" model="statusSelect" />
                 </div>
                 <label class="flex items-center justify-between gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
                     首頁置頂
@@ -107,17 +136,13 @@
             </div>
             <div class="min-w-[140px]">
                 <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="inline-status">狀態</label>
-                <select id="inline-status"
-                        class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800">
-                    <option>全部</option>
-                    <option>已付款</option>
-                    <option>待付款</option>
-                </select>
+                <partial name="_TaSelect" model="inlineStatusSelect" />
             </div>
             <div class="min-w-[140px]">
                 <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="inline-date">日期</label>
-                <input id="inline-date" type="date"
-                       class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800" />
+                <input id="inline-date" type="text" autocomplete="off" placeholder="選擇日期"
+                       class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800"
+                       x-datepicker />
             </div>
             <button type="submit" class="h-11 rounded-lg bg-brand-500 px-4 text-theme-sm font-medium text-white shadow-theme-xs hover:bg-brand-600">查詢</button>
             <button type="reset" class="h-11 rounded-lg border border-gray-300 bg-white px-4 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">重設</button>

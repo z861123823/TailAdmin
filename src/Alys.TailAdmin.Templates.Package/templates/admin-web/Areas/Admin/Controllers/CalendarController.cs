@@ -36,6 +36,7 @@ public sealed class CalendarController : Controller
         ViewData["Breadcrumb"] = new[] { "後台", "日曆" };
         ViewData["Year"] = y;
         ViewData["Month"] = m;
+        ViewData["UseDatepicker"] = true;
         return View();
     }
 }

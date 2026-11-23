@@ -306,6 +306,41 @@ public sealed class TaDropdownItemModel
     public bool Disabled { get; set; }
 }
 
+/// <summary>下拉选择框模型，用于 _TaSelect 局部视图（Alpine 自定义列表，可深度美化）。</summary>
+public sealed class TaSelectModel
+{
+    /// <summary>表单字段名，作为隐藏输入框的 name。</summary>
+    public string Name { get; set; } = string.Empty;
+
+    /// <summary>元素 id，留空时取 Name。</summary>
+    public string? Id { get; set; }
+
+    /// <summary>当前选中值。</summary>
+    public string? Value { get; set; }
+
+    /// <summary>未选择时的占位文案，默认「請選擇」。</summary>
+    public string Placeholder { get; set; } = "請選擇";
+
+    /// <summary>选项集合。</summary>
+    public List<TaSelectOptionModel> Options { get; set; } = new();
+
+    /// <summary>是否禁用。</summary>
+    public bool Disabled { get; set; }
+
+    /// <summary>附加类名。</summary>
+    public string? CssClass { get; set; }
+}
+
+/// <summary>下拉选择框选项。</summary>
+public sealed class TaSelectOptionModel
+{
+    /// <summary>选项值。</summary>
+    public string Value { get; set; } = string.Empty;
+
+    /// <summary>选项文字。</summary>
+    public string Text { get; set; } = string.Empty;
+}
+
 /// <summary>图片画廊模型。</summary>
 public sealed class TaImagesModel
 {

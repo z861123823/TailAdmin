@@ -46,7 +46,7 @@ dotnet test samples/Alys.TailAdmin.Demo.Tests
 ## 4. 用模板新建项目
 
 ```powershell
-dotnet new install ./artifacts/Alys.TailAdmin.Templates.1.5.0.nupkg
+dotnet new install ./artifacts/Alys.TailAdmin.Templates.1.5.1.nupkg
 dotnet new alys-admin -n MyCompany.Admin -o ../MyCompany.Admin
 
 # 可选参数

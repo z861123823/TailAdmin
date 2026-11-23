@@ -25,6 +25,7 @@ public sealed class FormsController : Controller
         ViewData["Subtitle"] = subtitle;
         ViewData["MenuKey"] = menuKey;
         ViewData["Breadcrumb"] = new[] { "後台", "表單", title };
+        ViewData["UseDatepicker"] = true;
         return View(viewName);
     }
 }
