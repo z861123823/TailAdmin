@@ -7,7 +7,7 @@
 }
 
 <form method="post" asp-area="Admin" asp-controller="Goods" asp-action="Save"
-      x-data="taForm()" x-on:submit.prevent="submit($el)">
+      x-on:submit.prevent="Ta.modal.submit('goodsEdit')">
     <input type="hidden" asp-for="Id" />
 
     <ta-input asp-for="GoodsName" label="商品名稱" required placeholder="例如：無線藍牙耳機" />
@@ -109,13 +109,4 @@
 
     <ta-toggle asp-for="IsHot" label="熱銷" hint="開啟後在列表中標記為熱銷" />
     <ta-textarea asp-for="Remark" label="備註" rows="3" placeholder="選填" />
-
-    <div class="flex flex-col-reverse justify-end gap-3 pt-1 sm:flex-row">
-        <button type="button"
-                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
-                x-on:click="Ta.modal.close('goodsEdit')">取消</button>
-        <button type="submit"
-                class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
-                x-bind:disabled="submitting">保存</button>
-    </div>
 </form>

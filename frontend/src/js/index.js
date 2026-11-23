@@ -37,7 +37,7 @@ const createModal = installModal(Ta);
 const createForm = installForm(Ta);
 installTheme(Ta);
 
-Ta.version = '1.1.0';
+Ta.version = '1.1.1';
 window.Ta = Ta;
 
 const createSearch = installSearch(Ta);
@@ -61,6 +61,23 @@ document.addEventListener('alpine:init', () => {
 
 Ta.theme.init();
 Alpine.start();
+
+// 原生 <dialog> 通用关闭行为：
+// 1) 点击遮罩（事件目标是 dialog 本身）关闭；
+// 2) 任意带 data-dialog-close 的按钮关闭最近的 dialog。
+document.addEventListener('click', (event) => {
+  const target = event.target;
+  if (target instanceof HTMLDialogElement && target.classList.contains('ta-dialog') && target.open) {
+    target.close();
+    return;
+  }
+
+  const trigger = target instanceof Element ? target.closest('[data-dialog-close]') : null;
+  if (trigger) {
+    const dialog = trigger.closest('dialog');
+    if (dialog && dialog.open) dialog.close();
+  }
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   initMonthlySalesChart();
