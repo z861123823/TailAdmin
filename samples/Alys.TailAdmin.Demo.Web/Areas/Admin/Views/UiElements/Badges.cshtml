@@ -1,0 +1,67 @@
+@{
+    var variants = new List<TaBadgeModel>
+    {
+        new() { Text = "主要", Variant = "primary" },
+        new() { Text = "成功", Variant = "success" },
+        new() { Text = "警告", Variant = "warning" },
+        new() { Text = "危險", Variant = "danger" },
+        new() { Text = "資訊", Variant = "info" },
+        new() { Text = "淺色", Variant = "light" },
+        new() { Text = "深色", Variant = "dark" }
+    };
+    var decorated = new List<TaBadgeModel>
+    {
+        new() { Text = "進行中", Variant = "primary", Dot = true },
+        new() { Text = "已完成", Variant = "success", Dot = true },
+        new() { Text = "待處理", Variant = "warning", Icon = "alert" },
+        new() { Text = "已取消", Variant = "danger", Icon = "close" },
+        new() { Text = "已審核", Variant = "info", Icon = "check" }
+    };
+    var small = new TaBadgeModel { Text = "Small", Size = "sm", Variant = "primary" };
+    var medium = new TaBadgeModel { Text = "Medium", Size = "md", Variant = "primary" };
+    var shipped = new TaBadgeModel { Text = "已發貨", Variant = "success", Dot = true };
+    var lowStock = new TaBadgeModel { Text = "低庫存", Variant = "warning" };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">色彩</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+            @foreach (var badge in variants)
+            {
+                <partial name="_TaBadge" model="badge" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">圓點與圖標</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+            @foreach (var badge in decorated)
+            {
+                <partial name="_TaBadge" model="badge" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">尺寸</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            <partial name="_TaBadge" model="small" />
+            <partial name="_TaBadge" model="medium" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">表格內徽章</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-6">
+            <div class="flex items-center gap-2 text-theme-sm text-gray-600 dark:text-gray-400">
+                訂單狀態
+                <partial name="_TaBadge" model="shipped" />
+            </div>
+            <div class="flex items-center gap-2 text-theme-sm text-gray-600 dark:text-gray-400">
+                庫存
+                <partial name="_TaBadge" model="lowStock" />
+            </div>
+        </div>
+    </section>
+</div>

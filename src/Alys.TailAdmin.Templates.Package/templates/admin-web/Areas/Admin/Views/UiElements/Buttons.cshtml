@@ -1,0 +1,71 @@
+@{
+    var variants = new List<TaButtonModel>
+    {
+        new() { Text = "主要按鈕" },
+        new() { Text = "成功按鈕", Variant = "success" },
+        new() { Text = "警告按鈕", Variant = "warning" },
+        new() { Text = "危險按鈕", Variant = "danger" },
+        new() { Text = "輪廓按鈕", Variant = "outline" },
+        new() { Text = "幽靈按鈕", Variant = "ghost" },
+        new() { Text = "淺色按鈕", Variant = "light" }
+    };
+    var sizes = new List<TaButtonModel>
+    {
+        new() { Text = "小按鈕", Size = "sm" },
+        new() { Text = "中按鈕", Size = "md" },
+        new() { Text = "大按鈕", Size = "lg" }
+    };
+    var withIcons = new List<TaButtonModel>
+    {
+        new() { Text = "新增", Icon = "plus" },
+        new() { Text = "上傳", Icon = "upload", Variant = "outline" },
+        new() { Text = "下一步", Icon = "chevron-right", IconPosition = "right", Variant = "light" }
+    };
+    var iconOnly = new TaButtonModel { Text = string.Empty, Icon = "plus", AriaLabel = "新增" };
+    var disabled = new TaButtonModel { Text = "禁用按鈕", Disabled = true };
+    var fullWidth = new TaButtonModel { Text = "佔滿寬度", FullWidth = true };
+    var linkButton = new TaButtonModel { Text = "連結按鈕", Href = "#", Icon = "eye", Variant = "outline" };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">樣式</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            @foreach (var button in variants)
+            {
+                <partial name="_TaButton" model="button" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">尺寸</h3>
+        <div class="mt-4 flex flex-wrap items-end gap-3">
+            @foreach (var button in sizes)
+            {
+                <partial name="_TaButton" model="button" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">圖標按鈕</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            @foreach (var button in withIcons)
+            {
+                <partial name="_TaButton" model="button" />
+            }
+            <partial name="_TaButton" model="iconOnly" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">狀態與連結</h3>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            <partial name="_TaButton" model="disabled" />
+            <partial name="_TaButton" model="linkButton" />
+        </div>
+        <div class="mt-4 max-w-sm">
+            <partial name="_TaButton" model="fullWidth" />
+        </div>
+    </section>
+</div>

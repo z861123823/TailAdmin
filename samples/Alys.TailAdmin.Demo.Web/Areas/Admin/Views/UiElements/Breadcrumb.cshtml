@@ -1,0 +1,53 @@
+@{
+    var withHome = new TaBreadcrumbModel
+    {
+        HomeUrl = "/Admin/Home/Index",
+        Items = new List<TaBreadcrumbItemModel>
+        {
+            new() { Text = "商品中心", Url = "#" },
+            new() { Text = "商品管理", Url = "#" },
+            new() { Text = "編輯商品" }
+        }
+    };
+    var withoutHome = new TaBreadcrumbModel
+    {
+        ShowHome = false,
+        Items = new List<TaBreadcrumbItemModel>
+        {
+            new() { Text = "設定", Url = "#" },
+            new() { Text = "權限管理", Url = "#" },
+            new() { Text = "角色詳情" }
+        }
+    };
+    var simple = new TaBreadcrumbModel
+    {
+        HomeText = "儀表盤",
+        HomeUrl = "/Admin/Home/Index",
+        Items = new List<TaBreadcrumbItemModel>
+        {
+            new() { Text = "當前頁面" }
+        }
+    };
+}
+<div class="flex flex-col gap-4 md:gap-6">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">含首頁入口</h3>
+        <div class="mt-4">
+            <partial name="_TaBreadcrumb" model="withHome" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">不含首頁入口</h3>
+        <div class="mt-4">
+            <partial name="_TaBreadcrumb" model="withoutHome" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">單層路徑</h3>
+        <div class="mt-4">
+            <partial name="_TaBreadcrumb" model="simple" />
+        </div>
+    </section>
+</div>

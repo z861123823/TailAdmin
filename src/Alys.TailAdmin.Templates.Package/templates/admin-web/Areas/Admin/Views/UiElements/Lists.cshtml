@@ -1,0 +1,53 @@
+@{
+    var basic = new TaListModel
+    {
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "個人資料已完成" },
+            new() { Text = "郵箱驗證已通過" },
+            new() { Text = "實名認證待上傳證件" }
+        }
+    };
+    var rich = new TaListModel
+    {
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "商品管理", Description = "分頁、排序與關鍵字查詢", Icon = "goods", Href = "#" },
+            new() { Text = "商品分類", Description = "分類維護與啟停用", Icon = "tag", Href = "#", Badge = "12" },
+            new() { Text = "系統設定", Description = "品牌、選單與權限配置", Icon = "settings", Active = true },
+            new() { Text = "操作日誌", Description = "最近 30 天的登入與變更記錄", Icon = "order", Href = "#" }
+        }
+    };
+    var compact = new TaListModel
+    {
+        Divided = false,
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "待付款", Badge = "3" },
+            new() { Text = "待發貨", Badge = "8" },
+            new() { Text = "售後處理", Badge = "1" }
+        }
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">基礎列表</h3>
+        <div class="mt-3">
+            <partial name="_TaList" model="basic" />
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">圖標與徽章</h3>
+        <div class="mt-3">
+            <partial name="_TaList" model="rich" />
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">緊湊列表（無分隔線）</h3>
+        <div class="mt-3">
+            <partial name="_TaList" model="compact" />
+        </div>
+    </section>
+</div>

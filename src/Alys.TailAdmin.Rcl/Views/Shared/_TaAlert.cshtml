@@ -6,14 +6,17 @@
         "success" => "border-green-200 bg-green-50 text-green-600 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-400",
         "warning" => "border-amber-200 bg-amber-50 text-amber-600 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400",
         "danger" => "border-red-200 bg-red-50 text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-400",
+        "default" => "border-gray-200 bg-gray-50 text-gray-600 dark:border-gray-700 dark:bg-white/5 dark:text-gray-300",
         _ => "border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-400"
     };
     var iconName = variant switch
     {
         "success" => "check",
+        "default" => "bell",
         "info" => "info",
         _ => "alert"
     };
+    var showLink = !string.IsNullOrWhiteSpace(Model.LinkUrl) && !string.IsNullOrWhiteSpace(Model.LinkText);
 }
 <div class="flex items-start gap-3 rounded-xl border px-4 py-3 text-theme-sm @box @Model.CssClass"
      x-data="{ show: true }" x-show="show" x-transition.opacity.duration.200ms>
@@ -31,6 +34,14 @@
         @if (!string.IsNullOrWhiteSpace(Model.Message))
         {
             <p class="text-gray-600 dark:text-gray-300 @(string.IsNullOrWhiteSpace(Model.Title) ? null : "mt-0.5")">@Model.Message</p>
+        }
+        @if (showLink)
+        {
+            <a href="@Model.LinkUrl"
+               class="mt-2 inline-flex items-center gap-1 text-theme-sm font-medium underline underline-offset-4">
+                @Model.LinkText
+                <partial name="_Icon" model="@("chevron-right")" />
+            </a>
         }
     </div>
     @if (Model.Dismissible)

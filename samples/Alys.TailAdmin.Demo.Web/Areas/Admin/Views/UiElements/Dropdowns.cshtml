@@ -1,0 +1,65 @@
+@{
+    var basic = new TaDropdownModel
+    {
+        TriggerText = "選項",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "編輯", Icon = "pencil", Url = "#" },
+            new() { Text = "複製", Icon = "goods", Url = "#" },
+            new() { Text = "刪除", Icon = "trash", Danger = true, DividerBefore = true, OnClick = "Ta.toast.info('演示操作')" }
+        }
+    };
+    var rightAligned = new TaDropdownModel
+    {
+        TriggerText = "更多",
+        TriggerIcon = "dots",
+        Align = "right",
+        Width = "sm",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "個人資料", Icon = "user", Url = "#" },
+            new() { Text = "帳戶設定", Icon = "settings", Url = "#" },
+            new() { Text = "登出", Icon = "logout", DividerBefore = true, OnClick = "Ta.toast.success('已登出（演示）')" }
+        }
+    };
+    var primary = new TaDropdownModel
+    {
+        TriggerText = "主要操作",
+        Variant = "primary",
+        Size = "sm",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "匯出 CSV", Icon = "upload", OnClick = "Ta.toast.info('匯出 CSV')" },
+            new() { Text = "匯出 Excel", Icon = "upload", OnClick = "Ta.toast.info('匯出 Excel')" }
+        }
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基礎下拉</h3>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="basic" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">右對齊</h3>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="rightAligned" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">主要按鈕觸發</h3>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="primary" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">交互說明</h3>
+        <p class="mt-3 text-theme-sm leading-6 text-gray-500 dark:text-gray-400">
+            點擊外部、按 Esc 或選擇任意選單項後自動關閉；禁用項不響應點擊。
+        </p>
+    </section>
+</div>

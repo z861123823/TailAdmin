@@ -1,0 +1,52 @@
+@{
+    var basic = new TaButtonGroupModel
+    {
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "日", Variant = "primary" },
+            new() { Text = "週" },
+            new() { Text = "月" }
+        }
+    };
+    var small = new TaButtonGroupModel
+    {
+        Size = "sm",
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "列表", Variant = "primary", Icon = "menu" },
+            new() { Text = "圖表", Icon = "chart" }
+        }
+    };
+    var large = new TaButtonGroupModel
+    {
+        Size = "lg",
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "全部", Variant = "primary" },
+            new() { Text = "已發佈" },
+            new() { Text = "草稿" }
+        }
+    };
+}
+<div class="flex flex-col gap-4 md:gap-6">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基礎用法</h3>
+        <div class="mt-4">
+            <partial name="_TaButtonGroup" model="basic" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帶圖標（Small）</h3>
+        <div class="mt-4">
+            <partial name="_TaButtonGroup" model="small" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">Large</h3>
+        <div class="mt-4">
+            <partial name="_TaButtonGroup" model="large" />
+        </div>
+    </section>
+</div>

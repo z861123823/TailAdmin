@@ -1,0 +1,32 @@
+@{
+    var basic = new TaCardModel
+    {
+        Title = "卡片標題",
+        Subtitle = "這是卡片的副標題說明",
+        Text = "卡片是最基礎的佈局單元，適合承載圖表、統計與說明等內容。"
+    };
+    var withLink = new TaCardModel
+    {
+        Icon = "chart",
+        Title = "月度銷售",
+        Subtitle = "按售價 × 銷量估算",
+        Text = "本月累計銷售額較上月增長 12.5%，主要來自熱銷商品的帶動。",
+        Href = "#",
+        LinkText = "查看詳情",
+        FooterText = "資料更新於今日 09:30",
+        Hoverable = true
+    };
+    var customBody = new TaCardModel
+    {
+        Title = "自定義內容",
+        Subtitle = "Body 支持受信任的 HTML 片段",
+        Body = Html.Raw("<div class=\"flex items-center gap-3\"><span class=\"inline-flex size-10 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400\">✓</span><div><p class=\"text-theme-sm font-medium text-gray-800 dark:text-white/90\">檢查完成</p><p class=\"text-theme-xs text-gray-500 dark:text-gray-400\">所有欄位均已通過校驗</p></div></div>")
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <partial name="_TaCard" model="basic" />
+    <partial name="_TaCard" model="withLink" />
+    <div class="xl:col-span-2">
+        <partial name="_TaCard" model="customBody" />
+    </div>
+</div>

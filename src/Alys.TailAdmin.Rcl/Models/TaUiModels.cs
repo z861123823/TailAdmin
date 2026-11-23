@@ -5,7 +5,7 @@ namespace Alys.TailAdmin.Rcl.Models;
 /// <summary>警告提示模型，对应 TailAdmin 的 Alert 组件。</summary>
 public sealed class TaAlertModel
 {
-    /// <summary>提示样式：info / success / warning / danger，默认 info。</summary>
+    /// <summary>提示样式：default / info / success / warning / danger，默认 info。</summary>
     public string Variant { get; set; } = "info";
 
     /// <summary>标题，留空时只显示内容。</summary>
@@ -13,6 +13,12 @@ public sealed class TaAlertModel
 
     /// <summary>提示内容（纯文本，HTML 会被编码）。</summary>
     public string Message { get; set; } = string.Empty;
+
+    /// <summary>提示内的链接地址。</summary>
+    public string? LinkUrl { get; set; }
+
+    /// <summary>提示内的链接文字，与 LinkUrl 同时设置才显示。</summary>
+    public string? LinkText { get; set; }
 
     /// <summary>是否显示状态图标。</summary>
     public bool ShowIcon { get; set; } = true;

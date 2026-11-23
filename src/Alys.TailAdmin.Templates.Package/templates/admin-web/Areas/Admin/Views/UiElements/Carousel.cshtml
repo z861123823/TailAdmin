@@ -1,0 +1,76 @@
+@{
+    var withAll = new TaCarouselModel
+    {
+        Height = "md",
+        Items = new List<TaCarouselItemModel>
+        {
+            new() { Src = Swatch("#465fff", "#8192ff", 0), Alt = "幻燈片一", Caption = "春季新品", Description = "全場商品限時折扣" },
+            new() { Src = Swatch("#12b76a", "#6ce9a6", 1), Alt = "幻燈片二", Caption = "會員專享", Description = "積分兌換與專屬優惠" },
+            new() { Src = Swatch("#f79009", "#fdb022", 0), Alt = "幻燈片三", Caption = "店慶活動", Description = "滿 300 減 50" }
+        }
+    };
+    var indicatorsOnly = new TaCarouselModel
+    {
+        Height = "sm",
+        ShowArrows = false,
+        Items = new List<TaCarouselItemModel>
+        {
+            new() { Src = Swatch("#0ba5ec", "#b9e6fe", 0), Alt = "幻燈片一", Caption = "僅指示點" },
+            new() { Src = Swatch("#f04438", "#fda29b", 1), Alt = "幻燈片二", Caption = "拖動或點擊切換" }
+        }
+    };
+    var bare = new TaCarouselModel
+    {
+        Height = "sm",
+        ShowArrows = false,
+        ShowIndicators = false,
+        Items = new List<TaCarouselItemModel>
+        {
+            new() { Src = Swatch("#7a5af8", "#c3b5fd", 0), Alt = "單張圖片" }
+        }
+    };
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">左右切換 + 指示點</h3>
+        <div class="mt-4">
+            <partial name="_TaCarousel" model="withAll" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">僅指示點</h3>
+        <div class="mt-4">
+            <partial name="_TaCarousel" model="indicatorsOnly" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">純圖片</h3>
+        <div class="mt-4">
+            <partial name="_TaCarousel" model="bare" />
+        </div>
+    </section>
+</div>
+
+@functions {
+    /// <summary>生成自包含的漸變 SVG 圖片，避免示例頁依賴外部圖床。</summary>
+    /// <param name="from">起始顏色。</param>
+    /// <param name="to">結束顏色。</param>
+    /// <param name="variant">圖形變體。</param>
+    /// <returns>可直接用於 img src 的 Data URI。</returns>
+    private static string Swatch(string from, string to, int variant)
+    {
+        var shape = variant % 2 == 0
+            ? "<circle cx='620' cy='180' r='210' fill='white' fill-opacity='0.14'/>"
+            : "<rect x='420' y='360' width='520' height='520' fill='white' fill-opacity='0.12' transform='rotate(18 680 620)'/>";
+        var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'>"
+            + "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>"
+            + $"<stop offset='0' stop-color='{from}'/><stop offset='1' stop-color='{to}'/>"
+            + "</linearGradient></defs>"
+            + "<rect width='800' height='500' fill='url(#g)'/>"
+            + shape
+            + "</svg>";
+        return "data:image/svg+xml;utf8," + Uri.EscapeDataString(svg);
+    }
+}

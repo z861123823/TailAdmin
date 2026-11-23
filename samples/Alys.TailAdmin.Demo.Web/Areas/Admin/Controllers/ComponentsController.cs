@@ -3,21 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Alys.TailAdmin.Demo.Web.Areas.Admin.Controllers;
 
-/// <summary>组件示例页。</summary>
+/// <summary>旧组件总览入口，保留地址并跳转到逐组件页面。</summary>
 [Area("Admin")]
 [Authorize]
 [AutoValidateAntiforgeryToken]
 public sealed class ComponentsController : Controller
 {
-    /// <summary>组件总览页。</summary>
-    /// <returns>组件示例视图。</returns>
+    /// <summary>跳转到 UI 元件首个页面。</summary>
+    /// <returns>重定向结果。</returns>
     [HttpGet]
-    public IActionResult Index()
-    {
-        ViewData["Title"] = "組件示例";
-        ViewData["Subtitle"] = "TailAdmin 官方組件的 Razor 封裝";
-        ViewData["MenuKey"] = "components";
-        ViewData["Breadcrumb"] = new[] { "後台", "組件示例" };
-        return View();
-    }
+    public IActionResult Index() => RedirectToAction("Alerts", "UiElements", new { area = "Admin" });
 }
