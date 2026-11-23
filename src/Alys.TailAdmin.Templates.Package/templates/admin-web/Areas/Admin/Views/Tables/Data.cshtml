@@ -25,6 +25,21 @@
         Placeholder = "搜索商品名稱"
     };
 }
+<div class="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-3 md:mb-6">
+    <div class="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-white/[0.03]">
+        <span class="text-theme-sm text-gray-500 dark:text-gray-400">總記錄</span>
+        <span class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">36</span>
+    </div>
+    <div class="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-white/[0.03]">
+        <span class="text-theme-sm text-gray-500 dark:text-gray-400">当前页</span>
+        <span class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">10 条</span>
+    </div>
+    <div class="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-3 dark:border-gray-800 dark:bg-white/[0.03]">
+        <span class="text-theme-sm text-gray-500 dark:text-gray-400">排序</span>
+        <span class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">預設</span>
+    </div>
+</div>
+
 <partial name="_TableToolbar" model="toolbar" />
 
 <partial name="_TaTable" model="table" />

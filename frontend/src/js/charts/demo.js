@@ -84,9 +84,28 @@ function initTrafficDonut() {
   }).render();
 }
 
+function initPlanDonut() {
+  const el = document.querySelector('#demoPlanChart');
+  if (!el) return;
+
+  new ApexCharts(el, {
+    chart: { type: 'donut', height: 280, fontFamily },
+    colors: [brandColor('500'), '#12b76a', '#f79009'],
+    series: [62, 28, 10],
+    labels: ['企業版', '專業版', '基礎版'],
+    stroke: { width: 2, colors: ['#ffffff'] },
+    dataLabels: { enabled: false },
+    legend: { position: 'bottom', horizontalAlign: 'center' },
+    plotOptions: {
+      pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: 'MRR', formatter: () => '$48.2k' } } } }
+    }
+  }).render();
+}
+
 export default function initDemoCharts() {
   initLineChart();
   initBarChart();
   initPieChart();
   initTrafficDonut();
+  initPlanDonut();
 }

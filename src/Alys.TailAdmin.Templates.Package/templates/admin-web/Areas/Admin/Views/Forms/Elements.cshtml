@@ -127,3 +127,101 @@
         </div>
     </section>
 </div>
+
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-2">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">進階輸入</h3>
+        <div class="mt-4 space-y-4">
+            <div>
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-icon">帶圖標</label>
+                <div class="relative">
+                    <span class="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-gray-400 dark:text-gray-500">
+                        <partial name="_Icon" model="@("search")" />
+                    </span>
+                    <input id="input-icon" type="text" placeholder="搜索訂單或客戶"
+                           class="h-11 w-full rounded-lg border border-gray-300 bg-transparent pr-4 pl-11 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+                </div>
+            </div>
+            <div x-data="{ show: false }">
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-password">密碼（可切換顯示）</label>
+                <div class="relative">
+                    <input id="input-password" x-bind:type="show ? 'text' : 'password'" value="Alys@2026" autocomplete="off"
+                           class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-12 text-theme-sm text-gray-800 shadow-theme-xs transition-colors focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800" />
+                    <button type="button" class="absolute top-1/2 right-2 -translate-y-1/2 rounded px-2 py-1 text-theme-xs font-medium text-brand-500 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-500/10"
+                            x-on:click="show = !show" x-text="show ? '隱藏' : '顯示'" aria-label="切換密碼顯示"></button>
+                </div>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-error">錯誤狀態</label>
+                <input id="input-error" type="email" value="manager@@"
+                       class="h-11 w-full rounded-lg border border-red-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-red-400 focus:ring-3 focus:ring-red-500/20 focus:outline-hidden dark:border-red-500/50 dark:bg-gray-900 dark:text-white/90" />
+                <p class="mt-1.5 text-theme-xs text-red-600 dark:text-red-400">請輸入完整的郵箱地址。</p>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-success">成功狀態</label>
+                <input id="input-success" type="text" value="SKU-1042"
+                       class="h-11 w-full rounded-lg border border-green-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-green-400 focus:ring-3 focus:ring-green-500/20 focus:outline-hidden dark:border-green-500/50 dark:bg-gray-900 dark:text-white/90" />
+                <p class="mt-1.5 text-theme-xs text-green-600 dark:text-green-400">SKU 可使用。</p>
+            </div>
+            <div>
+                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-disabled">禁用狀態</label>
+                <input id="input-disabled" type="text" value="不可編輯" disabled
+                       class="h-11 w-full cursor-not-allowed rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-theme-sm text-gray-400 dark:border-gray-800 dark:bg-gray-900/60 dark:text-gray-600" />
+            </div>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">選項與組合</h3>
+        <div class="mt-4 space-y-5">
+            <div>
+                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">方案選擇（卡片式單選）</span>
+                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
+                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
+                        <input type="radio" name="plan-card" class="peer sr-only" />
+                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">基礎版</span>
+                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$99 / 月</span>
+                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
+                    </label>
+                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
+                        <input type="radio" name="plan-card" class="peer sr-only" checked />
+                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">專業版</span>
+                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$299 / 月</span>
+                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
+                    </label>
+                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
+                        <input type="radio" name="plan-card" class="peer sr-only" />
+                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">企業版</span>
+                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$999 / 月</span>
+                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">通知渠道（多選）</span>
+                <div class="space-y-2">
+                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" checked />
+                        站內通知
+                    </label>
+                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" checked />
+                        電子郵件
+                    </label>
+                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                        SMS 簡訊
+                    </label>
+                </div>
+            </div>
+            <div>
+                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">尺寸對比</span>
+                <div class="flex flex-wrap items-center gap-3">
+                    <input type="text" placeholder="小尺寸" class="h-9 w-32 rounded-lg border border-gray-300 bg-transparent px-3 text-theme-xs text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    <input type="text" placeholder="預設尺寸" class="h-11 w-40 rounded-lg border border-gray-300 bg-transparent px-4 text-theme-sm text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                    <input type="text" placeholder="大尺寸" class="h-12 w-48 rounded-xl border border-gray-300 bg-transparent px-4 text-theme-sm text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

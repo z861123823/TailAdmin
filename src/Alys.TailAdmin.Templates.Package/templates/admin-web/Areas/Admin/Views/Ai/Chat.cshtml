@@ -1,67 +1,116 @@
-<section class="mx-auto flex max-w-4xl flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 dark:border-gray-800">
-        <div class="flex items-center gap-3">
-            <span class="flex size-10 items-center justify-center rounded-xl bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
-                <partial name="_Icon" model="@("components")" />
-            </span>
-            <div>
-                <h3 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">AI 助手</h3>
-                <p class="text-theme-xs text-gray-500 dark:text-gray-400">GPT-4o · 已就緒</p>
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12"
+     x-data="{
+        draft: '',
+        messages: [
+            { me: false, text: '你好，我是商城的 AI 助手。可以幫你寫文案、分析數據或整理工單。', time: '10:02' },
+            { me: true, text: '幫我寫一段雙十一活動的商品推薦文案，語氣活潑一點。', time: '10:03' },
+            { me: false, text: '雙十一狂歡開跑！精選好物直降 40%，無線耳機、便攜充電器與香氛禮盒一次買齊。限量優惠，錯過再等一年，現在下單再享免運！', time: '10:03' },
+            { me: true, text: '不錯，再精簡到 50 字以內。', time: '10:05' },
+            { me: false, text: '雙十一狂歡開跑！精選好物直降 40%，耳機、充電器、香氛禮盒一次買齊，限時免運。', time: '10:05' }
+        ],
+        send() {
+            if (!this.draft.trim()) return;
+            this.messages.push({ me: true, text: this.draft, time: '剛剛' });
+            this.draft = '';
+            this.$nextTick(() => {
+                const el = this.$refs.scroller;
+                if (el) el.scrollTop = el.scrollHeight;
+            });
+        }
+     }">
+    <div class="space-y-4 md:space-y-6 xl:col-span-8">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+                <select class="h-10 rounded-lg border border-gray-300 bg-transparent px-3 text-theme-sm text-gray-700 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                    <option>GPT-4.1 · 通用</option>
+                    <option>Claude · 長文本</option>
+                    <option>本地模型 · 私密</option>
+                </select>
+                <span class="rounded-full bg-green-50 px-2.5 py-1 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-400">已連線</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-theme-xs text-gray-500 dark:text-gray-400">本輪 1,284 tokens</span>
+                <button type="button" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        onclick="Ta.toast.info('已建立新對話（演示）')">新對話</button>
             </div>
         </div>
-        <button type="button" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                onclick="Ta.toast.success('已開始新對話（演示）')">新對話</button>
+
+        <section class="flex min-h-[520px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex-1 space-y-4 overflow-y-auto px-5 py-5 custom-scrollbar" x-ref="scroller">
+                <template x-for="(m, mi) in messages" :key="mi">
+                    <div class="flex gap-3" x-bind:class="m.me ? 'flex-row-reverse' : ''">
+                        <span class="flex size-8 shrink-0 items-center justify-center rounded-full text-theme-xs font-semibold"
+                              x-bind:class="m.me ? 'bg-brand-500 text-white' : 'bg-gray-100 text-gray-600 dark:bg-white/10 dark:text-gray-300'"
+                              x-text="m.me ? '我' : 'AI'"></span>
+                        <div class="max-w-[80%]">
+                            <div class="rounded-2xl px-4 py-2.5 text-theme-sm leading-6"
+                                 x-bind:class="m.me ? 'rounded-tr-md bg-brand-500 text-white' : 'rounded-tl-md bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-gray-300'">
+                                <p x-text="m.text"></p>
+                            </div>
+                            <div class="mt-1 flex items-center gap-2 text-theme-xs text-gray-400" x-bind:class="m.me ? 'justify-end' : ''">
+                                <span x-text="m.time"></span>
+                                <template x-if="!m.me">
+                                    <span class="flex gap-2">
+                                        <button type="button" class="hover:text-gray-700 dark:hover:text-gray-300" onclick="Ta.toast.success('已複製（演示）')">複製</button>
+                                        <button type="button" class="hover:text-gray-700 dark:hover:text-gray-300" onclick="Ta.toast.info('重新生成（演示）')">重新生成</button>
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <div class="border-t border-gray-100 px-5 pt-3 dark:border-gray-800">
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                            x-on:click="draft = '總結本週商品銷售表現並給出 3 條優化建議'">總結本週銷售</button>
+                    <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                            x-on:click="draft = '把這段客服回覆改寫得更親切'">改寫客服回覆</button>
+                    <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                            x-on:click="draft = '生成一份雙十一活動執行清單'">生成活動清單</button>
+                </div>
+            </div>
+
+            <div class="p-5">
+                <div class="flex items-end gap-2">
+                    <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                            onclick="Ta.toast.info('附加檔案（演示）')" aria-label="附件">
+                        <partial name="_Icon" model="@("upload")" />
+                    </button>
+                    <textarea rows="1" placeholder="輸入問題，Enter 發送…" x-model="draft" x-on:keydown.enter.prevent="send()"
+                              class="max-h-28 min-h-11 w-full resize-none rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"></textarea>
+                    <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:opacity-50"
+                            x-bind:disabled="!draft.trim()" x-on:click="send()" aria-label="發送">
+                        <partial name="_Icon" model="@("chevron-right")" />
+                    </button>
+                </div>
+                <p class="mt-2 text-center text-theme-xs text-gray-400 dark:text-gray-500">AI 生成內容僅供參考，請在發佈前人工確認。</p>
+            </div>
+        </section>
     </div>
 
-    <div class="space-y-5 px-5 py-6">
-        <div class="flex gap-3">
-            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
-                <partial name="_Icon" model="@("components")" />
-            </span>
-            <div class="max-w-[85%] rounded-2xl rounded-tl-md bg-gray-50 px-4 py-3 text-theme-sm leading-6 text-gray-700 dark:bg-white/5 dark:text-gray-300">
-                你好，我是你的運營助手。可以幫你分析銷售數據、生成商品文案，或整理客服回覆。今天想先做什麼？
+    <aside class="space-y-4 md:space-y-6 xl:col-span-4">
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-center justify-between">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">最近對話</h3>
+                <span class="text-theme-xs text-gray-500 dark:text-gray-400">4</span>
             </div>
-        </div>
+            <ul class="mt-4 space-y-1">
+                <li><button type="button" class="w-full rounded-lg bg-brand-50 px-3 py-2.5 text-left text-theme-sm text-brand-700 dark:bg-brand-500/15 dark:text-brand-400">雙十一文案優化</button></li>
+                <li><button type="button" class="w-full rounded-lg px-3 py-2.5 text-left text-theme-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-white/5">本週銷售分析</button></li>
+                <li><button type="button" class="w-full rounded-lg px-3 py-2.5 text-left text-theme-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-white/5">客訴回覆模板</button></li>
+                <li><button type="button" class="w-full rounded-lg px-3 py-2.5 text-left text-theme-sm text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-white/5">活動執行清單</button></li>
+            </ul>
+        </section>
 
-        <div class="flex justify-end">
-            <div class="max-w-[85%] rounded-2xl rounded-tr-md bg-brand-500 px-4 py-3 text-theme-sm leading-6 text-white">
-                幫我總結上月銷售表現，並給三條優化建議。
-            </div>
-        </div>
-
-        <div class="flex gap-3">
-            <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
-                <partial name="_Icon" model="@("components")" />
-            </span>
-            <div class="max-w-[85%] rounded-2xl rounded-tl-md bg-gray-50 px-4 py-3 text-theme-sm leading-6 text-gray-700 dark:bg-white/5 dark:text-gray-300">
-                <p>上月銷售額較前月增長 8.6%，主要由數碼品類拉動；退貨率下降 1.2 個百分點，客單價基本持平。</p>
-                <p class="mt-2 font-medium text-gray-800 dark:text-gray-200">三條建議：</p>
-                <ul class="mt-1 list-disc space-y-1 pl-5">
-                    <li>加大數碼品類的庫存與首頁曝光，抓住增長窗口。</li>
-                    <li>對高退貨 SKU 補充尺寸與材質說明，繼續壓低退貨率。</li>
-                    <li>針對沉睡用戶發放限時券，提升復購與客單價。</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div class="border-t border-gray-100 px-5 py-4 dark:border-gray-800">
-        <div class="mb-3 flex flex-wrap gap-2">
-            <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
-                    onclick="Ta.toast.info('已插入提示詞（演示）')">生成商品文案</button>
-            <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
-                    onclick="Ta.toast.info('已插入提示詞（演示）')">分析轉化漏斗</button>
-            <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
-                    onclick="Ta.toast.info('已插入提示詞（演示）')">整理客服回覆</button>
-        </div>
-        <div class="flex items-end gap-3">
-            <textarea rows="2" placeholder="輸入你的問題…"
-                      class="w-full rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"></textarea>
-            <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600"
-                    onclick="Ta.toast.success('已發送（演示）')" aria-label="發送">
-                <partial name="_Icon" model="@("chevron-right")" />
-            </button>
-        </div>
-        <p class="mt-2 text-center text-theme-xs text-gray-400 dark:text-gray-500">AI 生成的內容僅供參考，請人工核對後再使用。</p>
-    </div>
-</section>
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">使用提示</h3>
+            <ul class="mt-3 space-y-2 text-theme-sm text-gray-600 dark:text-gray-400">
+                <li class="flex gap-2"><span class="text-brand-500">•</span>提供目標受眾與語氣，結果更準確。</li>
+                <li class="flex gap-2"><span class="text-brand-500">•</span>長文本可切分後逐段生成。</li>
+                <li class="flex gap-2"><span class="text-brand-500">•</span>敏感內容會被安全策略攔截。</li>
+            </ul>
+        </section>
+    </aside>
+</div>
