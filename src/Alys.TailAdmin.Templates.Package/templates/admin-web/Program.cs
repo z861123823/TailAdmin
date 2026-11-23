@@ -68,6 +68,21 @@ builder.Services.Configure<AdminUiOptions>(options =>
     });
     options.Menu.Items.Add(new AdminMenuItem
     {
+        Key = "dashboards",
+        Title = "儀表盤變體",
+        Icon = "chart",
+        Permission = "dashboards",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "dash-analytics", Title = "分析", Area = "Admin", Controller = "Dashboards", Action = "Analytics", Permission = "dashboards" },
+            new() { Key = "dash-marketing", Title = "營銷", Area = "Admin", Controller = "Dashboards", Action = "Marketing", Permission = "dashboards" },
+            new() { Key = "dash-crm", Title = "CRM", Area = "Admin", Controller = "Dashboards", Action = "Crm", Permission = "dashboards" },
+            new() { Key = "dash-saas", Title = "SaaS", Area = "Admin", Controller = "Dashboards", Action = "Saas", Permission = "dashboards" },
+            new() { Key = "dash-logistics", Title = "物流", Area = "Admin", Controller = "Dashboards", Action = "Logistics", Permission = "dashboards" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
         Key = "pages",
         Title = "頁面",
         Icon = "menu",

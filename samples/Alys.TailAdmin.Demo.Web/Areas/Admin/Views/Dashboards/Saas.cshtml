@@ -1,0 +1,74 @@
+@{
+    var subscriptions = new[]
+    {
+        new { Customer = "宏遠科技", Plan = "企業版", Mrr = "$1,980", Status = "正常", Renew = "2026-12-05", Variant = "success" },
+        new { Customer = "星海貿易", Plan = "專業版", Mrr = "$490", Status = "正常", Renew = "2026-12-11", Variant = "success" },
+        new { Customer = "光點設計", Plan = "專業版", Mrr = "$490", Status = "試用中", Renew = "2026-11-30", Variant = "primary" },
+        new { Customer = "南灣餐飲", Plan = "基礎版", Mrr = "$99", Status = "逾期", Renew = "2026-11-20", Variant = "danger" },
+        new { Customer = "遠景物流", Plan = "企業版", Mrr = "$2,400", Status = "正常", Renew = "2027-01-08", Variant = "success" }
+    };
+}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">MRR</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">$48,200</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 6.4% 較上月</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">ARR</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">$578,400</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">按當前 MRR 年化</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">流失率</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">2.1%</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↓ 0.3% 較上月</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">淨收入留存</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">112%</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 4% 較上季</p>
+    </div>
+</div>
+
+<section class="mt-4 rounded-2xl border border-gray-200 bg-white p-5 md:mt-6 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+    <div class="flex flex-wrap items-start justify-between gap-3">
+        <div>
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">收入增長</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">MRR 與新增收入趨勢</p>
+        </div>
+    </div>
+    <div class="mt-4" id="demoLineChart"></div>
+</section>
+
+<section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white md:mt-6 dark:border-gray-800 dark:bg-white/[0.03]">
+    <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">訂閱客戶</h3>
+    </div>
+    <div class="max-w-full overflow-x-auto custom-scrollbar">
+        <table class="min-w-full">
+            <thead class="border-b border-gray-100 dark:border-gray-800">
+                <tr>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">客戶</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">方案</th>
+                    <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">MRR</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">續訂日</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                @foreach (var item in subscriptions)
+                {
+                    var badge = new TaBadgeModel { Text = item.Status, Variant = item.Variant, Dot = true };
+                    <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                        <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@item.Customer</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Plan</td>
+                        <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@item.Mrr</td>
+                        <td class="px-5 py-4"><partial name="_TaBadge" model="badge" /></td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Renew</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,102 @@
+@{
+    var warehouses = new[]
+    {
+        new { Name = "台北倉", Usage = 78, Tone = "bg-brand-500" },
+        new { Name = "台中倉", Usage = 54, Tone = "bg-green-500" },
+        new { Name = "高雄倉", Usage = 91, Tone = "bg-red-500" }
+    };
+    var shipments = new[]
+    {
+        new { No = "SF-2026-8842", Destination = "台北市信義區", Carrier = "順豐", Status = "運輸中", Progress = 65, Eta = "11-24", Variant = "primary" },
+        new { No = "SF-2026-8841", Destination = "新北市板橋區", Carrier = "順豐", Status = "已簽收", Progress = 100, Eta = "11-23", Variant = "success" },
+        new { No = "JD-2026-3120", Destination = "台中市西屯區", Carrier = "京東", Status = "待發貨", Progress = 15, Eta = "11-26", Variant = "warning" },
+        new { No = "YT-2026-7705", Destination = "高雄市苓雅區", Carrier = "圓通", Status = "異常", Progress = 40, Eta = "延誤", Variant = "danger" },
+        new { No = "SF-2026-8839", Destination = "桃園市中壢區", Carrier = "順豐", Status = "運輸中", Progress = 80, Eta = "11-24", Variant = "primary" }
+    };
+}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">待發貨</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">128</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">其中 12 單超時</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">運輸中</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">64</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">平均 1.8 天送達</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">今日簽收</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">92</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">準時率 96.4%</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">異常</p>
+        <p class="mt-2 text-2xl font-semibold text-red-600 dark:text-red-400">6</p>
+        <p class="mt-1 text-theme-xs text-red-600 dark:text-red-400">需人工介入</p>
+    </div>
+</div>
+
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">運單追蹤</h3>
+        </div>
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">運單號</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">目的地</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">承運商</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">進度</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">預計到達</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var item in shipments)
+                    {
+                        var badge = new TaBadgeModel { Text = item.Status, Variant = item.Variant, Dot = true };
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                            <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@item.No</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Destination</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Carrier</td>
+                            <td class="px-5 py-4"><partial name="_TaBadge" model="badge" /></td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <div class="h-1.5 w-20 rounded-full bg-gray-100 dark:bg-white/10">
+                                        <div class="h-1.5 rounded-full bg-brand-500" style="width:@(item.Progress)%"></div>
+                                    </div>
+                                    <span class="text-theme-xs text-gray-500 dark:text-gray-400">@item.Progress%</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Eta</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">倉庫容量</h3>
+        <div class="mt-4 space-y-4">
+            @foreach (var warehouse in warehouses)
+            {
+                <div>
+                    <div class="flex items-center justify-between text-theme-sm">
+                        <span class="text-gray-700 dark:text-gray-300">@warehouse.Name</span>
+                        <span class="text-gray-500 dark:text-gray-400">@warehouse.Usage%</span>
+                    </div>
+                    <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                        <div class="h-2 rounded-full @warehouse.Tone" style="width:@(warehouse.Usage)%"></div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="mt-5 rounded-xl bg-amber-50 p-4 text-theme-sm text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
+            高雄倉容量已超過 90%，建議儘快安排調撥。
+        </div>
+    </section>
+</div>

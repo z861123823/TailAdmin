@@ -1,0 +1,95 @@
+@{
+    var deals = new[]
+    {
+        new { Customer = "宏遠科技", Stage = "談判中", Amount = "$42,000", Owner = "林", Due = "12-05", Variant = "warning" },
+        new { Customer = "星海貿易", Stage = "已成交", Amount = "$28,500", Owner = "陳", Due = "11-28", Variant = "success" },
+        new { Customer = "光點設計", Stage = "需求確認", Amount = "$16,800", Owner = "王", Due = "12-12", Variant = "primary" },
+        new { Customer = "南灣餐飲", Stage = "已成交", Amount = "$9,600", Owner = "李", Due = "11-25", Variant = "success" },
+        new { Customer = "遠景物流", Stage = "初步接觸", Amount = "$54,000", Owner = "張", Due = "01-08", Variant = "light" }
+    };
+    var activities = new[]
+    {
+        new { Time = "10:32", Text = "林經理更新了「宏遠科技」的商機階段", Tone = "bg-brand-500" },
+        new { Time = "09:48", Text = "陳小明贏單「星海貿易」，金額 $28,500", Tone = "bg-green-500" },
+        new { Time = "昨天", Text = "王先生新增線索「光點設計」", Tone = "bg-amber-500" },
+        new { Time = "昨天", Text = "系統提醒：3 個商機即將到期", Tone = "bg-red-500" },
+        new { Time = "週一", Text = "李專員完成「南灣餐飲」回訪", Tone = "bg-brand-500" }
+    };
+}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">新線索</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">320</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 18 本週</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">進行中商機</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">86</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">總值 $412,000</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">本月成交</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">42</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">轉化率 26%</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">成交金額</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">$128,400</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 12.6% 較上月</p>
+    </div>
+</div>
+
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">商機列表</h3>
+        </div>
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">客戶</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">階段</th>
+                        <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">金額</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">負責人</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">預計成交</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var deal in deals)
+                    {
+                        var badge = new TaBadgeModel { Text = deal.Stage, Variant = deal.Variant, Dot = true };
+                        var avatar = new TaAvatarModel { Initials = deal.Owner, Size = "xs" };
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                            <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@deal.Customer</td>
+                            <td class="px-5 py-4"><partial name="_TaBadge" model="badge" /></td>
+                            <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@deal.Amount</td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <partial name="_TaAvatar" model="avatar" />
+                                </div>
+                            </td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@deal.Due</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">最近動態</h3>
+        <ul class="mt-4 space-y-4">
+            @foreach (var item in activities)
+            {
+                <li class="flex gap-3">
+                    <span class="mt-1.5 size-2 shrink-0 rounded-full @item.Tone"></span>
+                    <div>
+                        <p class="text-theme-sm leading-5 text-gray-700 dark:text-gray-300">@item.Text</p>
+                        <p class="mt-0.5 text-theme-xs text-gray-400 dark:text-gray-500">@item.Time</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </section>
+</div>
