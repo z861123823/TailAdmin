@@ -7,6 +7,6 @@
     <Deterministic>true</Deterministic>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <Company>Internal</Company>
-    <Product>TailAdmin 通用后台模板</Product>
+    <Product>Alys.TailAdmin 通用后台模板</Product>
   </PropertyGroup>
 </Project>

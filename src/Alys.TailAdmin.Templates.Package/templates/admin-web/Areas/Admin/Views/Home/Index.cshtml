@@ -1,0 +1,30 @@
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    @await Component.InvokeAsync("StatCard", new { title = "模板版本", value = "v1.4.0", icon = "dashboard", variant = "primary", hint = "Alys.TailAdmin.Rcl" })
+    @await Component.InvokeAsync("StatCard", new { title = "界面基線", value = "TailAdmin 2.5.1", icon = "chart", variant = "success", hint = "官方 HTML 源码对齐" })
+    @await Component.InvokeAsync("StatCard", new { title = "樣式方案", value = "Tailwind 4", icon = "tag", variant = "info", hint = "官方主题与组件类" })
+    @await Component.InvokeAsync("StatCard", new { title = "交互", value = "Alpine 3", icon = "settings", variant = "warning", hint = "服务端渲染 + 局部交互" })
+</div>
+
+<div class="mt-4 rounded-2xl border border-gray-200 bg-white p-5 md:mt-6 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-white/90">開始使用</h2>
+    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">模板已按 TailAdmin 官方界面基线搭好布局、菜单与组件，直接替换业务页面即可。</p>
+
+    <ul class="mt-5 space-y-3 text-theme-sm leading-6 text-gray-600 dark:text-gray-400">
+        <li class="flex gap-2">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500"></span>
+            <span>页面声明 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">Layout = "~/Views/Shared/_AlysAdminLayout.cshtml"</code> 即继承官方侧边栏与顶栏。</span>
+        </li>
+        <li class="flex gap-2">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500"></span>
+            <span>菜单位于 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">appsettings.json</code> 的 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">AdminUi:Menu</code>，按权限自动过滤。</span>
+        </li>
+        <li class="flex gap-2">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500"></span>
+            <span>换品牌：修改 RCL 源仓库的 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">frontend/theme/brand.json</code> 后重建 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">tailadmin.css</code>。</span>
+        </li>
+        <li class="flex gap-2">
+            <span class="mt-2 size-1.5 shrink-0 rounded-full bg-brand-500"></span>
+            <span>表格、表单、弹窗、上传等组件用法见 RCL 仓库的 <code class="rounded bg-gray-100 px-1.5 py-0.5 text-theme-xs text-gray-700 dark:bg-white/5 dark:text-gray-300">docs/组件使用说明.md</code>。</span>
+        </li>
+    </ul>
+</div>

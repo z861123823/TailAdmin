@@ -1,12 +1,12 @@
 {
-  "name": "tailadmin-admin-web",
+  "name": "alys-admin-web",
   "private": true,
   "version": "1.4.0",
-  "description": "TailAdmin 通用后台模板前端构建清单（仅构建期使用，运行时不依赖 Node）",
+  "description": "Alys.TailAdmin 通用后台模板前端构建清单（仅构建期使用，运行时不依赖 Node）",
   "scripts": {
     "build:brand": "node scripts/gen-brand-css.mjs",
-    "build:css": "npm run build:brand && tailwindcss -i src/css/tailwind.css -o ../src/TailAdmin.Templates.Rcl/wwwroot/css/tailadmin.css --minify",
-    "build:js": "esbuild src/js/index.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=../src/TailAdmin.Templates.Rcl/wwwroot/js/tailadmin.js",
+    "build:css": "npm run build:brand && tailwindcss -i src/css/tailwind.css -o ../src/Alys.TailAdmin.Rcl/wwwroot/css/tailadmin.css --minify",
+    "build:js": "esbuild src/js/index.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=../src/Alys.TailAdmin.Rcl/wwwroot/js/tailadmin.js",
     "build": "npm run build:css && npm run build:js"
   },
   "devDependencies": {

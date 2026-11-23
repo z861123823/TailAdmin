@@ -1,5 +1,5 @@
 /**
- * TailAdmin 通用后台模板样式入口。
+ * Alys.TailAdmin 通用后台模板样式入口。
  *
  * 以 TailAdmin 官方 HTML 版（tailadmin-free-tailwind-dashboard-template v2.5.1）
  * 的 src/css/style.css 为基线：Tailwind CSS v4 + @tailwindcss/forms + Outfit 字体。
@@ -20,10 +20,10 @@
 
 @plugin "@tailwindcss/forms";
 
-@source "../../../src/TailAdmin.Templates.Rcl/Views";
-@source "../../../src/TailAdmin.Templates.Rcl/TagHelpers";
-@source "../../../src/TailAdmin.Templates.Rcl/ViewComponents";
-@source "../../../src/TailAdmin.Templates.Rcl/Models";
+@source "../../../src/Alys.TailAdmin.Rcl/Views";
+@source "../../../src/Alys.TailAdmin.Rcl/TagHelpers";
+@source "../../../src/Alys.TailAdmin.Rcl/ViewComponents";
+@source "../../../src/Alys.TailAdmin.Rcl/Models";
 @source "../../../samples";
 @source "../../src/js";
 

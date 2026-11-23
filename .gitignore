@@ -6,7 +6,7 @@ artifacts/
 frontend/node_modules/
 frontend/tools/
 frontend/dist/
-samples/TailAdmin.Demo.Web/wwwroot/Uploads/
+samples/Alys.TailAdmin.Demo.Web/wwwroot/Uploads/
 TestResults/
 *.nupkg
 *.snupkg

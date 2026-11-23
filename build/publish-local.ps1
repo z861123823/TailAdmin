@@ -24,8 +24,8 @@ foreach ($pkg in $packages) {
 }
 
 if ($ReinstallTemplate) {
-    dotnet new uninstall TailAdmin.Templates 2>$null | Out-Null
-    dotnet new install TailAdmin.Templates --add-source $TargetPath
+    dotnet new uninstall Alys.TailAdmin.Templates 2>$null | Out-Null
+    dotnet new install Alys.TailAdmin.Templates --add-source $TargetPath
     if ($LASTEXITCODE -ne 0) { throw '模板安装失败' }
-    Write-Host '模板已重新安装：dotnet new tailadmin-admin' -ForegroundColor Green
+    Write-Host '模板已重新安装：dotnet new alys-admin' -ForegroundColor Green
 }

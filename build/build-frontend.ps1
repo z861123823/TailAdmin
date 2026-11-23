@@ -14,7 +14,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $root = Split-Path -Parent $PSScriptRoot
 $frontend = Join-Path $root 'frontend'
-$rclRoot = Join-Path $root 'src/TailAdmin.Templates.Rcl'
+$rclRoot = Join-Path $root 'src/Alys.TailAdmin.Rcl'
 $wwwroot = Join-Path $rclRoot 'wwwroot'
 $cssOut = Join-Path $wwwroot 'css/tailadmin.css'
 $jsOut = Join-Path $wwwroot 'js/tailadmin.js'

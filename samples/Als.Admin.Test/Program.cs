@@ -3,7 +3,7 @@ using System.Text.Unicode;
 using Als.Admin.Test.Infrastructure;
 using Als.Admin.Test.Services;
 using Microsoft.Extensions.WebEncoders;
-using TailAdmin.Templates.Rcl.Extensions;
+using Alys.TailAdmin.Rcl.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +19,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.Configure<WebEncoderOptions>(options =>
     options.TextEncoderSettings = new TextEncoderSettings(UnicodeRanges.All));
 
-builder.Services.AddTailAdminUi(builder.Configuration);
+builder.Services.AddAlysAdminUi(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddSingleton<AlsApiClient>();
 builder.Services.AddSingleton<AlsAdminGateway>();

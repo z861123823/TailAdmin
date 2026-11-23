@@ -1,10 +1,10 @@
-# TailAdmin 通用后台模板
+# Alys.TailAdmin 通用后台模板
 
 基于 **ASP.NET Core MVC（Razor Pages/views） + TailAdmin 官方 HTML 源码（MIT） + Tailwind CSS 4 + Alpine.js** 的后台通用模板，交付三件套：
 
-- `TailAdmin.Templates.Rcl`：RCL 组件库（布局、侧边栏、顶栏、表格、弹窗、上传等）
-- `TailAdmin.Templates`：`dotnet new` 模板包，一条命令生成可运行后台
-- `samples/TailAdmin.Demo.Web`：完整示例宿主（登录、仪表盘、商品列表、分类试点页）
+- `Alys.TailAdmin.Rcl`：RCL 组件库（布局、侧边栏、顶栏、表格、弹窗、上传等）
+- `Alys.TailAdmin.Templates`：`dotnet new` 模板包，一条命令生成可运行后台
+- `samples/Alys.TailAdmin.Demo.Web`：完整示例宿主（登录、仪表盘、商品列表、分类试点页）
 
 > 详细方案见仓库根目录《后台通用模板建设方案.md》，本文只写实际操作。
 
@@ -20,10 +20,10 @@
 
 ```powershell
 # 1) 前端产物已入库，直接编译即可
-dotnet build TailAdmin.Templates.sln
+dotnet build Alys.TailAdmin.sln
 
 # 2) 运行示例宿主
-dotnet run --project samples/TailAdmin.Demo.Web --launch-profile http
+dotnet run --project samples/Alys.TailAdmin.Demo.Web --launch-profile http
 # 打开 http://localhost:5188/Admin/Account/Login
 # admin / 123456（全部菜单）
 # operator / 123456（仅仪表盘与商品管理，演示权限过滤）
@@ -38,7 +38,7 @@ dotnet run --project samples/TailAdmin.Demo.Web --launch-profile http
 ## 3. 测试与打包
 
 ```powershell
-dotnet test samples/TailAdmin.Demo.Tests
+dotnet test samples/Alys.TailAdmin.Demo.Tests
 ./build/pack-nuget.ps1          # 输出到 artifacts/
 ./build/publish-local.ps1 -ReinstallTemplate   # 复制 nupkg 并安装 dotnet new 模板
 ```
@@ -46,11 +46,11 @@ dotnet test samples/TailAdmin.Demo.Tests
 ## 4. 用模板新建项目
 
 ```powershell
-dotnet new install ./artifacts/TailAdmin.Templates.1.4.0.nupkg
-dotnet new tailadmin-admin -n MyCompany.Admin -o ../MyCompany.Admin
+dotnet new install ./artifacts/Alys.TailAdmin.Templates.1.4.0.nupkg
+dotnet new alys-admin -n MyCompany.Admin -o ../MyCompany.Admin
 
 # 可选参数
-dotnet new tailadmin-admin -n MyCompany.Admin --auth none --sample false --theme als
+dotnet new alys-admin -n MyCompany.Admin --auth none --sample false --theme als
 ```
 
 | 参数 | 取值 | 说明 |
@@ -66,15 +66,15 @@ dotnet new tailadmin-admin -n MyCompany.Admin --auth none --sample false --theme
 ```text
 .
 ├─ Directory.Build.props / Directory.Packages.props / nuget.config
-├─ TailAdmin.Templates.sln
+├─ Alys.TailAdmin.sln
 ├─ build/                      # 前端构建、打包、本地发布脚本
 ├─ frontend/                   # Tailwind 4 + Alpine 源码（构建期使用，运行时不依赖 Node）
 ├─ src/
-│  ├─ TailAdmin.Templates.Rcl/ # 组件库（Views / TagHelpers / 静态资源）
-│  └─ TailAdmin.Templates.Package/  # dotnet new 模板包
+│  ├─ Alys.TailAdmin.Rcl/ # 组件库（Views / TagHelpers / 静态资源）
+│  └─ Alys.TailAdmin.Templates.Package/  # dotnet new 模板包
 ├─ samples/
-│  ├─ TailAdmin.Demo.Web/      # 示例宿主
-│  └─ TailAdmin.Demo.Tests/    # xUnit 测试
+│  ├─ Alys.TailAdmin.Demo.Web/      # 示例宿主
+│  └─ Alys.TailAdmin.Demo.Tests/    # xUnit 测试
 ├─ docs/                       # 组件、主题、接口、迁移记录
 └─ artifacts/                  # nupkg 输出（不入库）
 ```

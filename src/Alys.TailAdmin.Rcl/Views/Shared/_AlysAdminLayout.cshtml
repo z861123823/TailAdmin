@@ -1,0 +1,132 @@
+@inject IOptions<AdminUiOptions> AdminUi
+@inject IHostEnvironment HostEnvironment
+@inject ILogger<AdminMenuService> Logger
+@inject AdminMenuService MenuService
+@{
+    var ui = AdminUi.Value;
+    var pageTitle = ViewData["Title"] as string ?? "儀表盤";
+    var subtitle = ViewData["Subtitle"] as string;
+    var menuKey = ViewData["MenuKey"] as string;
+
+    if (!string.IsNullOrWhiteSpace(menuKey) && !MenuService.ContainsKey(menuKey))
+    {
+        if (HostEnvironment.IsDevelopment())
+        {
+            throw new InvalidOperationException($"菜单键「{menuKey}」未在 AdminUi:Menu 中配置。");
+        }
+
+        Logger.LogWarning("菜单键 {MenuKey} 未配置，侧边栏将不做高亮", menuKey);
+    }
+
+    var breadcrumb = (ViewData["Breadcrumb"] as IEnumerable<string> ?? Array.Empty<string>()).ToList();
+    var pageHeader = new PageHeaderModel { Title = pageTitle, Subtitle = subtitle, Breadcrumb = breadcrumb };
+
+    var themeMode = (ui.DefaultTheme ?? "system").ToLowerInvariant();
+    var useDatepicker = ViewData["UseDatepicker"] is true;
+    var nonce = Context.Items["CspNonce"] as string;
+
+    var firstMenu = ui.Menu.Items.FirstOrDefault();
+    var homeUrl = firstMenu?.Url;
+    if (string.IsNullOrWhiteSpace(homeUrl) && firstMenu is not null)
+    {
+        homeUrl = Url.Action(firstMenu.Action ?? "Index", firstMenu.Controller, new { area = firstMenu.Area });
+    }
+    homeUrl = string.IsNullOrWhiteSpace(homeUrl) ? "/" : homeUrl;
+}
+<!DOCTYPE html>
+<html lang="zh-CN" data-brand="@ui.BrandName">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>@pageTitle · @ui.SiteName</title>
+    <script nonce="@nonce">
+        (function () {
+            var root = document.documentElement;
+            var stored = null;
+            try { stored = localStorage.getItem('darkMode'); } catch (e) { }
+            var dark;
+            if (stored !== null) {
+                try { dark = JSON.parse(stored) === true; } catch (e) { dark = false; }
+            } else {
+                var preset = '@themeMode';
+                dark = preset === 'dark' || (preset !== 'light' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            }
+            root.classList.toggle('dark', dark);
+            root.setAttribute('data-color-scheme', dark ? 'dark' : 'light');
+        })();
+    </script>
+    <link rel="stylesheet" href="~/_content/Alys.TailAdmin.Rcl/css/tailadmin.css" asp-append-version="true" />
+    @if (useDatepicker)
+    {
+        <link rel="stylesheet" href="~/_content/Alys.TailAdmin.Rcl/css/vendor/flatpickr.min.css" asp-append-version="true" />
+    }
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body class="ta-app"
+      x-data="{ page: '@menuKey', loaded: true, darkMode: document.documentElement.classList.contains('dark'), stickyMenu: false, sidebarToggle: @(ui.SidebarCollapsed ? "true" : "false"), scrollTop: false }"
+      x-init="$watch('darkMode', value => { document.documentElement.classList.toggle('dark', value); document.documentElement.setAttribute('data-color-scheme', value ? 'dark' : 'light'); try { localStorage.setItem('darkMode', JSON.stringify(value)); } catch (e) { } })"
+      :class="{ 'bg-gray-900': darkMode }">
+
+    <div class="flex h-screen overflow-hidden">
+        <partial name="_Sidebar" model="ui" />
+
+        <div class="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
+            <partial name="_Topbar" model="ui" />
+
+            <main id="main-content">
+                <div class="mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6">
+                    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <partial name="_PageHeader" model="pageHeader" />
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            @if (breadcrumb.Any())
+                            {
+                                <nav aria-label="面包屑">
+                                    <ol class="flex items-center gap-1.5">
+                                        <li>
+                                            <a class="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400" href="@homeUrl">
+                                                首頁
+                                                <svg class="stroke-current rtl:rotate-180" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M6.0765 12.667L10.2432 8.50033L6.0765 4.33366" stroke="" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </a>
+                                        </li>
+                                        @foreach (var crumb in breadcrumb)
+                                        {
+                                            <li class="text-sm text-gray-500 dark:text-gray-400">@crumb</li>
+                                            @if (crumb != breadcrumb.Last())
+                                            {
+                                                <li aria-hidden="true">
+                                                    <svg class="stroke-current text-gray-400" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M6.0765 12.667L10.2432 8.50033L6.0765 4.33366" stroke="" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </li>
+                                            }
+                                        }
+                                    </ol>
+                                </nav>
+                            }
+                            @await RenderSectionAsync("PageActions", false)
+                        </div>
+                    </div>
+
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+    </div>
+
+    @Html.AntiForgeryToken()
+    <partial name="_ToastHost" />
+
+    @if (useDatepicker)
+    {
+        <script src="~/_content/Alys.TailAdmin.Rcl/js/vendor/flatpickr.min.js" asp-append-version="true"></script>
+        <script src="~/_content/Alys.TailAdmin.Rcl/js/vendor/flatpickr.zh.js" asp-append-version="true"></script>
+    }
+
+    <partial name="_AdminScripts" model="ui" />
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>
