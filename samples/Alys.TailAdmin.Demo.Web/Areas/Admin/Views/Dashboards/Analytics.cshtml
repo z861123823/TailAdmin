@@ -1,11 +1,27 @@
 @{
-    var rangeBadge = new TaBadgeModel { Text = "近 12 個月", Variant = "light" };
+    var rangeBadge = new TaBadgeModel { Text = "近 30 天", Variant = "light" };
     var sources = new[]
     {
         new { Name = "自然搜索", Visits = 4820, Share = 42, Tone = "bg-brand-500" },
         new { Name = "直接訪問", Visits = 3160, Share = 28, Tone = "bg-green-500" },
         new { Name = "社交媒體", Visits = 2240, Share = 20, Tone = "bg-amber-500" },
         new { Name = "付費廣告", Visits = 1120, Share = 10, Tone = "bg-red-500" }
+    };
+    var funnel = new[]
+    {
+        new { Step = "訪問", Value = 11340, Width = 100 },
+        new { Step = "瀏覽商品", Value = 6820, Width = 78 },
+        new { Step = "加入購物車", Value = 2410, Width = 52 },
+        new { Step = "提交訂單", Value = 980, Width = 34 },
+        new { Step = "完成支付", Value = 438, Width = 22 }
+    };
+    var regions = new[]
+    {
+        new { Name = "台北", Share = 34 },
+        new { Name = "新北", Share = 22 },
+        new { Name = "台中", Share = 16 },
+        new { Name = "高雄", Share = 12 },
+        new { Name = "其他", Share = 16 }
     };
     var pages = new[]
     {
@@ -15,77 +31,179 @@
         new { Path = "/help/shipping", Views = 4180, Rate = "2.4%", Trend = "-1%" }
     };
 }
-<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">訪客數</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">11,340</p>
-        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 12.4% 較上週</p>
+<div x-data="{ range: '30' }">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="inline-flex items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="range === '7' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                    x-on:click="range = '7'">7 天</button>
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="range === '30' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                    x-on:click="range = '30'">30 天</button>
+            <button type="button" class="rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="range === '90' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'"
+                    x-on:click="range = '90'">90 天</button>
+        </div>
+        <button type="button" class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                onclick="Ta.toast.info('匯出報表（演示）')">
+            <partial name="_Icon" model="@("upload")" />
+            匯出
+        </button>
     </div>
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">轉化率</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">3.86%</p>
-        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 0.4% 較上週</p>
-    </div>
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">平均停留</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">3m 42s</p>
-        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">持平</p>
-    </div>
-    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <p class="text-theme-sm text-gray-500 dark:text-gray-400">跳出率</p>
-        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">38.2%</p>
-        <p class="mt-1 text-theme-xs text-red-600 dark:text-red-400">↑ 1.2% 較上週</p>
-    </div>
-</div>
 
-<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
-        <div class="flex flex-wrap items-start justify-between gap-3">
-            <div>
-                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">訪問趨勢</h3>
-                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">本期與上期訪問對比</p>
+    <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-start justify-between">
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">訪客數</p>
+                <span class="flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
+                    <partial name="_Icon" model="@("user")" />
+                </span>
             </div>
-            <partial name="_TaBadge" model="rangeBadge" />
+            <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">11,340</p>
+            <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 12.4% 較上期</p>
+            <svg class="mt-3 h-8 w-full text-brand-500" viewBox="0 0 100 32" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                <polyline points="0,26 12,20 24,23 36,14 48,17 60,10 72,13 84,6 100,4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
         </div>
-        <div class="mt-4" id="demoLineChart"></div>
-    </section>
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-start justify-between">
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">轉化率</p>
+                <span class="flex size-9 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400">
+                    <partial name="_Icon" model="@("chart")" />
+                </span>
+            </div>
+            <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">3.86%</p>
+            <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 0.4% 較上期</p>
+            <svg class="mt-3 h-8 w-full text-green-500" viewBox="0 0 100 32" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                <polyline points="0,24 12,22 24,18 36,20 48,13 60,15 72,9 84,11 100,5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-start justify-between">
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">平均停留</p>
+                <span class="flex size-9 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">
+                    <partial name="_Icon" model="@("calendar")" />
+                </span>
+            </div>
+            <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">3m 42s</p>
+            <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">與上期持平</p>
+            <svg class="mt-3 h-8 w-full text-amber-500" viewBox="0 0 100 32" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                <polyline points="0,16 12,15 24,18 36,14 48,16 60,13 72,15 84,12 100,14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-start justify-between">
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">跳出率</p>
+                <span class="flex size-9 items-center justify-center rounded-lg bg-red-50 text-red-500 dark:bg-red-500/15 dark:text-red-400">
+                    <partial name="_Icon" model="@("alert")" />
+                </span>
+            </div>
+            <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">38.2%</p>
+            <p class="mt-1 text-theme-xs text-red-600 dark:text-red-400">↑ 1.2% 較上期</p>
+            <svg class="mt-3 h-8 w-full text-red-500" viewBox="0 0 100 32" preserveAspectRatio="none" fill="none" aria-hidden="true">
+                <polyline points="0,12 12,15 24,11 36,18 48,14 60,20 72,17 84,23 100,21" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+        </div>
+    </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">流量來源</h3>
-        <div class="mt-4 space-y-4">
-            @foreach (var source in sources)
-            {
+    <div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                    <div class="flex items-center justify-between text-theme-sm">
-                        <span class="text-gray-700 dark:text-gray-300">@source.Name</span>
-                        <span class="text-gray-500 dark:text-gray-400">@source.Visits</span>
-                    </div>
-                    <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
-                        <div class="h-2 rounded-full @source.Tone" style="width:@(source.Share)%"></div>
-                    </div>
+                    <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">訪問趨勢</h3>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">本期與上期訪問對比</p>
                 </div>
-            }
+                <partial name="_TaBadge" model="rangeBadge" />
+            </div>
+            <div class="mt-4" id="demoLineChart"></div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">裝置分佈</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">按訪問裝置統計</p>
+            <div class="mt-2" id="demoTrafficChart"></div>
+        </section>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">流量來源</h3>
+            <div class="mt-4 space-y-4">
+                @foreach (var source in sources)
+                {
+                    <div>
+                        <div class="flex items-center justify-between text-theme-sm">
+                            <span class="text-gray-700 dark:text-gray-300">@source.Name</span>
+                            <span class="text-gray-500 dark:text-gray-400">@source.Visits</span>
+                        </div>
+                        <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                            <div class="h-2 rounded-full @source.Tone" style="width:@(source.Share)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">轉化漏斗</h3>
+            <div class="mt-4 space-y-2.5">
+                @foreach (var item in funnel)
+                {
+                    <div class="flex items-center gap-3">
+                        <span class="w-20 shrink-0 text-theme-xs text-gray-500 dark:text-gray-400">@item.Step</span>
+                        <div class="h-7 flex-1 overflow-hidden rounded-md bg-gray-100 dark:bg-white/10">
+                            <div class="flex h-7 items-center justify-end rounded-md bg-brand-500/85 px-2 text-[10px] font-medium text-white" style="width:@(item.Width)%">@item.Value</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">地區分佈</h3>
+            <ul class="mt-4 space-y-3">
+                @foreach (var region in regions)
+                {
+                    <li class="flex items-center justify-between gap-3 text-theme-sm">
+                        <span class="text-gray-700 dark:text-gray-300">@region.Name</span>
+                        <span class="flex items-center gap-2">
+                            <span class="h-1.5 w-24 rounded-full bg-gray-100 dark:bg-white/10">
+                                <span class="block h-1.5 rounded-full bg-brand-500" style="width:@(region.Share * 2)%"></span>
+                            </span>
+                            <span class="w-9 text-right text-theme-xs text-gray-500 dark:text-gray-400">@region.Share%</span>
+                        </span>
+                    </li>
+                }
+            </ul>
+        </section>
+    </div>
+
+    <section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white md:mt-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">熱門頁面</h3>
+        </div>
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">頁面</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">瀏覽量</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">轉化率</th>
+                        <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">趨勢</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var item in pages)
+                    {
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                            <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 md:px-6 dark:text-white/90">@item.Path</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Views 次</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Rate</td>
+                            <td class="px-5 py-4 text-end text-theme-sm whitespace-nowrap @(item.Trend.StartsWith("-") ? "text-red-600 dark:text-red-400" : "text-green-600 dark:text-green-400")">@item.Trend</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </section>
 </div>
-
-<section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white md:mt-6 dark:border-gray-800 dark:bg-white/[0.03]">
-    <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">熱門頁面</h3>
-    </div>
-    <div class="max-w-full overflow-x-auto custom-scrollbar">
-        <table class="min-w-full">
-            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                @foreach (var item in pages)
-                {
-                    <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
-                        <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 md:px-6 dark:text-white/90">@item.Path</td>
-                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Views 次瀏覽</td>
-                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">轉化 @item.Rate</td>
-                        <td class="px-5 py-4 text-end text-theme-sm whitespace-nowrap text-green-600 dark:text-green-400">@item.Trend</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</section>

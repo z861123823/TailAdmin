@@ -66,8 +66,27 @@ function initPieChart() {
   }).render();
 }
 
+function initTrafficDonut() {
+  const el = document.querySelector('#demoTrafficChart');
+  if (!el) return;
+
+  new ApexCharts(el, {
+    chart: { type: 'donut', height: 280, fontFamily },
+    colors: [brandColor('500'), '#12b76a', '#f79009', '#98a2b3'],
+    series: [58, 32, 7, 3],
+    labels: ['桌面', '移動', '平板', '其他'],
+    stroke: { width: 2, colors: ['#ffffff'] },
+    dataLabels: { enabled: false },
+    legend: { position: 'bottom', horizontalAlign: 'center' },
+    plotOptions: {
+      pie: { donut: { size: '70%', labels: { show: true, total: { show: true, label: '合計', formatter: () => '100%' } } } }
+    }
+  }).render();
+}
+
 export default function initDemoCharts() {
   initLineChart();
   initBarChart();
   initPieChart();
+  initTrafficDonut();
 }
