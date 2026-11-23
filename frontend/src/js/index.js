@@ -37,7 +37,7 @@ const createModal = installModal(Ta);
 const createForm = installForm(Ta);
 installTheme(Ta);
 
-Ta.version = '1.1.4';
+Ta.version = '1.1.5';
 Ta.alpine = Alpine;
 window.Ta = Ta;
 

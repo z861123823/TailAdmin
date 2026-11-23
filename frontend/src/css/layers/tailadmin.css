@@ -49,37 +49,37 @@
     background-color: #1a2231;
   }
 
+  /* 固定区与滚动区分界：静止时也有柔和阴影，滚动可继续时加强；左右两侧都覆盖，明暗主题分别调色 */
   .ta-sticky-edge-left {
-    border-right: 1px solid #eaecf0;
-  }
-
-  .dark .ta-sticky-edge-left {
-    border-right-color: #1d2939;
+    box-shadow: 8px 0 8px -8px rgba(16, 24, 40, 0.12);
   }
 
   .ta-sticky-edge-right {
-    border-left: 1px solid #eaecf0;
+    box-shadow: -8px 0 8px -8px rgba(16, 24, 40, 0.12);
+  }
+
+  .dark .ta-sticky-edge-left {
+    box-shadow: 8px 0 8px -8px rgba(0, 0, 0, 0.5);
   }
 
   .dark .ta-sticky-edge-right {
-    border-left-color: #1d2939;
+    box-shadow: -8px 0 8px -8px rgba(0, 0, 0, 0.5);
   }
 
-  /* 滚动到边界时固定列投影提示 */
   .can-scroll-left .ta-sticky-edge-left {
-    box-shadow: 6px 0 8px -6px rgba(16, 24, 40, 0.2);
+    box-shadow: 8px 0 12px -8px rgba(16, 24, 40, 0.32);
   }
 
   .can-scroll-right .ta-sticky-edge-right {
-    box-shadow: -6px 0 8px -6px rgba(16, 24, 40, 0.2);
+    box-shadow: -8px 0 12px -8px rgba(16, 24, 40, 0.32);
   }
 
   .dark .can-scroll-left .ta-sticky-edge-left {
-    box-shadow: 6px 0 8px -6px rgba(0, 0, 0, 0.5);
+    box-shadow: 8px 0 12px -8px rgba(0, 0, 0, 0.75);
   }
 
   .dark .can-scroll-right .ta-sticky-edge-right {
-    box-shadow: -6px 0 8px -6px rgba(0, 0, 0, 0.5);
+    box-shadow: -8px 0 12px -8px rgba(0, 0, 0, 0.75);
   }
 
   .ta-toast-host {
