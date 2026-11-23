@@ -18,7 +18,12 @@ $packages = Get-ChildItem $artifacts -Filter *.nupkg
 if (-not $packages) { throw 'artifacts 目录下没有 nupkg 文件' }
 
 New-Item -ItemType Directory -Force -Path $TargetPath | Out-Null
+$targetFull = (Resolve-Path $TargetPath).Path
 foreach ($pkg in $packages) {
+    if ($pkg.DirectoryName -eq $targetFull) {
+        Write-Host ("已就位 {0} -> {1}" -f $pkg.Name, $TargetPath) -ForegroundColor DarkGray
+        continue
+    }
     Copy-Item $pkg.FullName -Destination $TargetPath -Force
     Write-Host ("已复制 {0} -> {1}" -f $pkg.Name, $TargetPath) -ForegroundColor Green
 }
