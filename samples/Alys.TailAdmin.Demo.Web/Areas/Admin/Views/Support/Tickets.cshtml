@@ -1,38 +1,66 @@
 @{
     var tickets = new[]
     {
-        new { No = "TK-1042", Subject = "訂單付款成功但狀態未更新", Requester = "陳小明", Initials = "陳", Priority = "高", State = "open", Status = "待處理", Updated = "5 分鐘前" },
-        new { No = "TK-1041", Subject = "如何批次匯出商品資料？", Requester = "林小姐", Initials = "林", Priority = "中", State = "open", Status = "待處理", Updated = "22 分鐘前" },
-        new { No = "TK-1040", Subject = "發票抬頭需要修改", Requester = "王先生", Initials = "王", Priority = "低", State = "open", Status = "待處理", Updated = "1 小時前" },
-        new { No = "TK-1039", Subject = "後台登入驗證碼收不到", Requester = "李專員", Initials = "李", Priority = "高", State = "resolved", Status = "已解決", Updated = "昨天" },
-        new { No = "TK-1038", Subject = "商品圖片上傳失敗", Requester = "張經理", Initials = "張", Priority = "中", State = "resolved", Status = "已解決", Updated = "昨天" },
-        new { No = "TK-1037", Subject = "希望增加庫存預警", Requester = "黃小姐", Initials = "黃", Priority = "低", State = "resolved", Status = "已解決", Updated = "2 天前" }
+        new { No = "TK-1042", Subject = "訂單遲遲未發貨", Customer = "陳小姐", Priority = "高", PriorityVariant = "danger", Status = "待處理", StatusKey = "open", StatusVariant = "warning", Owner = "李", Updated = "5 分鐘前" },
+        new { No = "TK-1041", Subject = "退款金額與頁面顯示不符", Customer = "張先生", Priority = "高", PriorityVariant = "danger", Status = "進行中", StatusKey = "progress", StatusVariant = "primary", Owner = "李", Updated = "20 分鐘前" },
+        new { No = "TK-1040", Subject = "優惠券無法使用", Customer = "林小姐", Priority = "中", PriorityVariant = "warning", Status = "待處理", StatusKey = "open", StatusVariant = "warning", Owner = "王", Updated = "1 小時前" },
+        new { No = "TK-1039", Subject = "商品規格與描述不一致", Customer = "黃先生", Priority = "中", PriorityVariant = "warning", Status = "進行中", StatusKey = "progress", StatusVariant = "primary", Owner = "陳", Updated = "2 小時前" },
+        new { No = "TK-1038", Subject = "發票統編需要修改", Customer = "宏遠科技", Priority = "低", PriorityVariant = "light", Status = "已解決", StatusKey = "resolved", StatusVariant = "success", Owner = "王", Updated = "昨天" },
+        new { No = "TK-1037", Subject = "App 無法接收推播", Customer = "吳小姐", Priority = "中", PriorityVariant = "warning", Status = "已解決", StatusKey = "resolved", StatusVariant = "success", Owner = "陳", Updated = "昨天" },
+        new { No = "TK-1036", Subject = "會員等級權益諮詢", Customer = "劉先生", Priority = "低", PriorityVariant = "light", Status = "已解決", StatusKey = "resolved", StatusVariant = "success", Owner = "李", Updated = "11-21" },
+        new { No = "TK-1035", Subject = "重複扣款請協助處理", Customer = "蔡小姐", Priority = "高", PriorityVariant = "danger", Status = "進行中", StatusKey = "progress", StatusVariant = "primary", Owner = "王", Updated = "11-21" }
     };
-    TaBadgeModel PriorityBadge(string priority) => priority switch
+    var tabs = new[]
     {
-        "高" => new TaBadgeModel { Text = "高", Variant = "danger" },
-        "中" => new TaBadgeModel { Text = "中", Variant = "warning" },
-        _ => new TaBadgeModel { Text = "低", Variant = "light" }
+        new { Key = "all", Label = "全部", Count = 8 },
+        new { Key = "open", Label = "待處理", Count = 2 },
+        new { Key = "progress", Label = "進行中", Count = 3 },
+        new { Key = "resolved", Label = "已解決", Count = 3 }
     };
 }
-<div x-data="{ filter: 'all' }">
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">待處理</p>
+        <p class="mt-2 text-2xl font-semibold text-amber-600 dark:text-amber-400">12</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">其中 3 張高優先級</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">進行中</p>
+        <p class="mt-2 text-2xl font-semibold text-brand-600 dark:text-brand-400">8</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">平均處理 6 小時</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">本週已解決</p>
+        <p class="mt-2 text-2xl font-semibold text-green-600 dark:text-green-400">86</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">解決率 92%</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">平均首次回應</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">1.2h</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↓ 0.3h 較上週</p>
+    </div>
+</div>
+
+<div class="mt-4 md:mt-6" x-data="{ tab: 'all' }">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <div class="flex flex-wrap gap-2">
-            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
-                    x-bind:class="filter === 'all' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
-                    x-on:click="filter = 'all'">全部 <span class="ml-1 text-theme-xs">6</span></button>
-            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
-                    x-bind:class="filter === 'open' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
-                    x-on:click="filter = 'open'">待處理 <span class="ml-1 text-theme-xs">3</span></button>
-            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
-                    x-bind:class="filter === 'resolved' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
-                    x-on:click="filter = 'resolved'">已解決 <span class="ml-1 text-theme-xs">3</span></button>
+            @foreach (var item in tabs)
+            {
+                <button type="button" class="rounded-full border px-3 py-1.5 text-theme-xs font-medium transition-colors"
+                        x-bind:class="tab === '@item.Key' ? 'border-brand-300 bg-brand-50 text-brand-600 dark:border-brand-800 dark:bg-brand-500/15 dark:text-brand-400' : 'border-gray-300 text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5'"
+                        x-on:click="tab = '@item.Key'">@item.Label <span class="ml-1 text-[10px]">@item.Count</span></button>
+            }
         </div>
-        <button type="button" class="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
-                onclick="Ta.toast.info('建立工單（演示）')">
-            <partial name="_Icon" model="@("plus")" />
-            建立工單
-        </button>
+        <div class="flex flex-wrap items-center gap-2">
+            <input type="text" placeholder="搜索工單"
+                   class="h-10 w-48 rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+            <select class="h-10 rounded-lg border border-gray-300 bg-transparent px-3 py-2 text-theme-sm text-gray-700 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+                <option>全部優先級</option>
+                <option>高</option>
+                <option>中</option>
+                <option>低</option>
+            </select>
+        </div>
     </div>
 
     <section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -41,10 +69,11 @@
                 <thead class="border-b border-gray-100 dark:border-gray-800">
                     <tr>
                         <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">工單</th>
-                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">主題</th>
-                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">提出人</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">主旨</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">客戶</th>
                         <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">優先級</th>
                         <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">負責人</th>
                         <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">更新時間</th>
                         <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
                     </tr>
@@ -52,34 +81,39 @@
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                     @foreach (var ticket in tickets)
                     {
-                        var priorityBadge = PriorityBadge(ticket.Priority);
-                        var avatar = new TaAvatarModel { Initials = ticket.Initials, Size = "xs" };
-                        var statusBadge = string.Equals(ticket.Status, "已解決", StringComparison.Ordinal)
-                            ? new TaBadgeModel { Text = "已解決", Variant = "success", Dot = true }
-                            : new TaBadgeModel { Text = "待處理", Variant = "warning", Dot = true };
+                        var priorityBadge = new TaBadgeModel { Text = ticket.Priority, Variant = ticket.PriorityVariant };
+                        var statusBadge = new TaBadgeModel { Text = ticket.Status, Variant = ticket.StatusVariant, Dot = true };
                         <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]"
-                            x-show="filter === 'all' || filter === '@ticket.State'">
+                            x-show="tab === 'all' || tab === '@ticket.StatusKey'">
                             <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@ticket.No</td>
-                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@ticket.Subject</td>
-                            <td class="px-5 py-4">
-                                <div class="flex items-center gap-2">
-                                    <partial name="_TaAvatar" model="avatar" />
-                                    <span class="text-theme-sm whitespace-nowrap text-gray-600 dark:text-gray-400">@ticket.Requester</span>
-                                </div>
-                            </td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-700 dark:text-gray-300">@ticket.Subject</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@ticket.Customer</td>
                             <td class="px-5 py-4"><partial name="_TaBadge" model="priorityBadge" /></td>
                             <td class="px-5 py-4"><partial name="_TaBadge" model="statusBadge" /></td>
+                            <td class="px-5 py-4">
+                                <span class="flex size-7 items-center justify-center rounded-full bg-brand-50 text-theme-xs font-semibold text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">@ticket.Owner</span>
+                            </td>
                             <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@ticket.Updated</td>
                             <td class="px-5 py-4">
-                                <div class="flex justify-end">
-                                    <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-theme-xs font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                                            onclick="Ta.toast.info('查看 @ticket.No（演示）')">查看</button>
+                                <div class="flex justify-end gap-2">
+                                    <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                                            onclick="Ta.toast.info('查看工單（演示）')">查看</button>
+                                    <button type="button" class="rounded-lg bg-brand-500 px-3 py-1.5 text-theme-xs font-medium text-white hover:bg-brand-600"
+                                            onclick="Ta.toast.success('已回覆（演示）')">回覆</button>
                                 </div>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-3 border-t border-gray-100 px-5 py-4 dark:border-gray-800">
+            <p class="text-theme-xs text-gray-500 dark:text-gray-400">顯示 8 / 128 張工單</p>
+            <div class="flex items-center gap-1">
+                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-500 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400" disabled>上一頁</button>
+                <span class="rounded-lg bg-brand-500 px-3 py-1.5 text-theme-xs font-medium text-white">1</span>
+                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400">下一頁</button>
+            </div>
         </div>
     </section>
 </div>

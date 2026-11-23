@@ -1,80 +1,105 @@
 @{
+    const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
+    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
     const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
-    var planBadge = new TaBadgeModel { Text = "目前方案", Variant = "primary", Dot = true };
-    var invoices = new[]
+    var billing = new[]
     {
-        new { No = "INV-2026-011", Date = "2026-11-01", Amount = "$49.00", Variant = "success", Status = "已支付" },
-        new { No = "INV-2026-010", Date = "2026-10-01", Amount = "$49.00", Variant = "success", Status = "已支付" },
-        new { No = "INV-2026-009", Date = "2026-09-01", Amount = "$49.00", Variant = "success", Status = "已支付" }
+        new { No = "INV-2026-0042", Date = "2026-11-01", Amount = "$412.00", Status = "已付款", Variant = "success" },
+        new { No = "INV-2026-0031", Date = "2026-10-01", Amount = "$412.00", Status = "已付款", Variant = "success" },
+        new { No = "INV-2026-0020", Date = "2026-09-01", Amount = "$412.00", Status = "已付款", Variant = "success" },
+        new { No = "INV-2026-0009", Date = "2026-08-01", Amount = "$412.00", Status = "已付款", Variant = "success" },
+        new { No = "INV-2026-0001", Date = "2026-07-01", Amount = "$399.00", Status = "已退款", Variant = "light" }
+    };
+    var usage = new[]
+    {
+        new { Name = "商品數量", Value = "1,248 / 2,000", Percent = 62, Tone = "bg-brand-500" },
+        new { Name = "團隊成員", Value = "12 / 20", Percent = 60, Tone = "bg-green-500" },
+        new { Name = "API 呼叫", Value = "48k / 100k", Percent = 48, Tone = "bg-amber-500" },
+        new { Name = "儲存空間", Value = "18 GB / 50 GB", Percent = 36, Tone = "bg-blue-500" }
     };
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12">
     <div class="space-y-4 md:space-y-6 xl:col-span-8">
-        <section class="@cardClass">
+        <section class="@cardClass" x-data="{ cycle: 'yearly' }">
             <div class="flex flex-wrap items-start justify-between gap-3">
                 <div>
-                    <div class="flex items-center gap-2">
-                        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">專業版</h3>
-                        <partial name="_TaBadge" model="planBadge" />
-                    </div>
-                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">包含全部後台模組、無限商品與優先技術支援。</p>
+                    <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">當前方案</h3>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">下次續訂：2026-12-01</p>
                 </div>
-                <p class="text-2xl font-semibold text-gray-800 dark:text-white/90">$49<span class="text-theme-sm font-normal text-gray-500 dark:text-gray-400"> / 月</span></p>
+                <div class="inline-flex items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
+                    <button type="button" class="rounded-md px-3 py-1.5 text-theme-xs font-medium transition-colors"
+                            x-bind:class="cycle === 'monthly' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                            x-on:click="cycle = 'monthly'">月付</button>
+                    <button type="button" class="rounded-md px-3 py-1.5 text-theme-xs font-medium transition-colors"
+                            x-bind:class="cycle === 'yearly' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 dark:text-gray-400'"
+                            x-on:click="cycle = 'yearly'">年付 · 省 20%</button>
+                </div>
             </div>
-            <dl class="mt-5 grid grid-cols-1 gap-3 border-t border-gray-100 pt-4 text-theme-sm sm:grid-cols-3 dark:border-gray-800">
-                <div>
-                    <dt class="text-gray-500 dark:text-gray-400">下次扣款</dt>
-                    <dd class="mt-0.5 font-medium text-gray-800 dark:text-gray-300">2026-12-01</dd>
-                </div>
-                <div>
-                    <dt class="text-gray-500 dark:text-gray-400">計費週期</dt>
-                    <dd class="mt-0.5 font-medium text-gray-800 dark:text-gray-300">每月</dd>
-                </div>
-                <div>
-                    <dt class="text-gray-500 dark:text-gray-400">席位</dt>
-                    <dd class="mt-0.5 font-medium text-gray-800 dark:text-gray-300">10 個</dd>
-                </div>
-            </dl>
-            <div class="mt-5 flex flex-wrap gap-3">
-                <button type="button" class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
-                        onclick="Ta.toast.info('變更方案（演示）')">變更方案</button>
-                <button type="button" class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                        onclick="Ta.toast.info('已取消訂閱（演示）')">取消訂閱</button>
+            <div class="mt-4 flex flex-wrap items-end gap-2">
+                <span class="text-3xl font-semibold text-gray-800 dark:text-white/90" x-text="cycle === 'yearly' ? '$3,960' : '$412'"></span>
+                <span class="pb-1 text-theme-sm text-gray-500 dark:text-gray-400" x-text="cycle === 'yearly' ? '/ 年' : '/ 月'"></span>
+                <span class="mb-1 ml-1 rounded-full bg-brand-50 px-2 py-0.5 text-theme-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">企業版</span>
+            </div>
+            <ul class="mt-4 grid grid-cols-1 gap-2 text-theme-sm text-gray-600 sm:grid-cols-2 dark:text-gray-400">
+                <li class="flex items-center gap-2"><partial name="_Icon" model="@("check")" />2,000 個商品上限</li>
+                <li class="flex items-center gap-2"><partial name="_Icon" model="@("check")" />20 個團隊席位</li>
+                <li class="flex items-center gap-2"><partial name="_Icon" model="@("check")" />API 與 Webhook</li>
+                <li class="flex items-center gap-2"><partial name="_Icon" model="@("check")" />專屬技術支援</li>
+            </ul>
+            <div class="mt-4 flex flex-wrap gap-2">
+                <button type="button" class="rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+                        onclick="Ta.toast.info('升級方案（演示）')">升級方案</button>
+                <button type="button" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        onclick="Ta.toast.info('查看方案詳情（演示）')">比較方案</button>
             </div>
         </section>
 
         <section class="@cardClass">
-            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">付款方式</h3>
-            <div class="mt-4 flex flex-wrap items-center justify-between gap-4 rounded-xl border border-gray-100 p-4 dark:border-gray-800">
-                <div class="flex items-center gap-3">
-                    <span class="flex size-11 items-center justify-center rounded-lg bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">VISA</span>
-                    <div>
-                        <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">•••• •••• •••• 4242</p>
-                        <p class="text-theme-xs text-gray-500 dark:text-gray-400">有效期限 08/28</p>
-                    </div>
-                </div>
-                <button type="button" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">付款方式</h3>
+                <button type="button" class="text-theme-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400"
                         onclick="Ta.toast.info('更新付款方式（演示）')">更新</button>
+            </div>
+            <div class="mt-4 flex flex-wrap items-center gap-4 rounded-xl border border-gray-100 p-4 dark:border-gray-800">
+                <span class="flex h-9 w-14 items-center justify-center rounded-md bg-gradient-to-br from-[#1a1f71] to-[#4b55c8] text-theme-xs font-bold tracking-wider text-white">VISA</span>
+                <div class="min-w-0 flex-1">
+                    <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">Visa 結尾 4242</p>
+                    <p class="text-theme-xs text-gray-500 dark:text-gray-400">到期 08/2028 · 林經理</p>
+                </div>
+                <span class="rounded-full bg-green-50 px-2.5 py-1 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-400">預設</span>
             </div>
         </section>
 
         <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-            <div class="flex items-center justify-between border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
-                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">最近帳單</h3>
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+                <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帳單記錄</h3>
                 <a asp-area="Admin" asp-controller="Ecommerce" asp-action="Invoices"
                    class="text-theme-sm font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400">查看全部</a>
             </div>
             <div class="max-w-full overflow-x-auto custom-scrollbar">
                 <table class="min-w-full">
+                    <thead class="border-b border-gray-100 dark:border-gray-800">
+                        <tr>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">發票</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">日期</th>
+                            <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">金額</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                            <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
+                        </tr>
+                    </thead>
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                        @foreach (var item in invoices)
+                        @foreach (var item in billing)
                         {
                             var badge = new TaBadgeModel { Text = item.Status, Variant = item.Variant, Dot = true };
-                            <tr>
+                            <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
                                 <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@item.No</td>
                                 <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Date</td>
-                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@item.Amount</td>
+                                <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@item.Amount</td>
                                 <td class="px-5 py-4"><partial name="_TaBadge" model="badge" /></td>
+                                <td class="px-5 py-4 text-end">
+                                    <a asp-area="Admin" asp-controller="Ecommerce" asp-action="InvoiceDetail" asp-route-id="@item.No"
+                                       class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5">查看</a>
+                                </td>
                             </tr>
                         }
                     </tbody>
@@ -85,35 +110,40 @@
 
     <aside class="space-y-4 md:space-y-6 xl:col-span-4">
         <section class="@cardClass">
-            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帳單地址</h3>
-            <p class="mt-3 text-theme-sm leading-6 text-gray-600 dark:text-gray-400">
-                陳小明<br />
-                台北市信義區信義路五段 7 號<br />
-                110 台灣
-            </p>
-            <button type="button" class="mt-4 inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
-                    onclick="Ta.toast.info('編輯地址（演示）')">編輯地址</button>
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">用量</h3>
+            <div class="mt-4 space-y-4">
+                @foreach (var item in usage)
+                {
+                    <div>
+                        <div class="flex items-center justify-between text-theme-sm">
+                            <span class="text-gray-700 dark:text-gray-300">@item.Name</span>
+                            <span class="text-theme-xs text-gray-500 dark:text-gray-400">@item.Value</span>
+                        </div>
+                        <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                            <div class="h-2 rounded-full @item.Tone" style="width:@(item.Percent)%"></div>
+                        </div>
+                    </div>
+                }
+            </div>
         </section>
 
         <section class="@cardClass">
-            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">用量</h3>
-            <div class="mt-3 space-y-3 text-theme-sm">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帳單地址</h3>
+            <div class="mt-4 space-y-3">
                 <div>
-                    <div class="flex items-center justify-between text-gray-600 dark:text-gray-400">
-                        <span>商品數</span><span>680 / 1000</span>
-                    </div>
-                    <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
-                        <div class="h-2 rounded-full bg-brand-500" style="width:68%"></div>
-                    </div>
+                    <label class="@labelClass" for="billing-company">公司名稱</label>
+                    <input id="billing-company" type="text" class="@inputClass" value="商城運營中心" />
                 </div>
                 <div>
-                    <div class="flex items-center justify-between text-gray-600 dark:text-gray-400">
-                        <span>API 呼叫</span><span>42%</span>
-                    </div>
-                    <div class="mt-1.5 h-2 rounded-full bg-gray-100 dark:bg-white/10">
-                        <div class="h-2 rounded-full bg-green-500" style="width:42%"></div>
-                    </div>
+                    <label class="@labelClass" for="billing-tax">統一編號</label>
+                    <input id="billing-tax" type="text" class="@inputClass" value="12345678" />
                 </div>
+                <div>
+                    <label class="@labelClass" for="billing-address">地址</label>
+                    <input id="billing-address" type="text" class="@inputClass" value="台北市信義區松高路 88 號" />
+                </div>
+                <button type="button" class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                        onclick="Ta.toast.success('帳單地址已保存（演示）')">保存地址</button>
             </div>
         </section>
     </aside>

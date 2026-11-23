@@ -29,6 +29,16 @@ public sealed class EcommerceController : Controller
     [HttpGet]
     public IActionResult Invoices() => Render("Invoices", "發票", "ecommerce-invoices", "Invoices：開票記錄與下載");
 
+    /// <summary>发票详情。</summary>
+    /// <param name="id">发票编号。</param>
+    /// <returns>发票详情视图。</returns>
+    [HttpGet]
+    public IActionResult InvoiceDetail(string? id)
+    {
+        ViewData["InvoiceNo"] = string.IsNullOrWhiteSpace(id) ? "INV-2026-0042" : id;
+        return Render("InvoiceDetail", "發票詳情", "ecommerce-invoices", "Invoice Detail：明細、稅額與付款資訊");
+    }
+
     private IActionResult Render(string viewName, string title, string menuKey, string subtitle)
     {
         ViewData["Title"] = title;
