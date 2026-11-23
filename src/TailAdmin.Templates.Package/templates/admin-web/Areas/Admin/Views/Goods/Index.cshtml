@@ -11,9 +11,9 @@
         Columns = new List<TaColumnModel>
         {
             new() { Key = "GoodsName", Label = "商品名稱", Fixed = "left", Width = 180 },
-            new() { Key = "Price", Label = "價格", Type = "money", Align = "right" },
+            new() { Key = "Price", Label = "價格", Type = "money", Align = "right", Sortable = true },
             new() { Key = "TypeName", Label = "分類", Sortable = false },
-            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = true },
             new() { Key = "AddTime", Label = "上架時間", Type = "date", Sortable = false, Fixed = "right" }
         }
     };
@@ -26,6 +26,38 @@
     };
 }
 
+<div class="mb-3 flex flex-wrap items-center gap-2">
+    <span class="text-theme-xs text-gray-500 dark:text-gray-400">數據來源示例：</span>
+    <button type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+            onclick="demoLocalGoods()">自定義取數（本地分頁）</button>
+    <button type="button"
+            class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+            onclick="demoRestoreGoods()">恢復服務端分頁</button>
+</div>
+
 <partial name="_TableToolbar" model="toolbar" />
 
 <partial name="_TaTable" model="table" />
+
+<script>
+    (function () {
+        var listUrl = '@Url.Action("List", "Goods", new { area = "Admin" })';
+
+        window.demoLocalGoods = async function () {
+            var table = window.Ta && Ta.tables && Ta.tables['goodsTable'];
+            if (!table) return;
+            var res = await Ta.http.get(listUrl, { page: 1, limit: 200 }, { silent: true });
+            var rows = res && Array.isArray(res.data) ? res.data : [];
+            table.setData(rows, { limit: 8, page: 1 });
+            Ta.toast.success('已切換為本地數據（前端分頁 / 排序）');
+        };
+
+        window.demoRestoreGoods = function () {
+            var table = window.Ta && Ta.tables && Ta.tables['goodsTable'];
+            if (!table) return;
+            table.page = 1;
+            table.load();
+        };
+    })();
+</script>

@@ -23,6 +23,8 @@ export function createTaTable(Ta) {
       canScrollLeft: false,
       canScrollRight: false,
       offsets: {},
+      mode: 'server',
+      sourceRows: [],
       keyword: '',
       sortField: cfg.sortField || '',
       sortOrder: cfg.sortOrder || 'desc',
@@ -76,9 +78,14 @@ export function createTaTable(Ta) {
       },
 
       async load() {
+        this.mode = 'server';
         this.loading = true;
         this.error = '';
         this.applyFixedOffsets();
+        if (!this.url) {
+          this.loading = false;
+          return;
+        }
         if (document.fonts && document.fonts.ready) {
           document.fonts.ready.then(() => this.applyFixedOffsets());
         }
@@ -118,10 +125,18 @@ export function createTaTable(Ta) {
 
       reload() {
         this.page = 1;
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return this;
+        }
         return this.load();
       },
 
       refresh() {
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return this;
+        }
         return this.load();
       },
 
@@ -129,18 +144,30 @@ export function createTaTable(Ta) {
         const next = Math.min(Math.max(1, page), this.pageCount());
         if (next === this.page) return;
         this.page = next;
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return;
+        }
         this.load();
       },
 
       setLimit(limit) {
         this.limit = Number(limit) || 20;
         this.page = 1;
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return;
+        }
         this.load();
       },
 
       applyFilters(filters) {
         this.params = Object.assign({}, this.params, filters || {});
         this.page = 1;
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return;
+        }
         this.load();
       },
 
@@ -175,12 +202,146 @@ export function createTaTable(Ta) {
           this.sortOrder = 'asc';
         }
         this.page = 1;
+        if (this.mode === 'local') {
+          this.applyLocal();
+          return;
+        }
         this.load();
       },
 
       sortIcon(key) {
         if (this.sortField !== key) return '↕';
         return this.sortOrder === 'asc' ? '↑' : '↓';
+      },
+
+      /**
+       * 外部喂数据（对齐 layui table.reload(id, { data })）。
+       * - 不传 total：本地数据模式，保存全量，前端分页/排序/关键字过滤
+       * - 传 total：服务端分页快照，只替换当前页，后续分页/排序仍走 Url
+       */
+      setData(rows, options) {
+        const opts = options || {};
+        const list = Array.isArray(rows) ? rows.slice() : [];
+        const hasTotal = opts.total !== undefined && opts.total !== null;
+
+        if (opts.limit != null) this.limit = Math.max(1, Number(opts.limit) || this.limit);
+        if (opts.page != null) this.page = Math.max(1, Number(opts.page) || 1);
+        if (opts.keyword !== undefined) this.keyword = opts.keyword || '';
+        if (opts.sortField !== undefined) this.sortField = opts.sortField || '';
+        if (opts.sortOrder !== undefined) this.sortOrder = opts.sortOrder || 'desc';
+        this.error = '';
+        this.loading = false;
+        this.selected = opts.keepSelection ? this.selected : [];
+
+        if (hasTotal) {
+          this.mode = 'server';
+          this.sourceRows = [];
+          this.rows = list;
+          this.total = Math.max(0, Number(opts.total) || 0);
+          const count = this.pageCount();
+          if (this.page > count) this.page = count;
+          if (opts.keepSelection) this.pruneSelection(this.rows);
+          if (this.table) this.table.setOptions({ data: this.rows, pageCount: count });
+          this.$nextTick(() => {
+            this.updateScroll();
+            this.applyFixedOffsets();
+          });
+          return this;
+        }
+
+        this.mode = 'local';
+        this.sourceRows = list;
+        this.applyLocal();
+        return this;
+      },
+
+      /** 自定义请求 + setData：返回 count 走服务端快照，否则按本地数据处理。 */
+      async loadData(url, params) {
+        this.loading = true;
+        this.error = '';
+        try {
+          const res = await Ta.http.get(url, params || {}, { silent: true });
+          const list = res && Array.isArray(res.data) ? res.data : [];
+          const total = res && typeof res.count === 'number' ? res.count : undefined;
+          this.setData(list, {
+            total,
+            page: params ? params.page : undefined,
+            limit: params ? params.limit : undefined,
+            keyword: params ? params.keyword : undefined,
+            sortField: params ? params.sortField : undefined,
+            sortOrder: params ? params.sortOrder : undefined
+          });
+          return this;
+        } catch (e) {
+          this.rows = [];
+          this.total = 0;
+          this.error = (e && e.message) ? e.message : '加載失敗';
+          this.loading = false;
+          this.$nextTick(() => {
+            this.updateScroll();
+            this.applyFixedOffsets();
+          });
+          return this;
+        }
+      },
+
+      /** 本地数据：前端过滤 + 排序 + 分页，然后重算固定列/滚动状态。 */
+      applyLocal() {
+        const keyword = (this.keyword || '').trim().toLowerCase();
+        let data = Array.isArray(this.sourceRows) ? this.sourceRows.slice() : [];
+
+        if (keyword) {
+          data = data.filter((row) =>
+            row && Object.keys(row).some((key) => {
+              const value = row[key];
+              return value !== null && value !== undefined && String(value).toLowerCase().indexOf(keyword) >= 0;
+            })
+          );
+        }
+
+        if (this.sortField) {
+          const field = this.sortField;
+          const direction = this.sortOrder === 'asc' ? 1 : -1;
+          data.sort((a, b) => this.compareValues(a ? a[field] : null, b ? b[field] : null) * direction);
+        }
+
+        this.total = data.length;
+        const count = this.pageCount();
+        if (this.page > count) this.page = count;
+        if (this.page < 1) this.page = 1;
+        const start = (this.page - 1) * this.limit;
+        this.rows = data.slice(start, start + this.limit);
+
+        this.pruneSelection(data);
+        if (this.table) this.table.setOptions({ data: this.rows, pageCount: count });
+
+        this.$nextTick(() => {
+          this.updateScroll();
+          this.applyFixedOffsets();
+        });
+      },
+
+      /** 本地排序对比：数字按数值、布尔按真假、其余按本地化字符串。 */
+      compareValues(a, b) {
+        const aEmpty = a === null || a === undefined || a === '';
+        const bEmpty = b === null || b === undefined || b === '';
+        if (aEmpty && bEmpty) return 0;
+        if (aEmpty) return 1;
+        if (bEmpty) return -1;
+        if (typeof a === 'boolean' || typeof b === 'boolean') {
+          return (a ? 1 : 0) - (b ? 1 : 0);
+        }
+        const na = Number(a);
+        const nb = Number(b);
+        if (!Number.isNaN(na) && !Number.isNaN(nb)) return na - nb;
+        return String(a).localeCompare(String(b), 'zh-Hans-CN', { numeric: true });
+      },
+
+      /** 多选残留清理：只保留仍存在于给定数据中的行 id。 */
+      pruneSelection(source) {
+        const list = Array.isArray(source) ? source : this.rows;
+        const ids = new Set(list.map((row) => String(this.rowId(row))));
+        this.selected = this.selected.filter((id) => ids.has(String(id)));
       },
 
       cellValue(row, column) {
