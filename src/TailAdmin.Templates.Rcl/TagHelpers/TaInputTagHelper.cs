@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace TailAdmin.Templates.Rcl.TagHelpers;
 
-/// <summary>daisyUI 输入框：&lt;ta-input asp-for="Name" label="名稱" /&gt;。</summary>
+/// <summary>TailAdmin 输入框：&lt;ta-input asp-for="Name" label="名稱" /&gt;。</summary>
 [HtmlTargetElement("ta-input")]
 public sealed class TaInputTagHelper : TaFieldTagHelperBase
 {
@@ -27,8 +27,8 @@ public sealed class TaInputTagHelper : TaFieldTagHelperBase
     {
         var input = new TagBuilder("input");
         input.TagRenderMode = TagRenderMode.SelfClosing;
-        input.AddCssClass("input input-bordered w-full");
-        ApplySize(input);
+        input.AddCssClass(ControlClass);
+        input.AddCssClass("h-11");
 
         input.Attributes["type"] = Type;
         input.Attributes["name"] = FieldName;

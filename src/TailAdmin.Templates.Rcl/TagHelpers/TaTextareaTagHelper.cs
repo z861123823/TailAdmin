@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace TailAdmin.Templates.Rcl.TagHelpers;
 
-/// <summary>daisyUI 文本域：&lt;ta-textarea asp-for="Remark" rows="3" /&gt;。</summary>
+/// <summary>TailAdmin 文本域：&lt;ta-textarea asp-for="Remark" rows="3" /&gt;。</summary>
 [HtmlTargetElement("ta-textarea")]
 public sealed class TaTextareaTagHelper : TaFieldTagHelperBase
 {
@@ -17,8 +17,8 @@ public sealed class TaTextareaTagHelper : TaFieldTagHelperBase
     protected override TagBuilder BuildControl()
     {
         var textarea = new TagBuilder("textarea");
-        textarea.AddCssClass("textarea textarea-bordered w-full");
-        ApplySize(textarea);
+        textarea.AddCssClass(ControlClass);
+        textarea.AddCssClass("min-h-[120px]");
         textarea.Attributes["name"] = FieldName;
         textarea.Attributes["id"] = FieldName;
         textarea.Attributes["rows"] = Rows.ToString();

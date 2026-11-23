@@ -6,12 +6,14 @@
 export function installModal(Ta) {
   const registry = new Map();
   const sizeClass = {
-    sm: 'modal-box max-w-sm',
-    md: 'modal-box max-w-lg',
-    lg: 'modal-box max-w-2xl',
-    xl: 'modal-box max-w-4xl',
-    full: 'modal-box max-w-full w-full h-full max-h-full rounded-none'
+    sm: 'max-w-md',
+    md: 'max-w-lg',
+    lg: 'max-w-2xl',
+    xl: 'max-w-4xl',
+    full: 'h-full max-w-none rounded-none'
   };
+  const outlineButton =
+    'inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 shadow-theme-xs transition-all outline-none select-none hover:bg-gray-50 active:translate-y-px dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/3';
 
   Ta.modal = {
     register(id, ctx) {
@@ -46,18 +48,18 @@ export function installModal(Ta) {
   Ta.previewImage = function previewImage(url) {
     if (!url) return;
     const dialog = document.createElement('dialog');
-    dialog.className = 'modal';
+    dialog.className = 'ta-dialog';
     const box = document.createElement('div');
-    box.className = 'modal-box max-w-4xl bg-base-100';
+    box.className = 'ta-dialog-card max-w-4xl';
     const img = document.createElement('img');
-    img.className = 'mx-auto max-h-[80vh] w-auto rounded';
+    img.className = 'mx-auto max-h-[80vh] w-auto rounded-xl';
     img.alt = '圖片預覽';
     img.src = url;
     const actions = document.createElement('div');
-    actions.className = 'modal-action';
+    actions.className = 'mt-5 flex justify-end';
     const close = document.createElement('button');
     close.type = 'button';
-    close.className = 'btn btn-sm btn-ghost';
+    close.className = outlineButton;
     close.textContent = '關閉';
     close.addEventListener('click', () => dialog.close());
     actions.appendChild(close);

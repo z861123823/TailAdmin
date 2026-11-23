@@ -7,8 +7,12 @@
     <ta-input asp-for="Sort" label="排序" type="number" min="0" required hint="數字越小越靠前" />
     <ta-toggle asp-for="Enabled" label="啟用" hint="停用後不再出現在商品分類下拉中" />
 
-    <div class="flex justify-end gap-2 pt-1">
-        <button type="button" class="btn btn-ghost btn-sm" x-on:click="Ta.modal.close('typeEdit')">取消</button>
-        <button type="submit" class="btn btn-primary btn-sm" x-bind:disabled="submitting">保存</button>
+    <div class="flex flex-col-reverse justify-end gap-3 pt-1 sm:flex-row">
+        <button type="button"
+                class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                x-on:click="Ta.modal.close('typeEdit')">取消</button>
+        <button type="submit"
+                class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                x-bind:disabled="submitting">保存</button>
     </div>
 </form>

@@ -208,8 +208,12 @@ export function createTaTable(Ta) {
       badgeClass(row, column) {
         const value = this.cellValue(row, column);
         const truthy = value === true || value === 'true' || value === 1 || value === '1';
-        if (column.type === 'bool') return truthy ? 'badge badge-success' : 'badge badge-ghost';
-        return 'badge badge-ghost';
+        if (column.type === 'bool') {
+          return truthy
+            ? 'bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-500'
+            : 'bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80';
+        }
+        return 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400';
       },
 
       imageUrl(row, column) {

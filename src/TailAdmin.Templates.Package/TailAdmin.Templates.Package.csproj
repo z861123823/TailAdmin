@@ -4,7 +4,7 @@
     <PackageType>Template</PackageType>
     <PackageId>TailAdmin.Templates</PackageId>
     <Title>TailAdmin 通用后台模板</Title>
-    <Description>一条命令生成 TailAdmin 通用后台骨架（RCL + daisyUI 主题 + Alpine 组件）。</Description>
+    <Description>一条命令生成 TailAdmin 通用后台骨架（官方 HTML 界面基线 + Tailwind 4 + Alpine 组件）。</Description>
     <Authors>Internal</Authors>
     <TargetFramework>net8.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>

@@ -2,14 +2,25 @@
  * taForm + Ta.form.applyErrors：
  * 前端只做即时提示，字段级错误以服务端返回的 Errors 为准统一回填。
  */
+const ERROR_CLASSES = [
+  'border-red-500',
+  'ring-3',
+  'ring-red-500/20',
+  'focus:border-red-500',
+  'focus:ring-red-500/20',
+  'dark:border-red-500/50',
+  'dark:ring-red-500/40'
+];
+
 export function installForm(Ta) {
   const applyErrors = (form, errors) => {
     if (!form || !errors) return;
     form.querySelectorAll('[data-valmsg-for]').forEach((el) => {
       el.textContent = '';
     });
-    form.querySelectorAll('.input-error, .select-error, .textarea-error').forEach((el) => {
-      el.classList.remove('input-error', 'select-error', 'textarea-error');
+    form.querySelectorAll('[aria-invalid="true"]').forEach((el) => {
+      el.removeAttribute('aria-invalid');
+      el.classList.remove(...ERROR_CLASSES);
     });
 
     Object.keys(errors).forEach((key) => {
@@ -20,9 +31,8 @@ export function installForm(Ta) {
 
       const field = form.querySelector(`[name="${key}"], [name="${key}[]"]`);
       if (field) {
-        if (field.tagName === 'SELECT') field.classList.add('select-error');
-        else if (field.tagName === 'TEXTAREA') field.classList.add('textarea-error');
-        else field.classList.add('input-error');
+        field.setAttribute('aria-invalid', 'true');
+        field.classList.add(...ERROR_CLASSES);
       }
     });
   };

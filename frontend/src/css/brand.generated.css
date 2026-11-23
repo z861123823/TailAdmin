@@ -1,0 +1,30 @@
+/* 自动生成，请修改 frontend/theme/brand.json 后重新执行 npm run build:brand */
+@theme {
+  --color-brand-50: #f4f5ff;
+  --color-brand-100: #e9ecff;
+  --color-brand-200: #d1d7ff;
+  --color-brand-300: #b1bcff;
+  --color-brand-400: #8192ff;
+  --color-brand-500: #465fff;
+  --color-brand-600: #3f56e6;
+  --color-brand-700: #374ac7;
+  --color-brand-800: #2e3fa8;
+  --color-brand-900: #26338a;
+  --color-brand-950: #1b2461;
+}
+
+@layer base {
+  .dark {
+    --color-brand-50: #f7f8ff;
+    --color-brand-100: #eef2ff;
+    --color-brand-200: #dde4ff;
+    --color-brand-300: #c5d1ff;
+    --color-brand-400: #a1b5ff;
+    --color-brand-500: #7592ff;
+    --color-brand-600: #6983e6;
+    --color-brand-700: #5b72c7;
+    --color-brand-800: #4d60a8;
+    --color-brand-900: #3f4f8a;
+    --color-brand-950: #2c3761;
+  }
+}

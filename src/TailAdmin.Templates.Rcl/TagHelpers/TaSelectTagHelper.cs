@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace TailAdmin.Templates.Rcl.TagHelpers;
 
-/// <summary>daisyUI 下拉框：&lt;ta-select asp-for="TypeId" items="Model.TypeList" /&gt;。</summary>
+/// <summary>TailAdmin 下拉框：&lt;ta-select asp-for="TypeId" items="Model.TypeList" /&gt;。</summary>
 [HtmlTargetElement("ta-select")]
 public sealed class TaSelectTagHelper : TaFieldTagHelperBase
 {
@@ -20,8 +20,8 @@ public sealed class TaSelectTagHelper : TaFieldTagHelperBase
     protected override TagBuilder BuildControl()
     {
         var select = new TagBuilder("select");
-        select.AddCssClass("select select-bordered w-full");
-        ApplySize(select);
+        select.AddCssClass(ControlClass);
+        select.AddCssClass("h-11 appearance-none");
         select.Attributes["name"] = FieldName;
         select.Attributes["id"] = FieldName;
         if (Required) select.Attributes["required"] = "required";

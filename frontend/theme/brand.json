@@ -1,7 +1,7 @@
 {
   "name": "als",
   "light": {
-    "primary": "#1f6feb",
+    "primary": "#465fff",
     "primary-content": "#ffffff",
     "secondary": "#5b6b7f",
     "secondary-content": "#ffffff",
@@ -30,7 +30,7 @@
     "--tab-radius": "0.5rem"
   },
   "dark": {
-    "primary": "#4f8ef7",
+    "primary": "#7592ff",
     "primary-content": "#0b1220",
     "secondary": "#8b9bb4",
     "secondary-content": "#0b1220",

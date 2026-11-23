@@ -6,114 +6,141 @@
 <div class="w-full" x-cloak
      x-data="taTable(@Model.BuildConfigJson())"
      x-init="load()">
-    <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
-        <table class="table table-zebra table-sm">
-            <thead class="bg-base-200/60">
-                <tr>
-                    @if (Model.Selectable)
-                    {
-                        <th class="w-10">
-                            <input type="checkbox" class="checkbox checkbox-xs" x-on:change="toggleAll($event)" aria-label="全選" />
-                        </th>
-                    }
-                    @foreach (var column in Model.Columns)
-                    {
-                        var alignClass = column.Align == "right" ? "text-right" : column.Align == "center" ? "text-center" : string.Empty;
-                        <th class="whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-base-content/60 @alignClass"
-                            style="@(column.Width.HasValue ? $"width:{column.Width}px" : null)">
-                            @if (column.Sortable)
-                            {
-                                <button type="button" class="inline-flex items-center gap-1 hover:text-base-content"
-                                        x-on:click="toggleSort({ key: '@column.Key' })">
-                                    @column.Label
-                                    <span class="text-base-content/40" x-text="sortIcon('@column.Key')"></span>
-                                </button>
-                            }
-                            else
-                            {
-                                <span>@column.Label</span>
-                            }
-                        </th>
-                    }
-                    @if (hasActions)
-                    {
-                        <th class="w-24 text-right text-xs font-semibold uppercase tracking-wide text-base-content/60">操作</th>
-                    }
-                </tr>
-            </thead>
-            <tbody>
-                <template x-for="i in 5" :key="'skeleton-' + i">
-                    <tr x-show="loading">
-                        <td colspan="@columnCount"><div class="skeleton h-4 w-full"></div></td>
-                    </tr>
-                </template>
-
-                <tr x-show="!loading && error">
-                    <td colspan="@columnCount">
-                        <div class="ta-table-empty">
-                            <partial name="_Icon" model="@("alert")" />
-                            <p class="text-error" x-text="error"></p>
-                            <button type="button" class="btn btn-sm btn-outline gap-1" x-on:click="refresh()">
-                                <partial name="_Icon" model="@("refresh")" />
-                                重試
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr x-show="!loading && !error && rows.length === 0">
-                    <td colspan="@columnCount">
-                        <div class="ta-table-empty">
-                            <partial name="_Icon" model="@("empty")" />
-                            <p x-text="emptyText"></p>
-                            <p class="text-xs">可調整查詢條件後重試</p>
-                        </div>
-                    </td>
-                </tr>
-
-                <template x-for="row in rows" :key="rowId(row)">
-                    <tr class="hover" x-show="!loading">
+    <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-y border-gray-100 dark:border-gray-800">
+                    <tr>
                         @if (Model.Selectable)
                         {
-                            <td><input type="checkbox" class="checkbox checkbox-xs" x-bind:checked="isSelected(row)" x-on:change="toggleRow(row)" /></td>
+                            <th class="w-12 px-5 py-3 text-start">
+                                <input type="checkbox"
+                                       class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
+                                       x-on:change="toggleAll($event)" aria-label="全選" />
+                            </th>
                         }
-                        <template x-for="col in columns" :key="col.key">
-                            <td x-bind:class="cellClass(col)" x-bind:style="col.width ? 'width:' + col.width + 'px' : ''">
-                                <template x-if="col.type === 'image'">
-                                    <span>
-                                        <img x-show="imageUrl(row, col)" x-bind:src="imageUrl(row, col)"
-                                             class="h-9 w-9 cursor-zoom-in rounded object-cover" x-on:click="preview(imageUrl(row, col))" alt="" />
-                                        <span x-show="!imageUrl(row, col)"
-                                              class="flex h-9 w-9 items-center justify-center rounded bg-base-200 text-xs text-base-content/40">無圖</span>
-                                    </span>
-                                </template>
-                                <template x-if="col.type === 'tag' || col.type === 'bool'">
-                                    <span class="badge" x-bind:class="badgeClass(row, col)" x-text="cellText(row, col)"></span>
-                                </template>
-                                <template x-if="col.type === 'link'">
-                                    <a class="link link-primary" x-bind:href="linkHref(row, col)" target="_blank" rel="noopener" x-text="cellText(row, col)"></a>
-                                </template>
-                                <template x-if="col.type !== 'image' && col.type !== 'tag' && col.type !== 'bool' && col.type !== 'link'">
-                                    <span x-text="cellText(row, col)"></span>
-                                </template>
-                            </td>
-                        </template>
+                        @foreach (var column in Model.Columns)
+                        {
+                            var alignClass = column.Align == "right" ? "text-right" : column.Align == "center" ? "text-center" : "text-start";
+                            <th class="px-5 py-3 @alignClass text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                style="@(column.Width.HasValue ? $"width:{column.Width}px" : null)">
+                                @if (column.Sortable)
+                                {
+                                    <button type="button"
+                                            class="inline-flex items-center gap-1 text-theme-xs font-medium text-gray-500 transition-colors hover:text-gray-800 dark:text-gray-400 dark:hover:text-white/90"
+                                            x-on:click="toggleSort({ key: '@column.Key' })">
+                                        @column.Label
+                                        <span class="text-gray-400 dark:text-gray-500" x-text="sortIcon('@column.Key')"></span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span>@column.Label</span>
+                                }
+                            </th>
+                        }
                         @if (hasActions)
                         {
-                            <td class="whitespace-nowrap text-right">
-                                <template x-for="action in actions.filter(a => a.visible !== false)" :key="action.event">
-                                    <button type="button" class="btn btn-xs"
-                                            x-bind:class="action.variant === 'error' ? 'btn-error' : action.variant === 'primary' ? 'btn-primary' : 'btn-ghost'"
-                                            x-on:click.stop="doAction(action.event, row)"
-                                            x-text="action.label"></button>
-                                </template>
-                            </td>
+                            <th class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
                         }
                     </tr>
-                </template>
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    <template x-for="i in 5" :key="'skeleton-' + i">
+                        <tr x-show="loading">
+                            <td colspan="@columnCount" class="px-5 py-4">
+                                <div class="h-4 w-full animate-pulse rounded bg-gray-100 dark:bg-white/10"></div>
+                            </td>
+                        </tr>
+                    </template>
 
-    <partial name="_Pagination" />
+                    <tr x-show="!loading && error">
+                        <td colspan="@columnCount">
+                            <div class="flex flex-col items-center justify-center px-6 py-14 text-center">
+                                <span class="flex size-13 items-center justify-center rounded-full bg-red-50 text-red-500 dark:bg-red-500/15 dark:text-red-400">
+                                    <partial name="_Icon" model="@("alert")" />
+                                </span>
+                                <p class="mt-3 text-theme-sm text-red-500" x-text="error"></p>
+                                <button type="button"
+                                        class="mt-4 inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                                        x-on:click="refresh()">
+                                    <partial name="_Icon" model="@("refresh")" />
+                                    重試
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr x-show="!loading && !error && rows.length === 0">
+                        <td colspan="@columnCount">
+                            <div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+                                <span class="flex size-14 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-white/5 dark:text-gray-500">
+                                    <partial name="_Icon" model="@("empty")" />
+                                </span>
+                                <p class="mt-4 text-theme-sm font-medium text-gray-800 dark:text-white/90" x-text="emptyText"></p>
+                                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">可調整查詢條件後重試</p>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <template x-for="row in rows" :key="rowId(row)">
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]" x-show="!loading">
+                            @if (Model.Selectable)
+                            {
+                                <td class="px-5 py-4">
+                                    <input type="checkbox"
+                                           class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
+                                           x-bind:checked="isSelected(row)" x-on:change="toggleRow(row)" />
+                                </td>
+                            }
+                            <template x-for="col in columns" :key="col.key">
+                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400"
+                                    x-bind:class="cellClass(col)"
+                                    x-bind:style="col.width ? 'width:' + col.width + 'px' : ''">
+                                    <template x-if="col.type === 'image'">
+                                        <span>
+                                            <img x-show="imageUrl(row, col)" x-bind:src="imageUrl(row, col)"
+                                                 class="h-12 w-12 cursor-zoom-in rounded-lg border border-gray-100 object-cover dark:border-gray-800"
+                                                 x-on:click="preview(imageUrl(row, col))" alt="" />
+                                            <span x-show="!imageUrl(row, col)"
+                                                  class="flex size-12 items-center justify-center rounded-lg bg-gray-100 text-theme-xs text-gray-400 dark:bg-white/5 dark:text-gray-500">無圖</span>
+                                        </span>
+                                    </template>
+                                    <template x-if="col.type === 'tag' || col.type === 'bool'">
+                                        <span class="inline-flex items-center justify-center gap-1 rounded-full px-2.5 py-0.5 text-theme-xs font-medium"
+                                              x-bind:class="badgeClass(row, col)" x-text="cellText(row, col)"></span>
+                                    </template>
+                                    <template x-if="col.type === 'link'">
+                                        <a class="font-medium text-brand-500 transition-colors hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+                                           x-bind:href="linkHref(row, col)" target="_blank" rel="noopener" x-text="cellText(row, col)"></a>
+                                    </template>
+                                    <template x-if="col.type !== 'image' && col.type !== 'tag' && col.type !== 'bool' && col.type !== 'link'">
+                                        <span x-text="cellText(row, col)"></span>
+                                    </template>
+                                </td>
+                            </template>
+                            @if (hasActions)
+                            {
+                                <td class="px-5 py-4 text-right whitespace-nowrap">
+                                    <template x-for="action in actions.filter(a => a.visible !== false)" :key="action.event">
+                                        <button type="button"
+                                                class="inline-flex items-center justify-center gap-1 rounded-lg px-3 py-2 text-theme-xs font-medium transition-colors"
+                                                x-bind:class="action.variant === 'error'
+                                                    ? 'bg-red-500 text-white hover:bg-red-600'
+                                                    : action.variant === 'primary'
+                                                        ? 'bg-brand-500 text-white hover:bg-brand-600'
+                                                        : 'border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5'"
+                                                x-on:click.stop="doAction(action.event, row)"
+                                                x-text="action.label"></button>
+                                    </template>
+                                </td>
+                            }
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <partial name="_Pagination" />
+    </div>
 </div>

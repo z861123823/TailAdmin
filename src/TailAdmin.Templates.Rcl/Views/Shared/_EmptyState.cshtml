@@ -1,13 +1,18 @@
 @model EmptyStateModel
-<div class="ta-table-empty">
-    <partial name="_Icon" model="@("empty")" />
-    <p class="text-base font-medium text-base-content/70">@Model.Title</p>
+<div class="flex flex-col items-center justify-center px-6 py-16 text-center">
+    <span class="flex size-14 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-white/5 dark:text-gray-500">
+        <partial name="_Icon" model="@("empty")" />
+    </span>
+    <p class="mt-4 text-sm font-medium text-gray-800 dark:text-white/90">@Model.Title</p>
     @if (!string.IsNullOrWhiteSpace(Model.Description))
     {
-        <p>@Model.Description</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">@Model.Description</p>
     }
     @if (!string.IsNullOrWhiteSpace(Model.ActionText) && !string.IsNullOrWhiteSpace(Model.ActionUrl))
     {
-        <a href="@Model.ActionUrl" class="btn btn-primary btn-sm mt-1">@Model.ActionText</a>
+        <a href="@Model.ActionUrl"
+           class="mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+            @Model.ActionText
+        </a>
     }
 </div>

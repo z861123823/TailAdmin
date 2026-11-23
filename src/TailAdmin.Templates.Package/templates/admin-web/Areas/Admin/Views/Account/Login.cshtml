@@ -4,32 +4,53 @@
     var returnUrl = ViewData["ReturnUrl"] as string;
     var userName = ViewData["UserName"] as string;
 }
-<div class="ta-auth-card">
-    <div class="mb-6 flex items-center gap-3">
-        <span class="ta-logo-mark">TA</span>
-        <div>
-            <h1 class="text-lg font-semibold">管理後台</h1>
-            <p class="text-xs text-base-content/60">TailAdmin 通用模板</p>
-        </div>
-    </div>
-
-    @if (!string.IsNullOrWhiteSpace(error))
-    {
-        <div class="alert alert-error mb-4 text-sm">@error</div>
-    }
-
-    <form method="post" asp-area="Admin" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl" class="space-y-3">
-        @Html.AntiForgeryToken()
-        <label class="form-control w-full">
-            <span class="label py-1"><span class="label-text text-sm font-medium">帳號</span></span>
-            <input type="text" name="userName" value="@userName" class="input input-bordered input-sm w-full" autocomplete="username" required autofocus />
-        </label>
-        <label class="form-control w-full">
-            <span class="label py-1"><span class="label-text text-sm font-medium">密碼</span></span>
-            <input type="password" name="password" class="input input-bordered input-sm w-full" autocomplete="current-password" required />
-        </label>
-        <button type="submit" class="btn btn-primary btn-sm mt-2 w-full">登入</button>
-    </form>
-
-    <p class="mt-4 text-center text-xs text-base-content/50">演示帳號：admin / 123456</p>
+<div class="mb-5 sm:mb-8">
+    <h1 class="mb-2 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">登入</h1>
+    <p class="text-theme-sm text-gray-500 dark:text-gray-400">輸入帳號與密碼以進入管理後台</p>
 </div>
+
+@if (!string.IsNullOrWhiteSpace(error))
+{
+    <div class="mb-5 flex items-start gap-3 rounded-xl border border-red-500/60 bg-red-50 p-4 text-theme-sm text-gray-700 dark:border-red-500/30 dark:bg-red-500/10 dark:text-gray-300"
+         role="alert">
+        <svg class="mt-0.5 size-5 shrink-0 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none">
+            <path d="M10 6.667V10m0 3.333h.008M18.333 10a8.333 8.333 0 11-16.667 0 8.333 8.333 0 0116.667 0z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>@error</span>
+    </div>
+}
+
+<form method="post" asp-area="Admin" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl">
+    @Html.AntiForgeryToken()
+    <div class="space-y-5">
+        <div>
+            <label for="userName" class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                帳號<span class="ml-0.5 text-red-500">*</span>
+            </label>
+            <input type="text" id="userName" name="userName" value="@userName"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                   placeholder="請輸入帳號" autocomplete="username" required autofocus />
+        </div>
+        <div>
+            <label for="password" class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                密碼<span class="ml-0.5 text-red-500">*</span>
+            </label>
+            <input type="password" id="password" name="password"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                   placeholder="請輸入密碼" autocomplete="current-password" required />
+        </div>
+        <button type="submit"
+                class="flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+            登入
+        </button>
+    </div>
+</form>
+
+<div class="mt-6 rounded-xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-white/[0.03]">
+    <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">演示帳號</p>
+    <p class="mt-2 text-theme-xs leading-5 text-gray-500 dark:text-gray-400">admin / 123456</p>
+</div>
+
+<p class="mt-8 text-center text-theme-sm text-gray-500 dark:text-gray-400">
+    基於 TailAdmin 官方界面基線構建的通用後台模板
+</p>

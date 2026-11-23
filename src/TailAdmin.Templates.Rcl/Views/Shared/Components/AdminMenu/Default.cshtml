@@ -16,45 +16,81 @@
     }
 
     bool HasActiveChild(AdminMenuItem item) => item.Children.Any(IsActive);
+
+    string? ItemUrl(AdminMenuItem item)
+    {
+        if (!string.IsNullOrWhiteSpace(item.Url)) return item.Url;
+        return Url.Action(item.Action ?? "Index", item.Controller, new { area = item.Area });
+    }
 }
 
 @if (Model.Items.Count == 0)
 {
-    <p class="px-2 py-6 text-center text-xs text-base-content/50">暫無可用菜單</p>
+    <p class="px-2 py-6 text-center text-xs text-gray-500 dark:text-gray-400">暫無可用菜單</p>
 }
 else
 {
-    <nav class="space-y-1">
+    <ul class="mb-6 flex flex-col gap-1">
         @foreach (var item in Model.Items)
         {
             var active = IsActive(item) || HasActiveChild(item);
-            var href = !string.IsNullOrWhiteSpace(item.Url)
-                ? item.Url
-                : Url.Action(item.Action ?? "Index", item.Controller, new { area = item.Area });
+            var hasChildren = item.Children.Count > 0;
+            var href = ItemUrl(item) ?? "#";
 
-            <a href="@href"
-               class="ta-sidebar-link @(active ? "ta-sidebar-link-active" : string.Empty)"
-               title="@item.Title"
-               target="@(item.NewWindow ? "_blank" : null)"
-               rel="@(item.NewWindow ? "noopener" : null)">
-                <partial name="_Icon" model="@item.Icon" />
-                <span class="truncate" x-show="!$store.taUi.collapsed">@item.Title</span>
-            </a>
-
-            @foreach (var child in item.Children)
+            if (hasChildren)
             {
-                var childActive = IsActive(child);
-                var childHref = !string.IsNullOrWhiteSpace(child.Url)
-                    ? child.Url
-                    : Url.Action(child.Action ?? "Index", child.Controller, new { area = child.Area });
-                <a href="@childHref"
-                   class="ta-sidebar-link ml-4 @(childActive ? "ta-sidebar-link-active" : string.Empty)"
-                   title="@child.Title"
-                   x-show="!$store.taUi.collapsed">
-                    <partial name="_Icon" model="@child.Icon" />
-                    <span class="truncate">@child.Title</span>
-                </a>
+                <li x-data="{ open: @(active ? "true" : "false") }">
+                    <a href="javascript:void(0)"
+                       x-on:click.prevent="open = !open"
+                       class="group menu-item @(active ? "menu-item-active" : "menu-item-inactive")"
+                       :aria-expanded="open.toString()"
+                       title="@item.Title">
+                        <span :class="open ? 'menu-item-icon-active' : 'menu-item-icon-inactive'">
+                            <partial name="_Icon" model="@item.Icon" />
+                        </span>
+                        <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''">@item.Title</span>
+                        <svg class="menu-item-arrow @(active ? "menu-item-arrow-active" : "menu-item-arrow-inactive")"
+                             :class="sidebarToggle ? 'xl:hidden' : ''"
+                             width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.79175 7.39584L10.0001 12.6042L15.2084 7.39585" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                    <div x-cloak x-show="open" x-collapse>
+                        <ul :class="sidebarToggle ? 'xl:hidden' : 'flex'"
+                            class="menu-dropdown mt-2 flex animate-in flex-col gap-1 pl-9 duration-200 fade-in-0 slide-in-from-top-1">
+                            @foreach (var child in item.Children)
+                            {
+                                var childActive = IsActive(child);
+                                var childHref = ItemUrl(child) ?? "#";
+                                <li>
+                                    <a href="@childHref"
+                                       target="@(child.NewWindow ? "_blank" : null)"
+                                       rel="@(child.NewWindow ? "noopener" : null)"
+                                       class="group menu-dropdown-item @(childActive ? "menu-dropdown-item-active" : "menu-dropdown-item-inactive")"
+                                       title="@child.Title">
+                                        @child.Title
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a href="@href"
+                       target="@(item.NewWindow ? "_blank" : null)"
+                       rel="@(item.NewWindow ? "noopener" : null)"
+                       class="group menu-item @(active ? "menu-item-active" : "menu-item-inactive")"
+                       title="@item.Title">
+                        <span class="@(active ? "menu-item-icon-active" : "menu-item-icon-inactive")">
+                            <partial name="_Icon" model="@item.Icon" />
+                        </span>
+                        <span class="menu-item-text" :class="sidebarToggle ? 'xl:hidden' : ''">@item.Title</span>
+                    </a>
+                </li>
             }
         }
-    </nav>
+    </ul>
 }

@@ -1,42 +1,213 @@
 @model DashboardViewModel
 @{
     var culture = System.Globalization.CultureInfo.GetCultureInfo("zh-CN");
+    var monthlyTarget = Model.SalesAmount > 0 ? Math.Round(Model.SalesAmount / 0.7555m, 2) : 100000m;
 }
-<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-    @await Component.InvokeAsync("StatCard", new { title = "商品總數", value = Model.GoodsCount.ToString(culture), icon = "goods", variant = "primary", hint = "全部商品" })
-    @await Component.InvokeAsync("StatCard", new { title = "銷售額（元）", value = Model.SalesAmount.ToString("N2", culture), icon = "chart", variant = "success", hint = "按售價 × 銷量估算" })
-    @await Component.InvokeAsync("StatCard", new { title = "商品分類", value = Model.TypeCount.ToString(culture), icon = "tag", variant = "info", hint = "啟用與停用合計" })
-    @await Component.InvokeAsync("StatCard", new { title = "熱銷商品", value = Model.HotCount.ToString(culture), icon = "order", variant = "warning", hint = "標記為熱銷" })
-</div>
-
-<div class="ta-card mt-4">
-    <div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
-        <h2 class="text-sm font-semibold">最近上架</h2>
-        <a asp-area="Admin" asp-controller="Goods" asp-action="Index" class="btn btn-ghost btn-xs">查看全部</a>
+<div class="grid grid-cols-12 gap-4 md:gap-6">
+    <div class="col-span-12 xl:col-span-7">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+            @await Component.InvokeAsync("StatCard", new { title = "商品總數", value = Model.GoodsCount.ToString(culture), icon = "goods", variant = "primary", hint = "全部商品" })
+            @await Component.InvokeAsync("StatCard", new { title = "銷售額（元）", value = Model.SalesAmount.ToString("N2", culture), icon = "chart", variant = "success", hint = "按售價 × 銷量估算" })
+            @await Component.InvokeAsync("StatCard", new { title = "商品分類", value = Model.TypeCount.ToString(culture), icon = "tag", variant = "info", hint = "啟用與停用合計" })
+            @await Component.InvokeAsync("StatCard", new { title = "熱銷商品", value = Model.HotCount.ToString(culture), icon = "order", variant = "warning", hint = "標記為熱銷" })
+        </div>
     </div>
-    <div class="overflow-x-auto">
-        <table class="table table-sm">
-            <thead class="bg-base-200/60">
-                <tr>
-                    <th>商品</th>
-                    <th>分類</th>
-                    <th class="text-right">價格</th>
-                    <th class="text-right">銷量</th>
-                    <th>上架時間</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.RecentGoods)
-                {
-                    <tr class="hover">
-                        <td class="font-medium">@item.GoodsName</td>
-                        <td>@item.TypeName</td>
-                        <td class="text-right">@item.Price.ToString("N2", culture)</td>
-                        <td class="text-right">@item.SalesVolume</td>
-                        <td class="text-base-content/60">@item.AddTime</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+
+    <div class="col-span-12 xl:col-span-5">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">月度銷售</h3>
+                <button type="button"
+                        class="inline-flex size-8 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-50 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        aria-label="更多">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="1" /><circle cx="19" cy="12" r="1" /><circle cx="5" cy="12" r="1" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-4 flex items-end justify-between">
+                <div>
+                    <h4 class="text-title-sm font-bold text-gray-800 dark:text-white/90">¥@Model.SalesAmount.ToString("N2", culture)</h4>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">按售價 × 銷量估算的年度累計</p>
+                </div>
+                <span class="inline-flex items-center gap-1 rounded-full bg-green-50 px-2.5 py-0.5 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-500">
+                    <svg class="size-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 12" fill="none">
+                        <path d="M5.56462 1.62393C5.70193 1.47093 5.91317 1.40977 6.10619 1.46221C6.29921 1.51465 6.44309 1.67356 6.47771 1.87114L7.88565 10.0359C7.92027 10.2335 7.83872 10.4343 7.67524 10.5564C7.51176 10.6784 7.29156 10.7014 7.10681 10.615L4.61376 9.4687C4.45787 9.3969 4.27179 9.40038 4.11889 9.47816L1.20851 10.9337C1.03333 11.0213 0.823429 10.9974 0.673486 10.8739C0.523543 10.7505 0.461589 10.5484 0.512987 10.3514L2.04945 4.45345C2.09336 4.28482 2.20946 4.14603 2.36674 4.07334L5.56462 1.62393Z" fill="currentColor" />
+                    </svg>
+                    年度
+                </span>
+            </div>
+            <div id="monthlySalesChart" class="-ml-3"></div>
+            <div class="mt-3 flex items-center justify-center gap-3 text-theme-xs text-gray-500 dark:text-gray-400">
+                <span class="inline-flex items-center gap-1.5">
+                    <span class="size-2 rounded-full bg-brand-500"></span>
+                    銷售額
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-7">
+        <div class="rounded-2xl border border-gray-200 bg-white px-5 pt-5 pb-5 sm:px-6 sm:pt-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">統計</h3>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">銷售與營收趨勢</p>
+                </div>
+                <div x-data="{ tab: 'overview' }" class="inline-flex items-center gap-0.5 rounded-lg bg-gray-100 p-0.5 dark:bg-gray-900">
+                    <button type="button" x-on:click="tab = 'overview'; window.updateStatisticsChart && window.updateStatisticsChart({ tab: 'overview' })"
+                            class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                            x-bind:class="tab === 'overview' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'">
+                        概覽
+                    </button>
+                    <button type="button" x-on:click="tab = 'sales'; window.updateStatisticsChart && window.updateStatisticsChart({ tab: 'sales' })"
+                            class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                            x-bind:class="tab === 'sales' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'">
+                        銷售
+                    </button>
+                    <button type="button" x-on:click="tab = 'revenue'; window.updateStatisticsChart && window.updateStatisticsChart({ tab: 'revenue' })"
+                            class="inline-flex items-center gap-2 rounded-md px-3 py-2 text-theme-sm font-medium transition-colors"
+                            x-bind:class="tab === 'revenue' ? 'bg-white text-gray-900 shadow-theme-xs dark:bg-gray-800 dark:text-white' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'">
+                        營收
+                    </button>
+                </div>
+            </div>
+            <div id="statisticsChart" class="-mb-6"></div>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-5">
+        <div class="rounded-2xl border border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="px-5 pt-5 sm:px-6 sm:pt-6">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">月度目標</h3>
+                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">目標完成度</p>
+            </div>
+            <div class="flex flex-col">
+                <div id="monthlyTargetChart"></div>
+                <div class="grid grid-cols-2 divide-x divide-gray-200 border-t border-gray-100 dark:divide-gray-800 dark:border-gray-800">
+                    <div class="flex items-center justify-center gap-2 px-5 py-4 sm:justify-start sm:px-7">
+                        <div class="flex items-center justify-center rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+                            <svg class="text-gray-500 dark:text-gray-400" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8 1.5v13M1.5 8h13" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-theme-xs text-gray-500 dark:text-gray-400">本月目標</p>
+                            <h4 class="mt-0.5 text-title-sm font-semibold text-gray-800 dark:text-white/90">¥@monthlyTarget.ToString("N0", culture)</h4>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-center gap-2 px-5 py-4 sm:justify-start sm:px-7">
+                        <div class="flex items-center justify-center rounded-full bg-gray-100 p-2 dark:bg-gray-800">
+                            <svg class="text-gray-500 dark:text-gray-400" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2 11.5L6 7l3 3 5-6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-theme-xs text-gray-500 dark:text-gray-400">本月銷售</p>
+                            <h4 class="mt-0.5 text-title-sm font-semibold text-gray-800 dark:text-white/90">¥@Model.SalesAmount.ToString("N0", culture)</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-100 px-5 py-4 sm:px-6 dark:border-gray-800">
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">
+                    本月已完成 <span class="font-medium text-gray-800 dark:text-white/90">75.55%</span> 的銷售目標，保持當前趨勢即可提前達成。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-7">
+        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-center justify-between px-5 pt-5 sm:px-6 sm:pt-6">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">最近上架</h3>
+                <a asp-area="Admin" asp-controller="Goods" asp-action="Index"
+                   class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+                    查看全部
+                    <svg class="stroke-current" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6.174 12.333L10.348 8.159a.22.22 0 000-.318L6.174 3.667" stroke="" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+            </div>
+            <div class="mt-4 max-w-full overflow-x-auto custom-scrollbar">
+                <table class="min-w-full">
+                    <thead class="border-y border-gray-100 dark:border-gray-800">
+                        <tr>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 sm:px-6 dark:text-gray-400">商品</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">分類</th>
+                            <th class="px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">價格</th>
+                            <th class="px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">銷量</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">上架時間</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        @foreach (var item in Model.RecentGoods)
+                        {
+                            <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center gap-3">
+                                        @if (!string.IsNullOrWhiteSpace(item.PicUrl))
+                                        {
+                                            <img src="@item.PicUrl" alt="@item.GoodsName" class="size-12 rounded-lg border border-gray-100 object-cover dark:border-gray-800" />
+                                        }
+                                        else
+                                        {
+                                            <span class="flex size-12 items-center justify-center rounded-lg bg-gray-100 text-theme-xs font-medium text-gray-500 dark:bg-white/5 dark:text-gray-400">
+                                                @(item.GoodsName.Length > 0 ? item.GoodsName.Substring(0, 1) : "商")
+                                            </span>
+                                        }
+                                        <span class="text-theme-sm font-medium text-gray-800 dark:text-white/90">@item.GoodsName</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.TypeName</td>
+                                <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-800 dark:text-white/90">¥@item.Price.ToString("N2", culture)</td>
+                                <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.SalesVolume.ToString("N0", culture)</td>
+                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.AddTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-5">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">快捷入口</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">直接進入常用維護頁面</p>
+            <div class="mt-4 flex flex-col gap-3">
+                <a asp-area="Admin" asp-controller="Goods" asp-action="Index"
+                   class="group flex items-center gap-3 rounded-xl border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-white/5">
+                    <span class="flex size-10 items-center justify-center rounded-lg bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
+                        <partial name="_Icon" model="@("goods")" />
+                    </span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-theme-sm font-medium text-gray-800 dark:text-white/90">商品管理</span>
+                        <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">分頁、排序、關鍵字查詢與編輯彈窗</span>
+                    </span>
+                    <svg class="size-4 text-gray-400 transition-transform group-hover:translate-x-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+                <a asp-area="Admin" asp-controller="GoodsType" asp-action="Index"
+                   class="group flex items-center gap-3 rounded-xl border border-gray-200 p-3 transition-colors hover:bg-gray-50 dark:border-gray-800 dark:hover:bg-white/5">
+                    <span class="flex size-10 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400">
+                        <partial name="_Icon" model="@("tag")" />
+                    </span>
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-theme-sm font-medium text-gray-800 dark:text-white/90">商品分類</span>
+                        <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">分類維護與啟停用</span>
+                    </span>
+                    <svg class="size-4 text-gray-400 transition-transform group-hover:translate-x-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="none">
+                        <path d="M6 3.5L10.5 8L6 12.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </a>
+                <div class="rounded-xl border border-dashed border-gray-300 p-3 dark:border-gray-700">
+                    <p class="text-theme-xs leading-5 text-gray-500 dark:text-gray-400">
+                        演示帳號：admin / 123456（全部菜單）；operator / 123456（儀表盤與商品管理）。
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

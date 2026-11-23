@@ -7,6 +7,7 @@ namespace TailAdmin.Templates.Rcl.TagHelpers;
 
 /// <summary>
 /// 表单字段 TagHelper 基类：统一标签、说明、必填星号与字段级错误容器。
+/// 样式以 TailAdmin 官方表单元素为准。
 /// </summary>
 public abstract class TaFieldTagHelperBase : TagHelper
 {
@@ -23,9 +24,6 @@ public abstract class TaFieldTagHelperBase : TagHelper
     /// <summary>是否必填。</summary>
     public bool Required { get; set; }
 
-    /// <summary>尺寸：sm（默认）/ md。</summary>
-    public string Size { get; set; } = "sm";
-
     /// <summary>视图上下文。</summary>
     [ViewContext]
     [HtmlAttributeNotBound]
@@ -37,8 +35,9 @@ public abstract class TaFieldTagHelperBase : TagHelper
     /// <summary>当前字段值。</summary>
     protected string CurrentValue => Convert.ToString(For?.Model, CultureInfo.InvariantCulture) ?? string.Empty;
 
-    /// <summary>是否为紧凑尺寸。</summary>
-    protected bool IsSmall => !string.Equals(Size, "md", StringComparison.OrdinalIgnoreCase);
+    /// <summary>官方输入控件公共类名。</summary>
+    protected const string ControlClass =
+        "w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
 
     /// <summary>构建控件。</summary>
     /// <returns>控件标签。</returns>
@@ -50,19 +49,16 @@ public abstract class TaFieldTagHelperBase : TagHelper
         ArgumentNullException.ThrowIfNull(For);
 
         var wrapper = new TagBuilder("div");
-        wrapper.AddCssClass("form-control w-full mb-3");
+        wrapper.AddCssClass("mb-5 w-full");
 
         var label = new TagBuilder("label");
-        label.AddCssClass("label py-1");
+        label.AddCssClass("mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400");
         label.Attributes["for"] = FieldName;
-        var labelText = new TagBuilder("span");
-        labelText.AddCssClass("label-text text-sm font-medium");
-        labelText.InnerHtml.Append(Label ?? For.Metadata.DisplayName ?? For.Name);
-        label.InnerHtml.AppendHtml(labelText);
+        label.InnerHtml.Append(Label ?? For.Metadata.DisplayName ?? For.Name);
         if (Required)
         {
             var star = new TagBuilder("span");
-            star.AddCssClass("ml-0.5 text-error");
+            star.AddCssClass("ml-0.5 text-red-500");
             star.InnerHtml.Append("*");
             label.InnerHtml.AppendHtml(star);
         }
@@ -85,26 +81,5 @@ public abstract class TaFieldTagHelperBase : TagHelper
 
         output.TagName = null;
         output.Content.SetHtmlContent(wrapper);
-    }
-
-    /// <summary>为控件追加尺寸类。</summary>
-    /// <param name="control">控件。</param>
-    /// <param name="mdClass">md 尺寸类，默认去掉 sm 后缀。</param>
-    protected void ApplySize(TagBuilder control, string? mdClass = null)
-    {
-        if (IsSmall)
-        {
-            control.AddCssClass(
-                control.TagName switch
-                {
-                    "select" => "select-sm",
-                    "textarea" => "textarea-sm",
-                    _ => "input-sm"
-                });
-        }
-        else if (!string.IsNullOrWhiteSpace(mdClass))
-        {
-            control.AddCssClass(mdClass);
-        }
     }
 }

@@ -26,7 +26,7 @@ public sealed class RenderingTests : IClassFixture<DemoWebFactory>, IClassFixtur
         var client = _anonymousFactory.CreateClient();
         var html = await client.GetStringAsync("/Admin/Account/Login");
 
-        Assert.Contains("ta-auth-card", html);
+        Assert.Contains("bg-brand-950", html);
         Assert.Contains("演示帳號", html);
     }
 
@@ -48,8 +48,12 @@ public sealed class RenderingTests : IClassFixture<DemoWebFactory>, IClassFixtur
         var client = _factory.CreateClient();
         var html = await client.GetStringAsync("/Admin/Home/Index");
 
-        Assert.Contains("ta-sidebar", html);
-        Assert.Equal(4, System.Text.RegularExpressions.Regex.Matches(html, "ta-card ta-card-pad").Count);
+        Assert.Contains("class=\"sidebar", html);
+        Assert.Contains("商品總數", html);
+        Assert.Contains("銷售額（元）", html);
+        Assert.Contains("商品分類", html);
+        Assert.Contains("熱銷商品", html);
+        Assert.Contains("monthlySalesChart", html);
         Assert.Contains("最近上架", html);
     }
 

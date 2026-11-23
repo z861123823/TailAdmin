@@ -1,29 +1,36 @@
-<div class="flex flex-wrap items-center justify-between gap-2 px-1 pt-3 text-sm">
-    <div class="text-base-content/60">
-        共 <span class="font-medium text-base-content" x-text="total"></span> 條
+<div class="flex flex-col items-center justify-between gap-3 border-t border-gray-100 px-5 py-4 sm:flex-row dark:border-gray-800">
+    <div class="text-theme-sm text-gray-500 dark:text-gray-400">
+        共 <span class="font-medium text-gray-800 dark:text-white/90" x-text="total"></span> 條
     </div>
 
-    <div class="flex flex-wrap items-center gap-2">
-        <div class="join">
-            <button type="button" class="btn btn-sm join-item" x-bind:disabled="page <= 1" x-on:click="setPage(page - 1)" aria-label="上一頁">
+    <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2">
+            <button type="button"
+                    class="inline-flex size-9 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                    x-bind:disabled="page <= 1" x-on:click="setPage(page - 1)" aria-label="上一頁">
                 <partial name="_Icon" model="@("chevron-left")" />
             </button>
             <template x-for="(p, idx) in pageList()" :key="idx">
                 <button type="button"
-                        class="btn btn-sm join-item"
-                        x-bind:class="{ 'btn-active': p === page }"
+                        class="inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-2 text-theme-sm font-medium shadow-theme-xs transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+                        x-bind:class="p === page
+                            ? 'border-brand-500 bg-brand-500 text-white hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:text-white'
+                            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5'"
                         x-bind:disabled="p === '...'"
                         x-on:click="setPage(p)"
                         x-text="p"></button>
             </template>
-            <button type="button" class="btn btn-sm join-item" x-bind:disabled="page >= pageCount()" x-on:click="setPage(page + 1)" aria-label="下一頁">
+            <button type="button"
+                    class="inline-flex size-9 items-center justify-center rounded-lg border border-gray-300 bg-white text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                    x-bind:disabled="page >= pageCount()" x-on:click="setPage(page + 1)" aria-label="下一頁">
                 <partial name="_Icon" model="@("chevron-right")" />
             </button>
         </div>
 
-        <label class="flex items-center gap-2 text-base-content/60">
+        <label class="flex items-center gap-2 text-theme-sm text-gray-500 dark:text-gray-400">
             每頁
-            <select class="select select-bordered select-sm w-20" x-model.number="limit" x-on:change="setLimit(limit)">
+            <select class="h-9 rounded-lg border border-gray-300 bg-white px-2 text-theme-sm text-gray-700 shadow-theme-xs outline-hidden focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                    x-model.number="limit" x-on:change="setLimit(limit)">
                 <option value="10">10</option>
                 <option value="20">20</option>
                 <option value="50">50</option>

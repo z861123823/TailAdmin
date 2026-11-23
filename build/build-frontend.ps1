@@ -19,7 +19,7 @@ $wwwroot = Join-Path $rclRoot 'wwwroot'
 $cssOut = Join-Path $wwwroot 'css/tailadmin.css'
 $jsOut = Join-Path $wwwroot 'js/tailadmin.js'
 
-Write-Host "[1/5] 检查前端工具链 ..." -ForegroundColor Cyan
+Write-Host "[1/6] 检查前端工具链 ..." -ForegroundColor Cyan
 Push-Location $frontend
 try {
     if (-not (Get-Command npm -ErrorAction SilentlyContinue)) {
@@ -33,11 +33,15 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'npm install 失败' }
     }
 
-    Write-Host "[2/5] 生成 CSS（Tailwind 3.4 + daisyUI 4，品牌主题来自 theme/brand.json）..." -ForegroundColor Cyan
+    Write-Host "[2/6] 生成品牌调色板（theme/brand.json → brand.generated.css）..." -ForegroundColor Cyan
+    npm run build:brand
+    if ($LASTEXITCODE -ne 0) { throw '品牌调色板生成失败' }
+
+    Write-Host "[3/6] 生成 CSS（Tailwind 4 + 官方 TailAdmin style.css 基线）..." -ForegroundColor Cyan
     npm run build:css
     if ($LASTEXITCODE -ne 0) { throw 'tailwind 构建失败' }
 
-    Write-Host "[3/5] 生成 JS（Alpine + TanStack Table Core + 组件）..." -ForegroundColor Cyan
+    Write-Host "[4/6] 生成 JS（Alpine + TanStack Table Core + 官方图表 + 组件）..." -ForegroundColor Cyan
     $esbuildExe = Join-Path $frontend 'tools/esbuild.exe'
     if (Test-Path $esbuildExe) {
         Write-Host '  使用 frontend/tools/esbuild.exe' -ForegroundColor DarkGray
@@ -49,25 +53,28 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'esbuild 构建失败' }
     }
 
-    Write-Host "[4/5] 拷贝第三方 vendor 资源（flatpickr）..." -ForegroundColor Cyan
+    Write-Host "[5/6] 拷贝第三方 vendor 资源（flatpickr、Outfit 字体）..." -ForegroundColor Cyan
     $vendorJs = Join-Path $wwwroot 'js/vendor'
     $vendorCss = Join-Path $wwwroot 'css/vendor'
-    New-Item -ItemType Directory -Force -Path $vendorJs, $vendorCss | Out-Null
+    $fontOut = Join-Path $wwwroot 'css/files'
+    New-Item -ItemType Directory -Force -Path $vendorJs, $vendorCss, $fontOut | Out-Null
     Copy-Item (Join-Path $frontend 'node_modules/flatpickr/dist/flatpickr.min.js') (Join-Path $vendorJs 'flatpickr.min.js') -Force
     Copy-Item (Join-Path $frontend 'node_modules/flatpickr/dist/l10n/zh.js') (Join-Path $vendorJs 'flatpickr.zh.js') -Force
     Copy-Item (Join-Path $frontend 'node_modules/flatpickr/dist/flatpickr.min.css') (Join-Path $vendorCss 'flatpickr.min.css') -Force
+    Copy-Item (Join-Path $frontend 'node_modules/@fontsource/outfit/files/*.woff2') $fontOut -Force
+    Copy-Item (Join-Path $frontend 'node_modules/@fontsource/outfit/files/*.woff') $fontOut -Force -ErrorAction SilentlyContinue
 
-    Write-Host "[5/5] 校验产物 ..." -ForegroundColor Cyan
+    Write-Host "[6/6] 校验产物 ..." -ForegroundColor Cyan
     foreach ($file in @($cssOut, $jsOut)) {
         if (-not (Test-Path $file)) { throw "产物缺失：$file" }
         if ((Get-Item $file).Length -lt 20KB) { throw "产物过小，疑似构建异常：$file" }
     }
     $cssText = Get-Content -Raw -Encoding utf8 $cssOut
-    foreach ($needle in @('.btn', 'data-theme', '--p')) {
+    foreach ($needle in @('--color-brand-500', 'menu-item', 'font-outfit', 'shadow-theme')) {
         if (-not $cssText.Contains($needle)) { throw "CSS 产物缺少关键标记：$needle" }
     }
     $jsText = Get-Content -Raw -Encoding utf8 $jsOut
-    foreach ($needle in @('taTable', 'Ta')) {
+    foreach ($needle in @('taTable', 'Ta', 'monthlySalesChart')) {
         if (-not $jsText.Contains($needle)) { throw "JS 产物缺少关键标记：$needle" }
     }
     $cssSize = [math]::Round((Get-Item $cssOut).Length / 1KB, 1)

@@ -1,6 +1,6 @@
 # TailAdmin 通用后台模板
 
-基于 **ASP.NET Core MVC（Razor Pages/views） + TailAdmin + Tailwind CSS + daisyUI + Alpine.js** 的后台通用模板，交付三件套：
+基于 **ASP.NET Core MVC（Razor Pages/views） + TailAdmin 官方 HTML 源码（MIT） + Tailwind CSS 4 + Alpine.js** 的后台通用模板，交付三件套：
 
 - `TailAdmin.Templates.Rcl`：RCL 组件库（布局、侧边栏、顶栏、表格、弹窗、上传等）
 - `TailAdmin.Templates`：`dotnet new` 模板包，一条命令生成可运行后台
@@ -46,7 +46,7 @@ dotnet test samples/TailAdmin.Demo.Tests
 ## 4. 用模板新建项目
 
 ```powershell
-dotnet new install ./artifacts/TailAdmin.Templates.1.0.0.nupkg
+dotnet new install ./artifacts/TailAdmin.Templates.1.1.0.nupkg
 dotnet new tailadmin-admin -n MyCompany.Admin -o ../MyCompany.Admin
 
 # 可选参数
@@ -68,7 +68,7 @@ dotnet new tailadmin-admin -n MyCompany.Admin --auth none --sample false --theme
 ├─ Directory.Build.props / Directory.Packages.props / nuget.config
 ├─ TailAdmin.Templates.sln
 ├─ build/                      # 前端构建、打包、本地发布脚本
-├─ frontend/                   # Tailwind + daisyUI + Alpine 源码（构建期使用）
+├─ frontend/                   # Tailwind 4 + Alpine 源码（构建期使用，运行时不依赖 Node）
 ├─ src/
 │  ├─ TailAdmin.Templates.Rcl/ # 组件库（Views / TagHelpers / 静态资源）
 │  └─ TailAdmin.Templates.Package/  # dotnet new 模板包
@@ -84,6 +84,8 @@ dotnet new tailadmin-admin -n MyCompany.Admin --auth none --sample false --theme
 - [组件使用说明](docs/组件使用说明.md)
 - [主题与换品牌指引](docs/主题与换品牌指引.md)
 - [后端接口约定](docs/后端接口约定.md)
+- [官方界面基线重构记录](docs/迁移记录/官方界面基线重构.md)
+- [第三方许可说明](docs/第三方许可说明.md)
 - [迁移记录](docs/迁移记录/v1.0.0.md)
 
 ## 7. 常见问题

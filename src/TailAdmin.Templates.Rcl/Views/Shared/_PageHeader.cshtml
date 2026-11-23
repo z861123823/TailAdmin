@@ -1,8 +1,8 @@
 @model PageHeaderModel
 <div class="min-w-0">
-    <h1 class="truncate text-xl font-semibold tracking-tight md:text-2xl">@Model.Title</h1>
+    <h2 class="text-xl font-semibold text-gray-800 dark:text-white/90">@Model.Title</h2>
     @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
     {
-        <p class="mt-1 text-sm text-base-content/60">@Model.Subtitle</p>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">@Model.Subtitle</p>
     }
 </div>

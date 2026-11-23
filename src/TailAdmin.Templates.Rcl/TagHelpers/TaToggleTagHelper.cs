@@ -4,13 +4,10 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace TailAdmin.Templates.Rcl.TagHelpers;
 
-/// <summary>daisyUI 开关：&lt;ta-toggle asp-for="IsHot" label="熱銷" /&gt;。</summary>
+/// <summary>TailAdmin 开关：&lt;ta-toggle asp-for="IsHot" label="熱銷" /&gt;。</summary>
 [HtmlTargetElement("ta-toggle")]
 public sealed class TaToggleTagHelper : TaFieldTagHelperBase
 {
-    /// <summary>开关颜色：primary / success / warning 等。</summary>
-    public string Variant { get; set; } = "primary";
-
     /// <inheritdoc />
     public override void Process(TagHelperContext context, TagHelperOutput output)
     {
@@ -41,33 +38,43 @@ public sealed class TaToggleTagHelper : TaFieldTagHelperBase
         }
 
         var wrapper = new TagBuilder("div");
-        wrapper.AddCssClass("flex flex-col gap-1");
+        wrapper.AddCssClass("mb-5 flex flex-col gap-1.5");
 
         var label = new TagBuilder("label");
-        label.AddCssClass("label cursor-pointer justify-start gap-3 py-1");
+        label.AddCssClass("inline-flex cursor-pointer items-center gap-3");
+
+        var track = new TagBuilder("span");
+        track.AddCssClass(
+            "relative inline-flex h-5 w-11 shrink-0 items-center rounded-full bg-gray-200 transition-colors has-[:checked]:bg-brand-500 dark:bg-gray-700");
+
+        var input = new TagBuilder("input");
+        input.TagRenderMode = TagRenderMode.SelfClosing;
+        input.AddCssClass("peer sr-only");
+        input.Attributes["type"] = "checkbox";
+        input.Attributes["name"] = FieldName;
+        input.Attributes["id"] = FieldName;
+        input.Attributes["value"] = "true";
+        if (checkedValue) input.Attributes["checked"] = "checked";
+        track.InnerHtml.AppendHtml(input);
+
+        var knob = new TagBuilder("span");
+        knob.AddCssClass(
+            "pointer-events-none inline-block size-4 translate-x-0.5 rounded-full bg-white shadow-theme-xs transition-transform peer-checked:translate-x-5.5");
+        track.InnerHtml.AppendHtml(knob);
+        label.InnerHtml.AppendHtml(track);
 
         var text = new TagBuilder("span");
-        text.AddCssClass("label-text text-sm font-medium");
+        text.AddCssClass("text-theme-sm font-medium text-gray-700 dark:text-gray-400");
         text.InnerHtml.Append(Label ?? For.Metadata.DisplayName ?? For.Name);
         label.InnerHtml.AppendHtml(text);
 
         if (Required)
         {
             var star = new TagBuilder("span");
-            star.AddCssClass("ml-0.5 text-error");
+            star.AddCssClass("ml-0.5 text-red-500");
             star.InnerHtml.Append("*");
             label.InnerHtml.AppendHtml(star);
         }
-
-        var input = new TagBuilder("input");
-        input.TagRenderMode = TagRenderMode.SelfClosing;
-        input.AddCssClass($"toggle toggle-{Variant} toggle-sm");
-        input.Attributes["type"] = "checkbox";
-        input.Attributes["name"] = FieldName;
-        input.Attributes["id"] = FieldName;
-        input.Attributes["value"] = "true";
-        if (checkedValue) input.Attributes["checked"] = "checked";
-        label.InnerHtml.AppendHtml(input);
 
         // 未勾选时补发 false，保证 bool 模型绑定正确
         var hidden = new TagBuilder("input");
