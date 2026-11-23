@@ -1,0 +1,91 @@
+@{
+    var rows = new[]
+    {
+        new { Name = "MacBook Pro 13”", Category = "筆記型電腦", Price = "$2,399.00", Stock = 12, Status = "已上架", Variant = "success" },
+        new { Name = "Apple Watch Ultra", Category = "穿戴裝置", Price = "$879.00", Stock = 5, Status = "待補貨", Variant = "warning" },
+        new { Name = "iPhone 15 Pro Max", Category = "手機", Price = "$1,869.00", Stock = 0, Status = "已售罄", Variant = "danger" },
+        new { Name = "iPad Pro 3rd Gen", Category = "平板", Price = "$1,699.00", Stock = 23, Status = "已上架", Variant = "success" }
+    };
+    var activeBadge = new TaBadgeModel { Text = "生效中", Variant = "success", Dot = true };
+}
+<div class="flex flex-col gap-4 md:gap-6">
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基礎表格</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">表頭、行分隔線、狀態徽章與行操作。</p>
+        </div>
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">商品</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">分類</th>
+                        <th class="px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">價格</th>
+                        <th class="px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">庫存</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                        <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var row in rows)
+                    {
+                        var badge = new TaBadgeModel { Text = row.Status, Variant = row.Variant, Dot = true };
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                            <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@row.Name</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@row.Category</td>
+                            <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@row.Price</td>
+                            <td class="px-5 py-4 text-right text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@row.Stock</td>
+                            <td class="px-5 py-4 whitespace-nowrap">
+                                <partial name="_TaBadge" model="badge" />
+                            </td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center justify-end gap-1">
+                                    <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300" aria-label="檢視">
+                                        <partial name="_Icon" model="@("eye")" />
+                                    </button>
+                                    <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300" aria-label="編輯">
+                                        <partial name="_Icon" model="@("pencil")" />
+                                    </button>
+                                    <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-500/10 dark:hover:text-red-400" aria-label="刪除">
+                                        <partial name="_Icon" model="@("trash")" />
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 md:px-6 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">精簡表格</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">適用於設置頁、詳情頁等低密度資料。</p>
+        </div>
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    <tr>
+                        <th class="w-40 px-5 py-4 text-start text-theme-sm font-medium text-gray-500 dark:text-gray-400">方案</th>
+                        <td class="px-5 py-4 text-theme-sm text-gray-800 dark:text-gray-300">專業版</td>
+                    </tr>
+                    <tr>
+                        <th class="px-5 py-4 text-start text-theme-sm font-medium text-gray-500 dark:text-gray-400">計費週期</th>
+                        <td class="px-5 py-4 text-theme-sm text-gray-800 dark:text-gray-300">每月</td>
+                    </tr>
+                    <tr>
+                        <th class="px-5 py-4 text-start text-theme-sm font-medium text-gray-500 dark:text-gray-400">下次扣款</th>
+                        <td class="px-5 py-4 text-theme-sm text-gray-800 dark:text-gray-300">2026-12-01</td>
+                    </tr>
+                    <tr>
+                        <th class="px-5 py-4 text-start text-theme-sm font-medium text-gray-500 dark:text-gray-400">狀態</th>
+                        <td class="px-5 py-4">
+                            <partial name="_TaBadge" model="activeBadge" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

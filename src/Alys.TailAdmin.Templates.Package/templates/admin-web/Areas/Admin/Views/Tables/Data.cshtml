@@ -1,0 +1,30 @@
+@{
+    var table = new TaTableModel
+    {
+        Id = "demoDataTable",
+        Url = Url.Action("List", "Goods", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 10,
+        EmptyText = "暫無數據",
+        StickyHeader = true,
+        ScrollHeight = "520px",
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "GoodsName", Label = "商品名稱", Fixed = "left", Width = 200 },
+            new() { Key = "TypeName", Label = "分類", Sortable = false },
+            new() { Key = "Price", Label = "價格", Type = "money", Align = "right" },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right" },
+            new() { Key = "IsHot", Label = "熱銷", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "AddTime", Label = "上架時間", Type = "date" }
+        }
+    };
+    var toolbar = new TableToolbarModel
+    {
+        TableId = "demoDataTable",
+        Description = "數據來自示例宿主商品接口，支持分頁、排序與關鍵字查詢",
+        Placeholder = "搜索商品名稱"
+    };
+}
+<partial name="_TableToolbar" model="toolbar" />
+
+<partial name="_TaTable" model="table" />

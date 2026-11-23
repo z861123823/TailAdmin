@@ -80,6 +80,43 @@ builder.Services.Configure<AdminUiOptions>(options =>
             new() { Key = "page-maintenance", Title = "系統維護", Area = "Admin", Controller = "Pages", Action = "Maintenance", Permission = "pages" }
         }
     });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "forms",
+        Title = "表單",
+        Icon = "pencil",
+        Permission = "forms",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "form-elements", Title = "表單元素", Area = "Admin", Controller = "Forms", Action = "Elements", Permission = "forms" },
+            new() { Key = "form-layout", Title = "表單佈局", Area = "Admin", Controller = "Forms", Action = "Layout", Permission = "forms" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "tables",
+        Title = "表格",
+        Icon = "order",
+        Permission = "tables",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "table-basic", Title = "基礎表格", Area = "Admin", Controller = "Tables", Action = "Basic", Permission = "tables" },
+            new() { Key = "table-data", Title = "數據表格", Area = "Admin", Controller = "Tables", Action = "Data", Permission = "tables" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "charts",
+        Title = "圖表",
+        Icon = "chart",
+        Permission = "charts",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "chart-line", Title = "折線圖", Area = "Admin", Controller = "Charts", Action = "Line", Permission = "charts" },
+            new() { Key = "chart-bar", Title = "長條圖", Area = "Admin", Controller = "Charts", Action = "Bar", Permission = "charts" },
+            new() { Key = "chart-pie", Title = "圓餅圖", Area = "Admin", Controller = "Charts", Action = "Pie", Permission = "charts" }
+        }
+    });
 });
 #endif
 

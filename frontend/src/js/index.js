@@ -17,6 +17,7 @@ import { createTaTable } from './components/table';
 import initMonthlySalesChart from './charts/monthly-sales';
 import initMonthlyTargetChart from './charts/monthly-target';
 import initStatisticsChart from './charts/statistics';
+import initDemoCharts from './charts/demo';
 
 const Ta = {
   config: window.TaConfig || {},
@@ -84,4 +85,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initMonthlySalesChart();
   initMonthlyTargetChart();
   initStatisticsChart();
+  initDemoCharts();
 });

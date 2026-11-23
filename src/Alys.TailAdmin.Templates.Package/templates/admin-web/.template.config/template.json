@@ -61,9 +61,15 @@
             "Areas/Admin/Controllers/GoodsController.cs",
             "Areas/Admin/Controllers/UiElementsController.cs",
             "Areas/Admin/Controllers/PagesController.cs",
+            "Areas/Admin/Controllers/FormsController.cs",
+            "Areas/Admin/Controllers/TablesController.cs",
+            "Areas/Admin/Controllers/ChartsController.cs",
             "Areas/Admin/Views/Goods/**",
             "Areas/Admin/Views/UiElements/**",
-            "Areas/Admin/Views/Pages/**"
+            "Areas/Admin/Views/Pages/**",
+            "Areas/Admin/Views/Forms/**",
+            "Areas/Admin/Views/Tables/**",
+            "Areas/Admin/Views/Charts/**"
           ]
         }
       ]
