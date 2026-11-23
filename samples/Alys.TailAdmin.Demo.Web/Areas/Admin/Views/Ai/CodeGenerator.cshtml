@@ -1,0 +1,83 @@
+@{
+    const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
+    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
+    const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
+}
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12">
+    <section class="@cardClass xl:col-span-5">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">生成設定</h3>
+        <div class="mt-4 space-y-4">
+            <div>
+                <label class="@labelClass" for="code-prompt">需求描述</label>
+                <textarea id="code-prompt" rows="5"
+                          class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                          placeholder="例如：用 SqlSugar 寫一個訂單保存服務，包含參數校驗與日誌。"></textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="@labelClass" for="code-language">語言</label>
+                    <select id="code-language" class="@inputClass">
+                        <option>C#</option>
+                        <option>TypeScript</option>
+                        <option>SQL</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="@labelClass" for="code-framework">框架</label>
+                    <select id="code-framework" class="@inputClass">
+                        <option>ASP.NET Core</option>
+                        <option>Razor Pages</option>
+                        <option>WinForm</option>
+                    </select>
+                </div>
+            </div>
+            <label class="flex items-center justify-between gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
+                包含單元測試
+                <input type="checkbox" class="peer sr-only" />
+                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+            </label>
+            <button type="button"
+                    class="flex w-full items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+                    onclick="Ta.toast.success('已生成代碼（演示）')">
+                <partial name="_Icon" model="@("components")" />
+                生成代碼
+            </button>
+        </div>
+    </section>
+
+    <section class="@cardClass xl:col-span-7">
+        <div class="flex items-center justify-between">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">代碼結果</h3>
+            <div class="flex gap-2">
+                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                        onclick="Ta.toast.success('已複製代碼（演示）')">複製</button>
+                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                        onclick="Ta.toast.info('已重新生成（演示）')">重新生成</button>
+            </div>
+        </div>
+        <pre class="mt-4 overflow-x-auto rounded-xl bg-gray-950 p-5 text-theme-xs leading-6 text-gray-200 custom-scrollbar"><code>public sealed class OrderService
+{
+    private readonly IOrderRepository _repository;
+    private readonly ILogger&lt;OrderService&gt; _logger;
+
+    public OrderService(IOrderRepository repository, ILogger&lt;OrderService&gt; logger)
+    {
+        _repository = repository;
+        _logger = logger;
+    }
+
+    public async Task SaveAsync(OrderInput input, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrWhiteSpace(input.Number))
+        {
+            throw new ArgumentException("訂單編號不能為空。", nameof(input));
+        }
+
+        _logger.LogInformation("保存訂單 {Number}", input.Number);
+        var order = new Order { Number = input.Number, Total = input.Total };
+        await _repository.AddAsync(order, cancellationToken);
+    }
+}</code></pre>
+        <p class="mt-3 text-theme-xs text-gray-500 dark:text-gray-400">C# · ASP.NET Core · 使用 SqlSugar 倉儲 · 用時 2.4s</p>
+    </section>
+</div>

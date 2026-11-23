@@ -1,0 +1,75 @@
+@{
+    var months = new[] { "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月" };
+    var values = new[] { 42, 55, 38, 64, 58, 72, 66, 84, 76, 92, 88, 100 };
+    var models = new[]
+    {
+        new { Name = "GPT-4o", Requests = "8,420", Tokens = "6.2M", Cost = "$48.20", Share = 62 },
+        new { Name = "Claude 3.5 Sonnet", Requests = "5,180", Tokens = "3.8M", Cost = "$24.60", Share = 28 },
+        new { Name = "Gemini 1.5 Pro", Requests = "3,120", Tokens = "1.9M", Cost = "$10.40", Share = 8 },
+        new { Name = "GPT-4o mini", Requests = "1,520", Tokens = "0.5M", Cost = "$3.20", Share = 2 }
+    };
+}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4 md:gap-6">
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">Token 用量</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">12.4M</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 8.6% 較上月</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">費用</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">$86.40</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↑ 5.1% 較上月</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">請求數</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">18,240</p>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">成功率 99.2%</p>
+    </div>
+    <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <p class="text-theme-sm text-gray-500 dark:text-gray-400">平均延遲</p>
+        <p class="mt-2 text-2xl font-semibold text-gray-800 dark:text-white/90">1.6s</p>
+        <p class="mt-1 text-theme-xs text-green-600 dark:text-green-400">↓ 0.2s 較上月</p>
+    </div>
+</div>
+
+<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-12">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-7 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">月度 Token 用量</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">近 12 個月（百萬 tokens）</p>
+        <div class="mt-6 flex h-52 items-end gap-2 md:gap-3">
+            @for (var index = 0; index < months.Length; index++)
+            {
+                <div class="flex flex-1 flex-col items-center gap-2">
+                    <div class="flex w-full flex-1 items-end">
+                        <div class="w-full rounded-t-md bg-brand-500/80 transition-all hover:bg-brand-500" style="height:@(values[index])%"></div>
+                    </div>
+                    <span class="text-[10px] text-gray-400 dark:text-gray-500">@months[index]</span>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="border-b border-gray-100 px-5 py-4 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">模型分佈</h3>
+        </div>
+        <div class="divide-y divide-gray-100 dark:divide-gray-800">
+            @foreach (var item in models)
+            {
+                <div class="px-5 py-4">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="text-theme-sm font-medium text-gray-800 dark:text-white/90">@item.Name</span>
+                        <span class="text-theme-xs text-gray-500 dark:text-gray-400">@(item.Share)%</span>
+                    </div>
+                    <div class="mt-2 h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                        <div class="h-2 rounded-full bg-brand-500" style="width:@(item.Share)%"></div>
+                    </div>
+                    <div class="mt-2 flex justify-between text-theme-xs text-gray-500 dark:text-gray-400">
+                        <span>@item.Requests 次 · @item.Tokens</span>
+                        <span>@item.Cost</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+</div>

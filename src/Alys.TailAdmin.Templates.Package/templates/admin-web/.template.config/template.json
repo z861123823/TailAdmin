@@ -74,6 +74,8 @@
             "Areas/Admin/Controllers/ChatController.cs",
             "Areas/Admin/Controllers/TasksController.cs",
             "Areas/Admin/Controllers/LayoutsController.cs",
+            "Areas/Admin/Controllers/AiController.cs",
+            "Areas/Admin/Controllers/AiSettingsController.cs",
             "Areas/Admin/Views/Goods/**",
             "Areas/Admin/Views/UiElements/**",
             "Areas/Admin/Views/Pages/**",
@@ -89,7 +91,9 @@
             "Areas/Admin/Views/Email/**",
             "Areas/Admin/Views/Chat/**",
             "Areas/Admin/Views/Tasks/**",
-            "Areas/Admin/Views/Layouts/**"
+            "Areas/Admin/Views/Layouts/**",
+            "Areas/Admin/Views/Ai/**",
+            "Areas/Admin/Views/AiSettings/**"
           ]
         }
       ]

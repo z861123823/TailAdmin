@@ -110,6 +110,36 @@ builder.Services.Configure<AdminUiOptions>(options =>
     });
     options.Menu.Items.Add(new AdminMenuItem
     {
+        Key = "ai",
+        Title = "AI",
+        Icon = "components",
+        Permission = "ai",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "ai-chat", Title = "AI 助手", Area = "Admin", Controller = "Ai", Action = "Chat", Permission = "ai" },
+            new() { Key = "ai-text", Title = "文本生成", Area = "Admin", Controller = "Ai", Action = "TextGenerator", Permission = "ai" },
+            new() { Key = "ai-image", Title = "圖片生成", Area = "Admin", Controller = "Ai", Action = "ImageGenerator", Permission = "ai" },
+            new() { Key = "ai-code", Title = "代碼生成", Area = "Admin", Controller = "Ai", Action = "CodeGenerator", Permission = "ai" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "ai-settings",
+        Title = "AI 設定",
+        Icon = "settings",
+        Permission = "ai-settings",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "ai-models", Title = "模型設定", Area = "Admin", Controller = "AiSettings", Action = "Models", Permission = "ai-settings" },
+            new() { Key = "ai-api-keys", Title = "API 金鑰", Area = "Admin", Controller = "AiSettings", Action = "ApiKeys", Permission = "ai-settings" },
+            new() { Key = "ai-usage", Title = "用量統計", Area = "Admin", Controller = "AiSettings", Action = "Usage", Permission = "ai-settings" },
+            new() { Key = "ai-prompts", Title = "提示詞庫", Area = "Admin", Controller = "AiSettings", Action = "Prompts", Permission = "ai-settings" },
+            new() { Key = "ai-safety", Title = "安全與限制", Area = "Admin", Controller = "AiSettings", Action = "Safety", Permission = "ai-settings" },
+            new() { Key = "ai-history", Title = "對話記錄", Area = "Admin", Controller = "AiSettings", Action = "History", Permission = "ai-settings" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
         Key = "forms",
         Title = "表單",
         Icon = "pencil",

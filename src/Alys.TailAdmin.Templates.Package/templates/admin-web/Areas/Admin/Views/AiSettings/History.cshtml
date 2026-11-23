@@ -1,0 +1,69 @@
+@{
+    var history = new[]
+    {
+        new { Title = "上月銷售表現分析", Model = "GPT-4o", Messages = 8, Tokens = "2,140", Time = "今天 10:32", Active = true },
+        new { Title = "夏季新品文案生成", Model = "Claude 3.5 Sonnet", Messages = 12, Tokens = "3,860", Time = "今天 09:05", Active = true },
+        new { Title = "訂單服務代碼重構", Model = "GPT-4o", Messages = 6, Tokens = "1,720", Time = "昨天 16:48", Active = true },
+        new { Title = "客服話術優化", Model = "GPT-4o mini", Messages = 15, Tokens = "4,120", Time = "昨天 14:20", Active = true },
+        new { Title = "競品定價對比", Model = "Gemini 1.5 Pro", Messages = 9, Tokens = "2,680", Time = "11-21 11:12", Active = true },
+        new { Title = "週報自動總結", Model = "GPT-4o", Messages = 4, Tokens = "980", Time = "11-20 18:30", Active = true },
+        new { Title = "圖片素材描述", Model = "GPT-4o mini", Messages = 7, Tokens = "1,460", Time = "11-19 15:02", Active = false },
+        new { Title = "舊版幫助文檔翻譯", Model = "Gemini 1.5 Pro", Messages = 22, Tokens = "6,940", Time = "11-18 09:40", Active = false }
+    };
+}
+<div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">對話記錄</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">保留最近 30 天的會話，可匯出或刪除。</p>
+    </div>
+    <button type="button" class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+            onclick="Ta.toast.info('匯出記錄（演示）')">
+        <partial name="_Icon" model="@("upload")" />
+        匯出
+    </button>
+</div>
+
+<section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+    <div class="max-w-full overflow-x-auto custom-scrollbar">
+        <table class="min-w-full">
+            <thead class="border-b border-gray-100 dark:border-gray-800">
+                <tr>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">會話</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">模型</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">訊息數</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">Token</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">時間</th>
+                    <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                @foreach (var item in history)
+                {
+                    var badge = item.Active
+                        ? new TaBadgeModel { Text = "進行中", Variant = "success", Dot = true }
+                        : new TaBadgeModel { Text = "已結束", Variant = "light", Dot = true };
+                    <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                        <td class="px-5 py-4">
+                            <div class="flex items-center gap-2">
+                                <span class="text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@item.Title</span>
+                                <partial name="_TaBadge" model="badge" />
+                            </div>
+                        </td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Model</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Messages</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Tokens</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.Time</td>
+                        <td class="px-5 py-4">
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                                        onclick="Ta.toast.info('查看會話（演示）')">查看</button>
+                                <button type="button" class="rounded-lg border border-red-200 px-3 py-1.5 text-theme-xs font-medium text-red-600 hover:bg-red-50 dark:border-red-500/30 dark:text-red-400 dark:hover:bg-red-500/10"
+                                        onclick="Ta.confirm({ title: '刪除會話', text: '刪除後無法恢復，確定繼續？', confirmText: '刪除', danger: true }).then(function(ok){ if (ok) Ta.toast.success('已刪除（演示）'); })">刪除</button>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

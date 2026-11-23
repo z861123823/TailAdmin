@@ -1,0 +1,63 @@
+@{
+    var keys = new[]
+    {
+        new { Name = "生產環境", Key = "sk-live-••••••••3f9a", Created = "2026-06-12", LastUsed = "2 分鐘前", Active = true },
+        new { Name = "測試環境", Key = "sk-test-••••••••7b21", Created = "2026-08-03", LastUsed = "昨天", Active = true },
+        new { Name = "數據分析", Key = "sk-live-••••••••c4d8", Created = "2026-09-18", LastUsed = "3 天前", Active = true },
+        new { Name = "臨時腳本", Key = "sk-test-••••••••0e6f", Created = "2026-05-01", LastUsed = "2026-10-30", Active = false }
+    };
+}
+<div class="flex flex-wrap items-center justify-between gap-3">
+    <div>
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">API 金鑰</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">金鑰僅在建立時完整顯示一次，請妥善保管。</p>
+    </div>
+    <button type="button" class="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs hover:bg-brand-600"
+            onclick="Ta.toast.success('已建立新金鑰（演示）')">
+        <partial name="_Icon" model="@("plus")" />
+        建立金鑰
+    </button>
+</div>
+
+<section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+    <div class="max-w-full overflow-x-auto custom-scrollbar">
+        <table class="min-w-full">
+            <thead class="border-b border-gray-100 dark:border-gray-800">
+                <tr>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">名稱</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">金鑰</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">建立時間</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">最近使用</th>
+                    <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                    <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                @foreach (var key in keys)
+                {
+                    var badge = key.Active
+                        ? new TaBadgeModel { Text = "啟用中", Variant = "success", Dot = true }
+                        : new TaBadgeModel { Text = "已撤銷", Variant = "light", Dot = true };
+                    <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                        <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@key.Name</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap font-mono text-gray-600 dark:text-gray-400">@key.Key</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@key.Created</td>
+                        <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@key.LastUsed</td>
+                        <td class="px-5 py-4"><partial name="_TaBadge" model="badge" /></td>
+                        <td class="px-5 py-4">
+                            <div class="flex justify-end gap-2">
+                                <button type="button" class="rounded-lg border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                                        onclick="Ta.toast.success('已複製（演示）')">複製</button>
+                                @if (key.Active)
+                                {
+                                    <button type="button" class="rounded-lg border border-red-200 px-3 py-1.5 text-theme-xs font-medium text-red-600 hover:bg-red-50 dark:border-red-500/30 dark:text-red-400 dark:hover:bg-red-500/10"
+                                            onclick="Ta.confirm({ title: '撤銷金鑰', text: '撤銷後使用該金鑰的服務將立即失效。', confirmText: '撤銷', danger: true }).then(function(ok){ if (ok) Ta.toast.success('已撤銷（演示）'); })">撤銷</button>
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
