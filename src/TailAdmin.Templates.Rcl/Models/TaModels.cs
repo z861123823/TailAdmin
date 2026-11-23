@@ -47,11 +47,45 @@ public sealed class TaActionModel
     /// <summary>事件名，对应 onAction 回调表中的键。</summary>
     public string Event { get; set; } = string.Empty;
 
-    /// <summary>样式：primary / error / ghost / outline。</summary>
+    /// <summary>样式：primary / error / ghost / outline（图标模式下用于悬停色）。</summary>
     public string? Variant { get; set; }
+
+    /// <summary>图标名（对应 _Icon 支持的名字）；留空时按事件名与文案自动推断。</summary>
+    public string? Icon { get; set; }
+
+    /// <summary>附加到按钮上的自定义 CSS 类，便于按业务深度定制。</summary>
+    public string? CssClass { get; set; }
 
     /// <summary>是否显示。</summary>
     public bool Visible { get; set; } = true;
+
+    /// <summary>解析最终使用的图标名。</summary>
+    public string ResolveIcon()
+    {
+        if (!string.IsNullOrWhiteSpace(Icon))
+        {
+            return Icon;
+        }
+
+        var text = $"{Event} {Label}".ToLowerInvariant();
+        if (text.Contains("delete") || text.Contains("remove") || text.Contains("刪除") || text.Contains("删除"))
+        {
+            return "trash";
+        }
+
+        if (text.Contains("view") || text.Contains("detail") || text.Contains("show")
+            || text.Contains("查看") || text.Contains("詳情") || text.Contains("详情"))
+        {
+            return "eye";
+        }
+
+        if (text.Contains("edit") || text.Contains("update") || text.Contains("編輯") || text.Contains("编辑"))
+        {
+            return "pencil";
+        }
+
+        return "empty";
+    }
 }
 
 /// <summary>
@@ -100,6 +134,11 @@ public sealed class TaTableModel
 
     /// <summary>行操作。</summary>
     public List<TaActionModel> Actions { get; set; } = new();
+
+    /// <summary>
+    /// 操作按钮风格：icon（默认，图标按钮）/ text（传统文字按钮）/ both（图标 + 文字）。
+    /// </summary>
+    public string ActionStyle { get; set; } = "icon";
 
     /// <summary>固定筛选参数。</summary>
     public Dictionary<string, object?>? Params { get; set; }
@@ -219,8 +258,11 @@ public sealed class TaTableModel
                 ["label"] = action.Label,
                 ["event"] = action.Event,
                 ["variant"] = action.Variant,
+                ["icon"] = action.ResolveIcon(),
+                ["cssClass"] = action.CssClass,
                 ["visible"] = action.Visible
-            }).ToList()
+            }).ToList(),
+            ["actionStyle"] = ActionStyle
         };
 
         var options = new JsonSerializerOptions
