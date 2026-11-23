@@ -46,7 +46,7 @@ dotnet test samples/TailAdmin.Demo.Tests
 ## 4. 用模板新建项目
 
 ```powershell
-dotnet new install ./artifacts/TailAdmin.Templates.1.1.3.nupkg
+dotnet new install ./artifacts/TailAdmin.Templates.1.1.4.nupkg
 dotnet new tailadmin-admin -n MyCompany.Admin -o ../MyCompany.Admin
 
 # 可选参数

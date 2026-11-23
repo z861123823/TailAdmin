@@ -31,6 +31,57 @@
     @apply relative flex max-h-[90vh] w-full flex-col overflow-y-auto rounded-2xl bg-white p-6 shadow-theme-xl sm:p-8 dark:bg-gray-900;
   }
 
+  /* 表格固定列：不透明底色需与表格卡片表面一致，避免横向滚动时内容透出；悬停时随行变色 */
+  .ta-sticky-cell {
+    background-color: #ffffff;
+    background-clip: padding-box;
+  }
+
+  .dark .ta-sticky-cell {
+    background-color: #17202e;
+  }
+
+  .group:hover .ta-sticky-cell {
+    background-color: #f9fafb;
+  }
+
+  .dark .group:hover .ta-sticky-cell {
+    background-color: #1a2231;
+  }
+
+  .ta-sticky-edge-left {
+    border-right: 1px solid #eaecf0;
+  }
+
+  .dark .ta-sticky-edge-left {
+    border-right-color: #1d2939;
+  }
+
+  .ta-sticky-edge-right {
+    border-left: 1px solid #eaecf0;
+  }
+
+  .dark .ta-sticky-edge-right {
+    border-left-color: #1d2939;
+  }
+
+  /* 滚动到边界时固定列投影提示 */
+  .can-scroll-left .ta-sticky-edge-left {
+    box-shadow: 6px 0 8px -6px rgba(16, 24, 40, 0.2);
+  }
+
+  .can-scroll-right .ta-sticky-edge-right {
+    box-shadow: -6px 0 8px -6px rgba(16, 24, 40, 0.2);
+  }
+
+  .dark .can-scroll-left .ta-sticky-edge-left {
+    box-shadow: 6px 0 8px -6px rgba(0, 0, 0, 0.5);
+  }
+
+  .dark .can-scroll-right .ta-sticky-edge-right {
+    box-shadow: -6px 0 8px -6px rgba(0, 0, 0, 0.5);
+  }
+
   .ta-toast-host {
     @apply pointer-events-none fixed top-5 right-5 z-[100] flex w-full max-w-sm flex-col gap-3;
   }

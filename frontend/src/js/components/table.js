@@ -20,6 +20,8 @@ export function createTaTable(Ta) {
       pageSizes: cfg.pageSizes || [10, 20, 50, 100],
       loading: false,
       error: '',
+      canScrollLeft: false,
+      canScrollRight: false,
       keyword: '',
       sortField: cfg.sortField || '',
       sortOrder: cfg.sortOrder || 'desc',
@@ -102,6 +104,7 @@ export function createTaTable(Ta) {
           this.total = 0;
         } finally {
           this.loading = false;
+          this.$nextTick(() => this.updateScroll());
         }
       },
 
@@ -202,7 +205,28 @@ export function createTaTable(Ta) {
       },
 
       cellClass(column) {
-        return [this.alignClass(column), column.cellClass || ''].filter(Boolean).join(' ');
+        const classes = [this.alignClass(column), column.cellClass || ''];
+        if (column.fixed === 'left' || column.fixed === 'right') {
+          classes.push('sticky z-10 ta-sticky-cell');
+        }
+        if (column.edgeLeft) classes.push('ta-sticky-edge-left');
+        if (column.edgeRight) classes.push('ta-sticky-edge-right');
+        return classes.filter(Boolean).join(' ');
+      },
+
+      cellStyle(column) {
+        const parts = [];
+        if (column.width) parts.push(`width:${column.width}px`);
+        if (column.fixed === 'left' && column.left != null) parts.push(`left:${column.left}px`);
+        if (column.fixed === 'right' && column.right != null) parts.push(`right:${column.right}px`);
+        return parts.join(';');
+      },
+
+      updateScroll() {
+        const el = this.$refs.scroller;
+        if (!el) return;
+        this.canScrollLeft = el.scrollLeft > 0;
+        this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
       },
 
       badgeClass(row, column) {
