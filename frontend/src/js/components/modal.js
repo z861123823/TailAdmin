@@ -83,15 +83,24 @@ export function installModal(Ta) {
       get boxClass() {
         return sizeClass[this.size] || sizeClass.md;
       },
+      // 取弹窗内容容器：优先 $refs，兜底按属性直接查询，避免 ref 丢失后无法再次打开
+      bodyEl() {
+        return this.$refs.body || this.$root.querySelector('[x-ref="body"]');
+      },
       init() {
         registry.set(this.id, this);
         if (cfg.title) this.title = cfg.title;
         // 注意：$el 是指令所在元素，按钮触发时是按钮本身；组件根节点必须用 $root
         this.$root.addEventListener('close', () => {
-          if (cfg.destroyOnClose !== false && this.$refs.body) {
-            if (Ta.alpine) Ta.alpine.destroyTree(this.$refs.body);
-            this.$refs.body.innerHTML = '';
+          if (cfg.destroyOnClose === false) return;
+          const body = this.bodyEl();
+          if (!body) return;
+          // 只销毁注入的子节点，绝不对 body 自身调用 destroyTree：
+          // 否则会触发 body 上 x-ref 的清理回调，把 dialog._x_refs.body 删除，导致再次打开时 $refs.body 丢失。
+          if (Ta.alpine) {
+            Array.from(body.children).forEach((child) => Ta.alpine.destroyTree(child));
           }
+          body.innerHTML = '';
         });
       },
       open(data) {
@@ -106,16 +115,18 @@ export function installModal(Ta) {
         try {
           const query = Ta.http.buildQuery(params || {});
           const html = await Ta.http.getText(url + query);
-          this.$refs.body.innerHTML = html;
+          const body = this.bodyEl();
+          if (!body) return;
+          body.innerHTML = html;
           // 动态注入的 Partial 含 Alpine 组件（上传、标签等），需手动初始化才会生效
-          if (Ta.alpine) Ta.alpine.initTree(this.$refs.body);
+          if (Ta.alpine) Ta.alpine.initTree(body);
           if (!this.$root.open) this.$root.showModal();
         } catch (e) {
           /* Ta.http.getText 已处理状态码提示 */
         }
       },
       async submit() {
-        const body = this.$refs.body;
+        const body = this.bodyEl();
         if (!body || this.submitting) return;
         const form = body.querySelector('form');
         if (!form) {
