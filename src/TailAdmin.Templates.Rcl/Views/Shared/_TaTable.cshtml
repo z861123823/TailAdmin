@@ -11,7 +11,7 @@
 <div class="w-full" x-cloak
      x-data="taTable(@Model.BuildConfigJson())"
      x-init="load()"
-     x-on:resize.window="updateScroll()">
+     x-on:resize.window="updateScroll(); applyFixedOffsets()">
     <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
         <div class="max-w-full overflow-x-auto custom-scrollbar"
              x-ref="scroller"
@@ -22,7 +22,7 @@
                     <tr>
                         @if (Model.Selectable)
                         {
-                            <th class="w-12 px-5 py-3 text-start @(selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
+                            <th data-fixed="left" data-col-key="__select" class="w-12 px-5 py-3 text-start @(selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
                                 <input type="checkbox"
                                        class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
                                        x-on:change="toggleAll($event)" aria-label="全選" />
@@ -56,7 +56,7 @@
                             {
                                 thClasses.Add("ta-sticky-edge-right");
                             }
-                            <th class="@string.Join(" ", thClasses)"
+                            <th data-col-key="@column.Key" data-fixed="@(item.FixedLeft ? "left" : item.FixedRight ? "right" : null)" class="@string.Join(" ", thClasses)"
                                 style="@(thStyles.Count > 0 ? string.Join(";", thStyles) : null)">
                                 @if (column.Sortable)
                                 {
@@ -75,7 +75,7 @@
                         }
                         @if (hasActions)
                         {
-                            <th class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? "sticky right-0 z-20 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
+                            <th data-fixed="right" data-col-key="__actions" class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? "sticky right-0 z-20 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
                         }
                     </tr>
                 </thead>

@@ -22,6 +22,7 @@ export function createTaTable(Ta) {
       error: '',
       canScrollLeft: false,
       canScrollRight: false,
+      offsets: {},
       keyword: '',
       sortField: cfg.sortField || '',
       sortOrder: cfg.sortOrder || 'desc',
@@ -77,6 +78,10 @@ export function createTaTable(Ta) {
       async load() {
         this.loading = true;
         this.error = '';
+        this.applyFixedOffsets();
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(() => this.applyFixedOffsets());
+        }
         try {
           const query = Object.assign({}, this.params, {
             page: this.page,
@@ -104,7 +109,10 @@ export function createTaTable(Ta) {
           this.total = 0;
         } finally {
           this.loading = false;
-          this.$nextTick(() => this.updateScroll());
+          this.$nextTick(() => {
+            this.updateScroll();
+            this.applyFixedOffsets();
+          });
         }
       },
 
@@ -216,10 +224,64 @@ export function createTaTable(Ta) {
 
       cellStyle(column) {
         const parts = [];
-        if (column.width) parts.push(`width:${column.width}px`);
-        if (column.fixed === 'left' && column.left != null) parts.push(`left:${column.left}px`);
-        if (column.fixed === 'right' && column.right != null) parts.push(`right:${column.right}px`);
+        const offset = this.offsets[column.key] || {};
+        const width = offset.width || column.width;
+        if (width) parts.push(`width:${width}px`);
+        if (column.fixed === 'left') {
+          const left = offset.left != null ? offset.left : column.left;
+          if (left != null) parts.push(`left:${left}px`);
+        }
+        if (column.fixed === 'right') {
+          const right = offset.right != null ? offset.right : column.right;
+          if (right != null) parts.push(`right:${right}px`);
+        }
         return parts.join(';');
+      },
+
+      /**
+       * 按表头实际渲染宽度重算固定列偏移。
+       * 静态 Width 会被浏览器自动布局压缩/撑开，必须用真实宽度累加，否则多列固定会出现缝隙或重叠。
+       */
+      applyFixedOffsets() {
+        const scroller = this.$refs.scroller;
+        const table = scroller ? scroller.querySelector('table') : null;
+        if (!table) return;
+        const heads = Array.prototype.slice.call(table.querySelectorAll('thead th'));
+        if (!heads.length) return;
+
+        const widths = heads.map((th) => th.getBoundingClientRect().width);
+        const offsets = {};
+
+        let left = 0;
+        heads.forEach((th, index) => {
+          const key = th.dataset.colKey;
+          if (!key || th.dataset.fixed !== 'left') return;
+          offsets[key] = Object.assign({}, offsets[key], { left, width: widths[index] });
+          left += widths[index];
+        });
+
+        let right = 0;
+        for (let index = heads.length - 1; index >= 0; index -= 1) {
+          const th = heads[index];
+          const key = th.dataset.colKey;
+          if (!key || th.dataset.fixed !== 'right') continue;
+          offsets[key] = Object.assign({}, offsets[key], { right, width: widths[index] });
+          right += widths[index];
+        }
+
+        this.offsets = offsets;
+
+        heads.forEach((th, index) => {
+          const key = th.dataset.colKey;
+          if (!key) return;
+          if (th.dataset.fixed === 'left' && offsets[key]) {
+            th.style.left = `${offsets[key].left}px`;
+            th.style.width = `${widths[index]}px`;
+          } else if (th.dataset.fixed === 'right' && offsets[key]) {
+            th.style.right = `${offsets[key].right}px`;
+            th.style.width = `${widths[index]}px`;
+          }
+        });
       },
 
       updateScroll() {

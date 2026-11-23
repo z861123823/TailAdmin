@@ -34,13 +34,13 @@
         Columns = new List<TaColumnModel>
         {
             new() { Key = "GoodsName", Label = "商品名稱", Sortable = true, Fixed = "left", Width = 180 },
-            new() { Key = "PicUrl", Label = "圖片", Type = "image", Width = 72, Sortable = false, Fixed = "left" },
+            new() { Key = "PicUrl", Label = "圖片", Type = "image", Width = 88, Sortable = false, Fixed = "left" },
             new() { Key = "Price", Label = "價格", Type = "money", Align = "right", Sortable = true },
             new() { Key = "TypeName", Label = "分類", Sortable = false },
             new() { Key = "TagsText", Label = "標籤", Sortable = false },
             new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = true },
             new() { Key = "IsHot", Label = "熱銷", Type = "bool", Align = "center", Sortable = false },
-            new() { Key = "AddTime", Label = "上架時間", Type = "date", Sortable = true }
+            new() { Key = "AddTime", Label = "上架時間", Type = "date", Sortable = true, Fixed = "right" }
         },
         Actions = new List<TaActionModel>
         {
