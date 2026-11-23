@@ -22,7 +22,7 @@
                     <tr>
                         @if (Model.Selectable)
                         {
-                            <th class="ta-col-border w-12 px-5 py-3 text-start @(selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
+                            <th class="w-12 px-5 py-3 text-start @(selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
                                 <input type="checkbox"
                                        class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
                                        x-on:change="toggleAll($event)" aria-label="全選" />
@@ -32,7 +32,7 @@
                         {
                             var column = item.Column;
                             var alignClass = column.Align == "right" ? "text-right" : column.Align == "center" ? "text-center" : "text-start";
-                            var thClasses = new List<string> { "ta-col-border px-5 py-3", alignClass, "text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400" };
+                            var thClasses = new List<string> { "px-5 py-3", alignClass, "text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400" };
                             var thStyles = new List<string>();
                             if (item.Width.HasValue)
                             {
@@ -75,7 +75,7 @@
                         }
                         @if (hasActions)
                         {
-                            <th class="ta-col-border-left w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? "sticky right-0 z-20 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
+                            <th class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? "sticky right-0 z-20 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
                         }
                     </tr>
                 </thead>
@@ -121,7 +121,7 @@
                         <tr class="group transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]" x-show="!loading">
                             @if (Model.Selectable)
                             {
-                                <td class="ta-col-border px-5 py-4 @(selectableFixed ? "sticky left-0 z-10 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
+                                <td class="px-5 py-4 @(selectableFixed ? "sticky left-0 z-10 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
                                     <input type="checkbox"
                                            class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
                                            x-bind:checked="isSelected(row)" x-on:change="toggleRow(row)" />
@@ -155,7 +155,7 @@
                             </template>
                             @if (hasActions)
                             {
-                                <td class="ta-col-border-left px-5 py-4 text-right whitespace-nowrap @(actionsFixed ? "sticky right-0 z-10 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">
+                                <td class="px-5 py-4 text-right whitespace-nowrap @(actionsFixed ? "sticky right-0 z-10 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">
                                     <div class="inline-flex items-center justify-end gap-2">
                                         <template x-for="action in actions.filter(a => a.visible !== false)" :key="action.event">
                                             <button type="button"
