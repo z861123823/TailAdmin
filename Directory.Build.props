@@ -6,7 +6,7 @@
     <VersionPrefix>1.4.0</VersionPrefix>
     <Deterministic>true</Deterministic>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
-    <Company>Internal</Company>
+    <Company>Alys</Company>
     <Product>Alys.TailAdmin 通用后台模板</Product>
   </PropertyGroup>
 </Project>

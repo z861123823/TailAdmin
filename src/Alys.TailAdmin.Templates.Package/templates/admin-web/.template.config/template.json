@@ -1,6 +1,6 @@
 {
   "$schema": "http://json.schemastore.org/template",
-  "author": "Internal",
+  "author": "Alys",
   "classifications": [ "Web", "Admin", "Alys.TailAdmin" ],
   "identity": "Alys.TailAdmin.Templates.AdminWeb",
   "name": "Alys.TailAdmin 通用后台模板",

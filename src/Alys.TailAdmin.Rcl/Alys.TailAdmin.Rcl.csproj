@@ -11,6 +11,11 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <Description>Alys.TailAdmin 通用后台模板：布局、Partial、前端组件与静态资源。</Description>
+    <Authors>Alys</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/z861123823/TailAdmin</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/z861123823/TailAdmin</PackageProjectUrl>
     <PackageTags>alys;tailadmin;admin;razor;tailwind;alpine</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <NoWarn>$(NoWarn);CS1591</NoWarn>

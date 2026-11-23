@@ -5,7 +5,12 @@
     <PackageId>Alys.TailAdmin.Templates</PackageId>
     <Title>Alys.TailAdmin 通用后台模板</Title>
     <Description>一条命令生成 Alys.TailAdmin 通用后台骨架（官方 HTML 界面基线 + Tailwind 4 + Alpine 组件）。</Description>
-    <Authors>Internal</Authors>
+    <Authors>Alys</Authors>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/z861123823/TailAdmin</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/z861123823/TailAdmin</PackageProjectUrl>
+    <PackageTags>alys;tailadmin;template;admin;razor</PackageTags>
     <TargetFramework>net8.0</TargetFramework>
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>

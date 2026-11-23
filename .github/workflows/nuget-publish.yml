@@ -1,0 +1,60 @@
+name: publish-nuget
+
+on:
+  push:
+    tags: [ 'v*' ]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Set version from tag
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}" -replace '^v', ''
+          "PACKAGE_VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend assets
+        working-directory: frontend
+        run: npm run build
+
+      - name: Pack NuGet packages
+        shell: pwsh
+        run: ./build/pack-nuget.ps1 -Version $env:PACKAGE_VERSION
+
+      - name: NuGet login (OIDC -> temp API key)
+        uses: NuGet/login@v1
+        id: login
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: Push RCL to nuget.org
+        run: dotnet nuget push "artifacts/Alys.TailAdmin.Rcl.${{ env.PACKAGE_VERSION }}.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
+
+      - name: Push templates to nuget.org
+        run: dotnet nuget push "artifacts/Alys.TailAdmin.Templates.${{ env.PACKAGE_VERSION }}.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ steps.login.outputs.NUGET_API_KEY }}
