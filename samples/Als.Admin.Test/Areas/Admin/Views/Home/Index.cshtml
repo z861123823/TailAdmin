@@ -1,0 +1,123 @@
+@model DashboardModel
+@{
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("zh-CN");
+}
+<div class="grid grid-cols-12 gap-4 md:gap-6">
+    <div class="col-span-12 xl:col-span-8">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+            @await Component.InvokeAsync("StatCard", new { title = "商品總數", value = Model.GoodsCount.ToString(culture), icon = "goods", variant = "primary", hint = "商城全部商品" })
+            @await Component.InvokeAsync("StatCard", new { title = "商品分類", value = Model.TypeCount.ToString(culture), icon = "tag", variant = "info", hint = "商城分類數量" })
+            @await Component.InvokeAsync("StatCard", new { title = "訂單總數", value = Model.OrderCount.ToString(culture), icon = "order", variant = "warning", hint = "商城全部訂單" })
+            @await Component.InvokeAsync("StatCard", new { title = "銷售明細", value = Model.SoldCount.ToString(culture), icon = "chart", variant = "success", hint = "訂單商品明細筆數" })
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-4">
+        <div class="h-full rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">已支付金額</h3>
+                <span class="rounded-full bg-brand-50 px-2.5 py-0.5 text-theme-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">@Model.Currency</span>
+            </div>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">數據來源：商城 /Admin/Order/GetPayTotal</p>
+            <dl class="mt-4 space-y-3 text-theme-sm">
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">今天</dt><dd class="font-semibold text-gray-800 dark:text-white/90">@Model.Today</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">昨天</dt><dd class="font-semibold text-gray-800 dark:text-white/90">@Model.Yesterday</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">本月</dt><dd class="font-semibold text-gray-800 dark:text-white/90">@Model.Month</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">上月</dt><dd class="font-semibold text-gray-800 dark:text-white/90">@Model.LastMonth</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">今年</dt><dd class="font-semibold text-gray-800 dark:text-white/90">@Model.Year</dd></div>
+            </dl>
+            <div class="mt-5 flex flex-wrap gap-2">
+                <a href="@Model.MallBaseUrl/Admin/Home/Index" target="_blank" rel="noopener"
+                   class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+                    打開商城原生後台
+                </a>
+                <a href="@Model.MallBaseUrl" target="_blank" rel="noopener"
+                   class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+                    打開商城前台
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Warnings.Count > 0)
+    {
+        <div class="col-span-12">
+            <div class="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-theme-sm text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400">
+                @foreach (var warning in Model.Warnings)
+                {
+                    <p>@warning</p>
+                }
+            </div>
+        </div>
+    }
+
+    <div class="col-span-12 xl:col-span-8">
+        <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+            <div class="flex items-center justify-between px-5 pt-5 sm:px-6 sm:pt-6">
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">最近上架</h3>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">取商城商品列表首頁數據</p>
+                </div>
+                <a asp-area="Admin" asp-controller="Goods" asp-action="Index"
+                   class="inline-flex items-center gap-1 rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+                    查看全部
+                </a>
+            </div>
+            <div class="mt-4 max-w-full overflow-x-auto custom-scrollbar">
+                <table class="min-w-full">
+                    <thead class="border-y border-gray-100 dark:border-gray-800">
+                        <tr>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 sm:px-6 dark:text-gray-400">商品</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">分類</th>
+                            <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">價格</th>
+                            <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">銷量</th>
+                            <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">添加時間</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        @if (Model.RecentGoods.Count == 0)
+                        {
+                            <tr>
+                                <td colspan="5" class="px-5 py-10 text-center text-theme-sm text-gray-500 dark:text-gray-400">暫無商品數據</td>
+                            </tr>
+                        }
+                        @foreach (var item in Model.RecentGoods)
+                        {
+                            <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]">
+                                <td class="px-5 py-4 sm:px-6">
+                                    <div class="flex items-center gap-3">
+                                        @if (!string.IsNullOrWhiteSpace(item.PicUrl))
+                                        {
+                                            <img src="@item.PicUrl" alt="@item.GoodsName" class="size-12 rounded-lg border border-gray-100 object-cover dark:border-gray-800" />
+                                        }
+                                        else
+                                        {
+                                            <span class="flex size-12 items-center justify-center rounded-lg bg-gray-100 text-theme-xs font-medium text-gray-500 dark:bg-white/5 dark:text-gray-400">商</span>
+                                        }
+                                        <span class="text-theme-sm font-medium text-gray-800 dark:text-white/90">@item.GoodsName</span>
+                                    </div>
+                                </td>
+                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.TypeName</td>
+                                <td class="px-5 py-4 text-end text-theme-sm whitespace-nowrap text-gray-800 dark:text-white/90">@item.PriceText</td>
+                                <td class="px-5 py-4 text-end text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.SalesVolume</td>
+                                <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@item.AddTime</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-span-12 xl:col-span-4">
+        <div class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">測試說明</h3>
+            <ul class="mt-3 space-y-2 text-theme-sm leading-6 text-gray-500 dark:text-gray-400">
+                <li>本後台是獨立測試項目，通過 HTTP 調用商城 <code class="text-brand-600 dark:text-brand-400">http://localhost:5200</code> 的既有後台接口。</li>
+                <li>不會修改商城源碼；商品、訂單、分類、文章、輪播圖等操作直接作用於商城真實數據。</li>
+                <li>商城當前 Development 環境已關閉後台登入校驗，因此無需登入即可測試。</li>
+                <li>文章數：@Model.ArticleCount 篇；圖片通過 /mall-assets 反向代理展示。</li>
+            </ul>
+        </div>
+    </div>
+</div>

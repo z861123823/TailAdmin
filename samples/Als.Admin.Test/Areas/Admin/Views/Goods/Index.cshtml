@@ -1,0 +1,132 @@
+@model GoodsListPageModel
+@{
+    var editUrl = Url.Action("EditForm", "Goods", new { area = "Admin" }) ?? string.Empty;
+    var deleteUrl = Url.Action("Delete", "Goods", new { area = "Admin" }) ?? string.Empty;
+
+    var onAction = string.Join("\n", new[]
+    {
+        "edit: function (row) { Ta.modal.load('goodsEdit', '" + editUrl + "', { id: row.Id }); },",
+        "delete: function (row) {",
+        "    Ta.confirm({ title: '刪除確認', text: '刪除後不可恢復，確定刪除「' + (row.GoodsName || row.Id) + '」？', confirmText: '刪除', danger: true }).then(function (ok) {",
+        "        if (!ok) return;",
+        "        Ta.http.postForm('" + deleteUrl + "', { id: row.Id }).then(function (res) {",
+        "            if (Ta.isOk(res)) { Ta.toast.success(Ta.value(res, 'Message')); var t = Ta.tables['goodsTable']; if (t) t.refresh(); }",
+        "            else { Ta.toast.error(Ta.value(res, 'Message') || '刪除失敗'); }",
+        "        });",
+        "    });",
+        "}"
+    });
+
+    var table = new TaTableModel
+    {
+        Id = "goodsTable",
+        Url = Url.Action("List", "Goods", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 15,
+        EmptyText = "暫無商品，點擊右上角「新增商品」開始",
+        ReloadOn = new List<string> { "goodsEdit" },
+        FixedActions = true,
+        StickyHeader = true,
+        ScrollHeight = "560px",
+        Params = new Dictionary<string, object?> { ["typeId"] = 0 },
+        OnAction = onAction,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "Id", Label = "ID", Width = 64, Sortable = false, Fixed = "left" },
+            new() { Key = "GoodsNumber", Label = "商品編號", Width = 120, Sortable = false, Fixed = "left" },
+            new() { Key = "GoodsName", Label = "商品名稱", Width = 240, Sortable = false },
+            new() { Key = "TypeName", Label = "分類", Width = 120, Sortable = false },
+            new() { Key = "PriceText", Label = "價格", Type = "money", Align = "right", Sortable = false },
+            new() { Key = "PicUrls", Label = "圖片", Type = "image", Width = 88, Sortable = false },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "Views", Label = "瀏覽", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "IsHot", Label = "熱銷", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "IsRecommend", Label = "推薦", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "IsSift", Label = "精選", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "AddTime", Label = "添加時間", Width = 120, Sortable = false, Fixed = "right" }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "編輯", Event = "edit", Variant = "primary" },
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        }
+    };
+}
+@section PageActions {
+    <button type="button"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+            x-on:click="Ta.modal.load('goodsEdit', '@editUrl', {})">
+        <partial name="_Icon" model="@("plus")" />
+        新增商品
+    </button>
+}
+
+<div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-theme-sm text-gray-500 dark:text-gray-400">數據直接來自商城 /Admin/Goods/List；可依分類篩選，編輯使用彈窗表單。</p>
+    <div class="flex flex-wrap items-center gap-3">
+        <label class="text-theme-sm text-gray-500 dark:text-gray-400" for="typeFilter">分類</label>
+        <select id="typeFilter"
+                class="h-10 rounded-lg border border-gray-300 bg-transparent px-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+            <option value="0">全部分類</option>
+            @foreach (var type in Model.Types)
+            {
+                <option value="@type.TypeId">@type.TypeName</option>
+            }
+        </select>
+        <button type="button" id="btnReload"
+                class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+            <partial name="_Icon" model="@("refresh")" />
+            重新整理
+        </button>
+    </div>
+</div>
+
+<partial name="_TaTable" model="table" />
+
+<dialog id="goodsEdit" class="ta-dialog"
+        x-data="taModal({ id: 'goodsEdit', title: '編輯商品', size: 'xl', destroyOnClose: true })">
+    <div class="ta-dialog-card" x-bind:class="boxClass">
+        <div class="flex items-start justify-between gap-4">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90" x-text="title"></h3>
+            <button type="button"
+                    class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                    data-dialog-close aria-label="關閉">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div x-ref="body" class="mt-4"></div>
+        <div class="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row">
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                    data-dialog-close>取消</button>
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    x-bind:disabled="submitting" x-on:click="submit()">保存</button>
+        </div>
+    </div>
+</dialog>
+
+<script>
+    (function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            var filter = document.getElementById('typeFilter');
+            var reload = document.getElementById('btnReload');
+
+            if (filter) {
+                filter.addEventListener('change', function () {
+                    var table = window.Ta && Ta.tables && Ta.tables['goodsTable'];
+                    if (table) table.applyFilters({ typeId: Number(filter.value) || 0 });
+                });
+            }
+
+            if (reload) {
+                reload.addEventListener('click', function () {
+                    var table = window.Ta && Ta.tables && Ta.tables['goodsTable'];
+                    if (table) table.reload();
+                });
+            }
+        });
+    })();
+</script>

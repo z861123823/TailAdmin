@@ -1,0 +1,135 @@
+@model GoodsFormModel
+@using System.Globalization
+@{
+    var priceText = Model.Price.ToString("0.##", CultureInfo.InvariantCulture);
+}
+<form method="post" action="@Url.Action("Save", "Goods", new { area = "Admin" })"
+      x-on:submit.prevent="Ta.modal.submit('goodsEdit')">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <input type="hidden" name="specData" value="@Model.SpecData" />
+    <input type="hidden" name="skuData" value="@Model.SkuData" />
+    <input type="hidden" name="skuTableList" value="@Model.SkuTableList" />
+    <input type="hidden" name="extraImagesJson" value="@Model.ExtraImagesJson" />
+
+    <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="GoodsNumber">商品編號</label>
+            <input id="GoodsNumber" name="goodsNumber" value="@Model.GoodsNumber" autocomplete="off"
+                   placeholder="留空由商城自動編號"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="GoodsName">商品名稱 <span class="text-red-500">*</span></label>
+            <input id="GoodsName" name="goodsName" value="@Model.GoodsName" required autocomplete="off"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Price">價格 <span class="text-red-500">*</span></label>
+            <input id="Price" name="price" type="number" step="0.01" min="0" value="@priceText" required
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="TypeId">商品分類</label>
+            <select id="TypeId" name="typeId"
+                    class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                <option value="0">請選擇分類</option>
+                @foreach (var type in Model.Types)
+                {
+                    if (type.TypeId == Model.TypeId)
+                    {
+                        <option value="@type.TypeId" selected>@type.TypeName</option>
+                    }
+                    else
+                    {
+                        <option value="@type.TypeId">@type.TypeName</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Format">規格</label>
+            <input id="Format" name="format" value="@Model.Format" autocomplete="off"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+
+        <div class="mb-5">
+            <span class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">商品圖片</span>
+            <div x-data="{ url: '@Model.PicUrl', name: '@Model.PicName', uploading: false }">
+                <input type="hidden" name="goodsImg" x-bind:value="name" />
+                <div class="flex items-center gap-3">
+                    <template x-if="url">
+                        <img x-bind:src="url" class="size-20 rounded-lg border border-gray-200 object-cover dark:border-gray-800" alt="商品圖片" />
+                    </template>
+                    <template x-if="!url">
+                        <span class="flex size-20 items-center justify-center rounded-lg bg-gray-100 text-theme-xs text-gray-400 dark:bg-white/5">暫無圖片</span>
+                    </template>
+                    <label class="inline-flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+                        <input type="file" class="hidden" accept="image/*"
+                               x-on:change="(async (event) => {
+                                   const file = event.target.files && event.target.files[0];
+                                   if (!file) return;
+                                   uploading = true;
+                                   const fd = new FormData();
+                                   fd.append('file', file);
+                                   try {
+                                       const resp = await fetch('@Model.UploadUrl', { method: 'POST', body: fd });
+                                       const res = await resp.json();
+                                       if (Ta.isOk(res)) {
+                                           name = Ta.value(res, 'PicName') || '';
+                                           url = Ta.value(res, 'PicUrl') || '';
+                                           Ta.toast.success('圖片上傳成功');
+                                       } else {
+                                           Ta.toast.error(Ta.value(res, 'Message') || '圖片上傳失敗');
+                                       }
+                                   } catch (e) {
+                                       Ta.toast.error('圖片上傳失敗');
+                                   } finally {
+                                       uploading = false;
+                                       event.target.value = '';
+                                   }
+                               })($event)" />
+                        <span x-text="uploading ? '上傳中…' : '選擇圖片'"></span>
+                    </label>
+                </div>
+                <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">上傳後自動回填商城圖片文件名，保存時由商城落庫。</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+        <div x-data="{ value: @(Model.IsHot ? "true" : "false") }">
+            <input type="hidden" name="isHot" x-bind:value="value ? 1 : 0" />
+            <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                <input type="checkbox" x-model="value" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                熱銷商品
+            </label>
+        </div>
+        <div x-data="{ value: @(Model.IsRecommend ? "true" : "false") }">
+            <input type="hidden" name="isRecommend" x-bind:value="value ? 1 : 0" />
+            <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                <input type="checkbox" x-model="value" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                推薦商品
+            </label>
+        </div>
+        <div x-data="{ value: @(Model.IsSift ? "true" : "false") }">
+            <input type="hidden" name="isSift" x-bind:value="value ? 1 : 0" />
+            <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                <input type="checkbox" x-model="value" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                精選商品
+            </label>
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="ProductDescription">商品介紹（HTML）</label>
+        <textarea id="ProductDescription" name="productDescription" rows="10"
+                  class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">@Model.ProductDescription</textarea>
+    </div>
+    <p class="text-theme-xs text-gray-500 dark:text-gray-400">
+        規格、SKU 與額外多圖沿用商城既有數據原樣回傳，測試後台不提供可視化編輯，避免覆蓋原有配置。
+    </p>
+</form>

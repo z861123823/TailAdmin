@@ -1,0 +1,37 @@
+@model ArticleFormModel
+<form method="post" action="@Url.Action("Save", "Article", new { area = "Admin" })"
+      x-on:submit.prevent="Ta.modal.submit('articleEdit')">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="grid grid-cols-1 gap-x-4 md:grid-cols-3">
+        <div class="mb-5 md:col-span-2">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Title">標題 <span class="text-red-500">*</span></label>
+            <input id="Title" name="title" value="@Model.Title" required maxlength="200" autocomplete="off"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+        <div class="mb-5">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="TypeId">文章分類</label>
+            <select id="TypeId" name="typeId"
+                    class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+                <option value="0">請選擇分類</option>
+                @foreach (var type in Model.Types)
+                {
+                    if (type.Id == Model.TypeId)
+                    {
+                        <option value="@type.Id" selected>@type.TypeName</option>
+                    }
+                    else
+                    {
+                        <option value="@type.Id">@type.TypeName</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Contents">正文（HTML）</label>
+        <textarea id="Contents" name="contents" rows="16"
+                  class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 font-mono text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">@Model.Contents</textarea>
+    </div>
+</form>

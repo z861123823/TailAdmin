@@ -1,0 +1,51 @@
+@model HomeSectionsPageModel
+@{
+    var selected = Model.CategoryIds.ToHashSet();
+}
+<form method="post" action="@Url.Action("Save", "HomeSections", new { area = "Admin" })"
+      x-data="{ ...taForm(), mode: '@Model.Mode' }"
+      x-on:submit.prevent="submit()">
+    <div class="space-y-5 rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div>
+            <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">展示方式</span>
+            <div class="flex flex-col gap-2 sm:flex-row sm:gap-6">
+                <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                    <input type="radio" name="mode" value="flags" x-model="mode"
+                           class="size-4 border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                    推薦 / 熱門 / 精選 三段
+                </label>
+                <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
+                    <input type="radio" name="mode" value="category" x-model="mode"
+                           class="size-4 border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                    按商品分類分段展示
+                </label>
+            </div>
+        </div>
+
+        <div x-show="mode === 'category'" x-cloak>
+            <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">
+                已選分類（勾選順序即首頁板塊順序，建議先在商城原生後台排好順序）
+            </span>
+            <div class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                @foreach (var type in Model.Types)
+                {
+                    <label class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 text-theme-sm text-gray-700 dark:border-gray-800 dark:text-gray-300">
+                        <input type="checkbox" name="categoryIds" value="@type.TypeId" checked="@selected.Contains(type.TypeId)"
+                               class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
+                        @type.TypeName
+                    </label>
+                }
+            </div>
+            @if (Model.Types.Count == 0)
+            {
+                <p class="text-theme-sm text-gray-500 dark:text-gray-400">商城尚未建立商品分類。</p>
+            }
+        </div>
+
+        <div class="flex items-center justify-end gap-3">
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    x-bind:disabled="submitting">保存首頁設置</button>
+        </div>
+    </div>
+</form>

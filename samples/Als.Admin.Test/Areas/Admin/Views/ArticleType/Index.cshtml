@@ -1,0 +1,75 @@
+@{
+    var editUrl = Url.Action("EditForm", "ArticleType", new { area = "Admin" }) ?? string.Empty;
+    var deleteUrl = Url.Action("Delete", "ArticleType", new { area = "Admin" }) ?? string.Empty;
+
+    var onAction = string.Join("\n", new[]
+    {
+        "edit: function (row) { Ta.modal.load('articleTypeEdit', '" + editUrl + "', { id: row.Id, typeName: row.TypeName }); },",
+        "delete: function (row) {",
+        "    Ta.confirm({ title: '刪除確認', text: '確定刪除分類「' + (row.TypeName || row.Id) + '」？', confirmText: '刪除', danger: true }).then(function (ok) {",
+        "        if (!ok) return;",
+        "        Ta.http.postForm('" + deleteUrl + "', { id: row.Id }).then(function (res) {",
+        "            if (Ta.isOk(res)) { Ta.toast.success(Ta.value(res, 'Message')); var t = Ta.tables['articleTypeTable']; if (t) t.refresh(); }",
+        "            else { Ta.toast.error(Ta.value(res, 'Message') || '刪除失敗'); }",
+        "        });",
+        "    });",
+        "}"
+    });
+
+    var table = new TaTableModel
+    {
+        Id = "articleTypeTable",
+        Url = Url.Action("List", "ArticleType", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 50,
+        EmptyText = "暫無文章分類",
+        ReloadOn = new List<string> { "articleTypeEdit" },
+        FixedActions = true,
+        OnAction = onAction,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "Id", Label = "ID", Width = 80, Sortable = false, Fixed = "left" },
+            new() { Key = "TypeName", Label = "分類名稱", Sortable = false }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "編輯", Event = "edit", Variant = "primary" },
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        }
+    };
+}
+@section PageActions {
+    <button type="button"
+            class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+            x-on:click="Ta.modal.load('articleTypeEdit', '@editUrl', { id: 0, typeName: '' })">
+        <partial name="_Icon" model="@("plus")" />
+        新增分類
+    </button>
+}
+
+<partial name="_TaTable" model="table" />
+
+<dialog id="articleTypeEdit" class="ta-dialog"
+        x-data="taModal({ id: 'articleTypeEdit', title: '編輯文章分類', size: 'md', destroyOnClose: true })">
+    <div class="ta-dialog-card" x-bind:class="boxClass">
+        <div class="flex items-start justify-between gap-4">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90" x-text="title"></h3>
+            <button type="button"
+                    class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                    data-dialog-close aria-label="關閉">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <div x-ref="body" class="mt-4"></div>
+        <div class="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row">
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
+                    data-dialog-close>取消</button>
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+                    x-bind:disabled="submitting" x-on:click="submit()">保存</button>
+        </div>
+    </div>
+</dialog>

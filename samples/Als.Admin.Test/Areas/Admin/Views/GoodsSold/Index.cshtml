@@ -1,0 +1,65 @@
+@{
+    var deleteUrl = Url.Action("Delete", "GoodsSold", new { area = "Admin" }) ?? string.Empty;
+    var onAction = string.Join("\n", new[]
+    {
+        "delete: function (row) {",
+        "    Ta.confirm({ title: '刪除確認', text: '確定刪除此銷售記錄？', confirmText: '刪除', danger: true }).then(function (ok) {",
+        "        if (!ok) return;",
+        "        Ta.http.postForm('" + deleteUrl + "', { id: row.Id }).then(function (res) {",
+        "            if (Ta.isOk(res)) { Ta.toast.success(Ta.value(res, 'Message')); var t = Ta.tables['soldTable']; if (t) t.refresh(); }",
+        "            else { Ta.toast.error(Ta.value(res, 'Message') || '刪除失敗'); }",
+        "        });",
+        "    });",
+        "}"
+    });
+
+    var table = new TaTableModel
+    {
+        Id = "soldTable",
+        Url = Url.Action("List", "GoodsSold", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 15,
+        EmptyText = "暫無銷售明細",
+        FixedActions = true,
+        StickyHeader = true,
+        ScrollHeight = "560px",
+        OnAction = onAction,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "Id", Label = "ID", Width = 64, Sortable = false, Fixed = "left" },
+            new() { Key = "CartOrders", Label = "訂單號", Width = 190, Sortable = false, Fixed = "left" },
+            new() { Key = "GoodsName", Label = "商品", Width = 240, Sortable = false },
+            new() { Key = "PicUrls", Label = "圖片", Type = "image", Width = 88, Sortable = false },
+            new() { Key = "Price", Label = "單價", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "BuyQty", Label = "數量", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "Total", Label = "小計", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "BuyName", Label = "購買者", Width = 110, Sortable = false },
+            new() { Key = "BuyTime", Label = "購買時間", Width = 170, Sortable = false }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        }
+    };
+}
+<div class="mb-4 flex items-center justify-between">
+    <p class="text-theme-sm text-gray-500 dark:text-gray-400">銷售明細由商城下單流程寫入，這裡可查看與清理異常記錄。</p>
+    <button type="button" id="btnReloadSold"
+            class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5">
+        <partial name="_Icon" model="@("refresh")" />
+        重新整理
+    </button>
+</div>
+
+<partial name="_TaTable" model="table" />
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var button = document.getElementById('btnReloadSold');
+        if (!button) return;
+        button.addEventListener('click', function () {
+            var t = window.Ta && Ta.tables && Ta.tables['soldTable'];
+            if (t) t.reload();
+        });
+    });
+</script>

@@ -1,0 +1,29 @@
+@model GoodsTypeFormModel
+<form method="post" action="@Url.Action("Save", "GoodsType", new { area = "Admin" })"
+      x-on:submit.prevent="Ta.modal.submit('typeEdit')">
+    <input type="hidden" name="typeId" value="@Model.TypeId" />
+
+    <div class="mb-5">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="TypeName">分類名稱 <span class="text-red-500">*</span></label>
+        <input id="TypeName" name="typeName" value="@Model.TypeName" required maxlength="50" autocomplete="off"
+               class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+    </div>
+
+    <div class="mb-2">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="ParentId">上級分類</label>
+        <select id="ParentId" name="parentId"
+                class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">
+            <option value="0" selected="@(Model.ParentId <= 0)">頂級分類</option>
+            @foreach (var type in Model.Types)
+            {
+                if (type.TypeId == Model.TypeId)
+                {
+                    continue;
+                }
+
+                <option value="@type.TypeId" selected="@(type.TypeId == Model.ParentId)">@type.TypeName</option>
+            }
+        </select>
+        <p class="mt-1 text-theme-xs text-gray-500 dark:text-gray-400">分類名稱不可重複；分類下仍有商品或子分類時商城會拒絕刪除。</p>
+    </div>
+</form>

@@ -1,0 +1,53 @@
+@model OrderFormModel
+<form method="post" action="@Url.Action("Save", "Order", new { area = "Admin" })"
+      x-on:submit.prevent="Ta.modal.submit('orderEdit')">
+    <input type="hidden" name="id" value="@Model.Id" />
+
+    <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+        <div class="mb-4">
+            <span class="mb-1 block text-theme-xs text-gray-500 dark:text-gray-400">訂單號</span>
+            <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">@Model.CartOrders</p>
+        </div>
+        <div class="mb-4">
+            <span class="mb-1 block text-theme-xs text-gray-500 dark:text-gray-400">下單時間</span>
+            <p class="text-theme-sm text-gray-800 dark:text-white/90">@Model.BuyTimes</p>
+        </div>
+        <div class="mb-4">
+            <span class="mb-1 block text-theme-xs text-gray-500 dark:text-gray-400">購買者</span>
+            <p class="text-theme-sm text-gray-800 dark:text-white/90">@Model.BuyerName</p>
+        </div>
+        <div class="mb-4">
+            <span class="mb-1 block text-theme-xs text-gray-500 dark:text-gray-400">付款狀態 / 金額</span>
+            <p class="text-theme-sm text-gray-800 dark:text-white/90">@Model.PayText / @Model.TotalText</p>
+        </div>
+        <div class="mb-4 md:col-span-2">
+            <span class="mb-1 block text-theme-xs text-gray-500 dark:text-gray-400">收貨地址</span>
+            <p class="text-theme-sm text-gray-800 dark:text-white/90">@Model.ReceiveAddress</p>
+        </div>
+    </div>
+
+    <div class="mb-4">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="ShipmentState">發貨狀態</label>
+        <input id="ShipmentState" name="shipmentState" value="@Model.ShipmentState" autocomplete="off"
+               class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+    </div>
+
+    <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+        <div class="mb-4">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Logistic">物流公司</label>
+            <input id="Logistic" name="logistic" value="@Model.Logistic" autocomplete="off"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+        <div class="mb-4">
+            <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="LogisticsId">貨運單號</label>
+            <input id="LogisticsId" name="logisticsId" value="@Model.LogisticsId" autocomplete="off"
+                   class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
+        </div>
+    </div>
+
+    <div class="mb-2">
+        <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="Remark">備註</label>
+        <textarea id="Remark" name="remark" rows="3"
+                  class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90">@Model.Remark</textarea>
+    </div>
+</form>
