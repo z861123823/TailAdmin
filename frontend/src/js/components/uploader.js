@@ -92,14 +92,15 @@ export function installUploader(Ta) {
         this.uploading = true;
         try {
           const res = await this.post(file, item);
-          if (Ta.isOk(res) && res.Data) {
-            item.url = res.Data.PicUrl || res.Data.PicName || '';
+          const data = Ta.value(res, 'Data');
+          if (Ta.isOk(res) && data) {
+            item.url = Ta.value(data, 'PicUrl') || Ta.value(data, 'PicName') || '';
             item.status = 'done';
             item.progress = 100;
-            Ta.toast.success(res.Message || '上傳成功');
+            Ta.toast.success(Ta.value(res, 'Message') || '上傳成功');
           } else {
             item.status = 'error';
-            this.error = (res && res.Message) || '上傳失敗';
+            this.error = Ta.value(res, 'Message') || '上傳失敗';
             Ta.toast.error(this.error);
           }
         } catch (e) {

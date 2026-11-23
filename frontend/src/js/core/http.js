@@ -56,7 +56,7 @@ export function installHttp(Ta) {
   };
 
   const handleFailure = (status, body, silent, traceId) => {
-    const message = (body && (body.Message || body.msg)) || '';
+    const message = Ta.value(body, 'Message') || (body && body.msg) || '';
     if (status === 401) {
       if (!silent) Ta.toast.error(message || '請重新登入');
       redirectToLogin();

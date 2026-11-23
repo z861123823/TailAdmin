@@ -10,11 +10,11 @@
         "        if (!ok) return;",
         "        Ta.http.postForm('" + deleteUrl + "', { Id: row.Id }).then(function (res) {",
         "            if (Ta.isOk(res)) {",
-        "                Ta.toast.success(res.Message);",
+        "                Ta.toast.success(Ta.value(res, 'Message'));",
         "                var table = Ta.tables && Ta.tables['goodsTable'];",
         "                if (table) table.refresh();",
         "            } else {",
-        "                Ta.toast.error(res.Message || '刪除失敗');",
+        "                Ta.toast.error(Ta.value(res, 'Message') || '刪除失敗');",
         "            }",
         "        });",
         "    });",
@@ -86,7 +86,7 @@
         <div class="mt-6 flex flex-col-reverse justify-end gap-3 sm:flex-row">
             <button type="button"
                     class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/5"
-                    x-on:click="close()">取消</button>
+                    data-dialog-close>取消</button>
             <button type="button"
                     class="inline-flex items-center justify-center rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
                     x-bind:disabled="submitting" x-on:click="submit()">保存</button>

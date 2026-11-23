@@ -37,7 +37,8 @@ const createModal = installModal(Ta);
 const createForm = installForm(Ta);
 installTheme(Ta);
 
-Ta.version = '1.1.1';
+Ta.version = '1.1.2';
+Ta.alpine = Alpine;
 window.Ta = Ta;
 
 const createSearch = installSearch(Ta);

@@ -3,7 +3,21 @@
  * 新页面禁止调用 escapeHtml / escapeAttr，统一由 Alpine 的 x-text 渲染，从根上避免 XSS。
  */
 export function installLegacy(Ta) {
-  Ta.isOk = (res) => !!res && (res.Success === true || res.Success === 'true');
+  /**
+   * 统一读取服务端字段：ASP.NET Core 默认 camelCase，旧接口可能是 PascalCase。
+   * 例：Ta.value(res, 'Success') 同时兼容 res.Success / res.success。
+   */
+  Ta.value = (obj, key) => {
+    if (!obj || typeof obj !== 'object') return undefined;
+    if (obj[key] !== undefined) return obj[key];
+    const camel = key.charAt(0).toLowerCase() + key.slice(1);
+    return obj[camel];
+  };
+
+  Ta.isOk = (res) => {
+    const value = Ta.value(res, 'Success');
+    return value === true || value === 'true' || value === 1 || value === '1';
+  };
 
   const escapeHtml = (value) => {
     if (value === null || value === undefined) return '';
@@ -21,7 +35,7 @@ export function installLegacy(Ta) {
 
   const notify = (res, onSuccess) => {
     const ok = Ta.isOk(res);
-    const message = (res && (res.Message || res.msg)) || (ok ? '操作成功' : '操作失敗');
+    const message = Ta.value(res, 'Message') || (res && res.msg) || (ok ? '操作成功' : '操作失敗');
     if (ok) {
       Ta.toast.success(message);
       if (typeof onSuccess === 'function') onSuccess(res);

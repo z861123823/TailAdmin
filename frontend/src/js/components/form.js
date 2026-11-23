@@ -53,7 +53,7 @@ export function installForm(Ta) {
         try {
           const res = await Ta.http.postForm(form.action, new FormData(form));
           if (Ta.isOk(res)) {
-            Ta.toast.success(res.Message || '保存成功');
+            Ta.toast.success(Ta.value(res, 'Message') || '保存成功');
             const url = form.dataset.successUrl;
             if (url) {
               window.location.href = url;
@@ -61,9 +61,12 @@ export function installForm(Ta) {
             }
             document.dispatchEvent(new CustomEvent('ta:form-saved', { detail: { form, result: res } }));
           } else {
-            Ta.toast.error(res && res.Message ? res.Message : '保存失敗');
-            if (res && res.Errors) applyErrors(form, res.Errors);
+            Ta.toast.error(Ta.value(res, 'Message') || '保存失敗');
+            const errors = Ta.value(res, 'Errors');
+            if (errors) applyErrors(form, errors);
           }
+        } catch (e) {
+          /* Ta.http 已统一弹出状态码/网络异常提示 */
         } finally {
           this.submitting = false;
         }

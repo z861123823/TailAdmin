@@ -86,16 +86,20 @@ export function installModal(Ta) {
       init() {
         registry.set(this.id, this);
         if (cfg.title) this.title = cfg.title;
-        this.$el.addEventListener('close', () => {
-          if (cfg.destroyOnClose !== false && this.$refs.body) this.$refs.body.innerHTML = '';
+        // 注意：$el 是指令所在元素，按钮触发时是按钮本身；组件根节点必须用 $root
+        this.$root.addEventListener('close', () => {
+          if (cfg.destroyOnClose !== false && this.$refs.body) {
+            if (Ta.alpine) Ta.alpine.destroyTree(this.$refs.body);
+            this.$refs.body.innerHTML = '';
+          }
         });
       },
       open(data) {
         this.current = data || null;
-        this.$el.showModal();
+        this.$root.showModal();
       },
       close() {
-        if (this.$el.open) this.$el.close();
+        if (this.$root.open) this.$root.close();
       },
       async load(url, params) {
         this.current = params || null;
@@ -103,14 +107,16 @@ export function installModal(Ta) {
           const query = Ta.http.buildQuery(params || {});
           const html = await Ta.http.getText(url + query);
           this.$refs.body.innerHTML = html;
-          if (!this.$el.open) this.$el.showModal();
+          // 动态注入的 Partial 含 Alpine 组件（上传、标签等），需手动初始化才会生效
+          if (Ta.alpine) Ta.alpine.initTree(this.$refs.body);
+          if (!this.$root.open) this.$root.showModal();
         } catch (e) {
           /* Ta.http.getText 已处理状态码提示 */
         }
       },
       async submit() {
         const body = this.$refs.body;
-        if (!body) return;
+        if (!body || this.submitting) return;
         const form = body.querySelector('form');
         if (!form) {
           this.close();
@@ -120,15 +126,19 @@ export function installModal(Ta) {
         try {
           const res = await Ta.http.postForm(form.action, new FormData(form));
           if (Ta.isOk(res)) {
-            Ta.toast.success(res.Message || '保存成功');
+            Ta.toast.success(Ta.value(res, 'Message') || '保存成功');
             this.close();
             document.dispatchEvent(
               new CustomEvent('ta:modal-submitted', { detail: { modalId: this.id, result: res } })
             );
           } else {
-            Ta.toast.error(res && res.Message ? res.Message : '保存失敗');
-            if (res && res.Errors && Ta.form) Ta.form.applyErrors(form, res.Errors);
+            // 失败分支保留弹窗，仅提示错误并回填字段级错误
+            Ta.toast.error(Ta.value(res, 'Message') || '保存失敗');
+            const errors = Ta.value(res, 'Errors');
+            if (errors && Ta.form) Ta.form.applyErrors(form, errors);
           }
+        } catch (e) {
+          /* Ta.http 已统一弹出状态码/网络异常提示，此处阻止未捕获异常中断交互 */
         } finally {
           this.submitting = false;
         }

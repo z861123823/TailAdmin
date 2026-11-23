@@ -22,10 +22,10 @@ export function installMultiSelect(Ta) {
         if (this.value && this.value.length) {
           try {
             const res = await Ta.http.get(this.url, { ids: this.value.join(',') }, { silent: true });
-            const list = (res && res.Data) || [];
+            const list = Ta.value(res, 'Data') || [];
             this.selected = this.value.map((val) => {
-              const hit = list.find((opt) => String(opt.Value) === String(val));
-              return { value: val, label: hit ? hit.Label : String(val) };
+              const hit = list.find((opt) => String(Ta.value(opt, 'Value')) === String(val));
+              return { value: val, label: hit ? Ta.value(hit, 'Label') : String(val) };
             });
           } catch (e) {
             this.selected = this.value.map((val) => ({ value: val, label: String(val) }));
@@ -42,7 +42,12 @@ export function installMultiSelect(Ta) {
         this.loading = true;
         try {
           const res = await Ta.http.get(this.url, { keyword, page: 1, limit: 20 }, { silent: true });
-          this.options = (res && res.Data) || [];
+          // 统一归一化为小写字段，模板与选中逻辑只认 value / label / disabled
+          this.options = (Ta.value(res, 'Data') || []).map((opt) => ({
+            value: Ta.value(opt, 'Value'),
+            label: Ta.value(opt, 'Label'),
+            disabled: !!Ta.value(opt, 'Disabled')
+          }));
         } catch (e) {
           this.options = [];
         } finally {
@@ -55,17 +60,16 @@ export function installMultiSelect(Ta) {
       },
 
       select(option) {
-        if (!option) return;
-        if (option.Disabled) return;
-        if (this.isSelected(option.Value)) {
-          this.remove(option.Value);
+        if (!option || option.disabled) return;
+        if (this.isSelected(option.value)) {
+          this.remove(option.value);
           return;
         }
         if (this.max > 0 && this.selected.length >= this.max) {
           Ta.toast.warning(`最多選擇 ${this.max} 項`);
           return;
         }
-        this.selected = this.selected.concat([{ value: option.Value, label: option.Label }]);
+        this.selected = this.selected.concat([{ value: option.value, label: option.label }]);
         this.keyword = '';
         this.options = [];
         this.open = false;
