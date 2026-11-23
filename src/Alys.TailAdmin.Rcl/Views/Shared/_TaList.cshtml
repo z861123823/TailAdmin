@@ -1,0 +1,62 @@
+@model TaListModel
+@{
+    var divide = Model.Divided ? "divide-y divide-gray-100 dark:divide-gray-800" : string.Empty;
+}
+<ul class="@divide @Model.CssClass">
+    @foreach (var item in Model.Items)
+    {
+        var rowClass = "flex items-center gap-3 px-4 py-3.5 transition-colors "
+            + (item.Active
+                ? "bg-brand-50 dark:bg-brand-500/10"
+                : "hover:bg-gray-50 dark:hover:bg-white/[0.03]");
+        var icon = item.Icon ?? string.Empty;
+
+        <li>
+            @if (!string.IsNullOrWhiteSpace(item.Href))
+            {
+                <a href="@item.Href" class="@rowClass">
+                    @if (!string.IsNullOrWhiteSpace(icon))
+                    {
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400 [&_svg]:size-4">
+                            <partial name="_Icon" model="@icon" />
+                        </span>
+                    }
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-theme-sm font-medium text-gray-800 dark:text-white/90">@item.Text</span>
+                        @if (!string.IsNullOrWhiteSpace(item.Description))
+                        {
+                            <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">@item.Description</span>
+                        }
+                    </span>
+                    @if (!string.IsNullOrWhiteSpace(item.Badge))
+                    {
+                        <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-theme-xs font-medium text-gray-700 dark:bg-white/5 dark:text-gray-300">@item.Badge</span>
+                    }
+                    <partial name="_Icon" model="@("chevron-right")" />
+                </a>
+            }
+            else
+            {
+                <div class="@rowClass">
+                    @if (!string.IsNullOrWhiteSpace(icon))
+                    {
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-lg bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400 [&_svg]:size-4">
+                            <partial name="_Icon" model="@icon" />
+                        </span>
+                    }
+                    <span class="min-w-0 flex-1">
+                        <span class="block text-theme-sm font-medium text-gray-800 dark:text-white/90">@item.Text</span>
+                        @if (!string.IsNullOrWhiteSpace(item.Description))
+                        {
+                            <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">@item.Description</span>
+                        }
+                    </span>
+                    @if (!string.IsNullOrWhiteSpace(item.Badge))
+                    {
+                        <span class="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-theme-xs font-medium text-gray-700 dark:bg-white/5 dark:text-gray-300">@item.Badge</span>
+                    }
+                </div>
+            }
+        </li>
+    }
+</ul>

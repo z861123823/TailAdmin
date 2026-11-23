@@ -59,7 +59,9 @@
           "condition": "(!sampleEnabled)",
           "exclude": [
             "Areas/Admin/Controllers/GoodsController.cs",
-            "Areas/Admin/Views/Goods/**"
+            "Areas/Admin/Controllers/ComponentsController.cs",
+            "Areas/Admin/Views/Goods/**",
+            "Areas/Admin/Views/Components/**"
           ]
         }
       ]

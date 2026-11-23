@@ -2,7 +2,7 @@
 
 基于 **ASP.NET Core MVC（Razor Pages/views） + TailAdmin 官方 HTML 源码（MIT） + Tailwind CSS 4 + Alpine.js** 的后台通用模板，交付三件套：
 
-- `Alys.TailAdmin.Rcl`：RCL 组件库（布局、侧边栏、顶栏、表格、弹窗、上传等）
+- `Alys.TailAdmin.Rcl`：RCL 组件库（布局、侧边栏、顶栏、表格、弹窗、上传、按钮/徽章/提示/头像/卡片/轮播等基础 UI 组件）
 - `Alys.TailAdmin.Templates`：`dotnet new` 模板包，一条命令生成可运行后台
 - `samples/Alys.TailAdmin.Demo.Web`：完整示例宿主（登录、仪表盘、商品列表、分类试点页）
 
@@ -46,7 +46,7 @@ dotnet test samples/Alys.TailAdmin.Demo.Tests
 ## 4. 用模板新建项目
 
 ```powershell
-dotnet new install ./artifacts/Alys.TailAdmin.Templates.1.4.0.nupkg
+dotnet new install ./artifacts/Alys.TailAdmin.Templates.1.5.0.nupkg
 dotnet new alys-admin -n MyCompany.Admin -o ../MyCompany.Admin
 
 # 可选参数

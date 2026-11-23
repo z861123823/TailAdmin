@@ -1,0 +1,61 @@
+@model TaAvatarModel
+@{
+    var size = (Model.Size ?? "md").ToLowerInvariant();
+    var box = size switch
+    {
+        "xs" => "size-6",
+        "sm" => "size-8",
+        "lg" => "size-12",
+        "xl" => "size-16",
+        "2xl" => "size-20",
+        _ => "size-10"
+    };
+    var textSize = size switch
+    {
+        "xs" => "text-[10px]",
+        "sm" => "text-theme-xs",
+        "lg" => "text-base",
+        "xl" => "text-lg",
+        "2xl" => "text-xl",
+        _ => "text-theme-sm"
+    };
+    var dot = size switch
+    {
+        "xs" => "size-2",
+        "sm" => "size-2.5",
+        "lg" => "size-3.5",
+        "xl" => "size-4",
+        "2xl" => "size-5",
+        _ => "size-3"
+    };
+    var shape = string.Equals(Model.Shape, "rounded", StringComparison.OrdinalIgnoreCase) ? "rounded-xl" : "rounded-full";
+    var status = (Model.Status ?? "none").ToLowerInvariant();
+    var statusColor = status switch
+    {
+        "online" => "bg-green-500",
+        "offline" => "bg-gray-400",
+        "busy" => "bg-red-500",
+        _ => string.Empty
+    };
+    var initials = Model.Initials;
+    if (string.IsNullOrWhiteSpace(initials) && !string.IsNullOrWhiteSpace(Model.Alt))
+    {
+        initials = Model.Alt.Substring(0, 1);
+    }
+    initials = string.IsNullOrWhiteSpace(initials) ? "?" : initials;
+}
+<div class="relative inline-flex shrink-0 @box @Model.CssClass">
+    @if (!string.IsNullOrWhiteSpace(Model.Src))
+    {
+        <img src="@Model.Src" alt="@(Model.Alt ?? initials)"
+             class="@box @shape object-cover" />
+    }
+    else
+    {
+        <span class="flex @box @shape items-center justify-center bg-brand-50 font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400 @textSize">@initials</span>
+    }
+    @if (!string.IsNullOrWhiteSpace(statusColor))
+    {
+        <span class="absolute right-0 bottom-0 @dot rounded-full border-2 border-white @statusColor dark:border-gray-900"></span>
+    }
+</div>

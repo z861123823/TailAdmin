@@ -1,0 +1,67 @@
+@model TaCarouselModel
+@{
+    var height = (Model.Height ?? "md").ToLowerInvariant() switch
+    {
+        "sm" => "h-48",
+        "lg" => "h-80",
+        _ => "h-64"
+    };
+    var count = Model.Items.Count;
+}
+@if (count > 0)
+{
+    <div class="relative overflow-hidden rounded-2xl bg-gray-100 dark:bg-gray-800 @Model.CssClass"
+         x-data="{ active: 0, count: @count }">
+        <div class="relative @height">
+            @for (var index = 0; index < count; index++)
+            {
+                var item = Model.Items[index];
+                <div class="absolute inset-0" x-show="active === @index" x-transition.opacity.duration.300ms>
+                    <img src="@item.Src" alt="@(item.Alt ?? string.Empty)" class="h-full w-full object-cover" />
+                    @if (!string.IsNullOrWhiteSpace(item.Href))
+                    {
+                        <a href="@item.Href" class="absolute inset-0" aria-label="@(item.Alt ?? item.Caption ?? "查看")"></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(item.Caption) || !string.IsNullOrWhiteSpace(item.Description))
+                    {
+                        <div class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-5 text-white">
+                            @if (!string.IsNullOrWhiteSpace(item.Caption))
+                            {
+                                <p class="text-base font-semibold">@item.Caption</p>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(item.Description))
+                            {
+                                <p class="mt-1 text-theme-sm text-white/80">@item.Description</p>
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+
+        @if (Model.ShowArrows && count > 1)
+        {
+            <button type="button"
+                    class="absolute top-1/2 left-3 z-20 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-theme-sm transition-colors hover:bg-white dark:bg-gray-900/80 dark:text-gray-200 dark:hover:bg-gray-900"
+                    x-on:click="active = (active - 1 + count) % count" aria-label="上一張">
+                <partial name="_Icon" model="@("chevron-left")" />
+            </button>
+            <button type="button"
+                    class="absolute top-1/2 right-3 z-20 inline-flex size-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-gray-700 shadow-theme-sm transition-colors hover:bg-white dark:bg-gray-900/80 dark:text-gray-200 dark:hover:bg-gray-900"
+                    x-on:click="active = (active + 1) % count" aria-label="下一張">
+                <partial name="_Icon" model="@("chevron-right")" />
+            </button>
+        }
+
+        @if (Model.ShowIndicators && count > 1)
+        {
+            <div class="absolute inset-x-0 bottom-3 z-20 flex items-center justify-center gap-2">
+                <template x-for="i in count" :key="i">
+                    <button type="button" class="h-2 rounded-full transition-all"
+                            x-bind:class="active === (i - 1) ? 'w-6 bg-white' : 'w-2 bg-white/60 hover:bg-white/80'"
+                            x-on:click="active = i - 1" aria-label="切換幻燈片"></button>
+                </template>
+            </div>
+        }
+    </div>
+}

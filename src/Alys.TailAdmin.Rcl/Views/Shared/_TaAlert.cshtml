@@ -1,0 +1,44 @@
+@model TaAlertModel
+@{
+    var variant = (Model.Variant ?? "info").ToLowerInvariant();
+    var box = variant switch
+    {
+        "success" => "border-green-200 bg-green-50 text-green-600 dark:border-green-500/30 dark:bg-green-500/10 dark:text-green-400",
+        "warning" => "border-amber-200 bg-amber-50 text-amber-600 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-400",
+        "danger" => "border-red-200 bg-red-50 text-red-600 dark:border-red-500/30 dark:bg-red-500/10 dark:text-red-400",
+        _ => "border-blue-200 bg-blue-50 text-blue-600 dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-400"
+    };
+    var iconName = variant switch
+    {
+        "success" => "check",
+        "info" => "info",
+        _ => "alert"
+    };
+}
+<div class="flex items-start gap-3 rounded-xl border px-4 py-3 text-theme-sm @box @Model.CssClass"
+     x-data="{ show: true }" x-show="show" x-transition.opacity.duration.200ms>
+    @if (Model.ShowIcon)
+    {
+        <span class="mt-0.5 shrink-0">
+            <partial name="_Icon" model="@iconName" />
+        </span>
+    }
+    <div class="min-w-0 flex-1">
+        @if (!string.IsNullOrWhiteSpace(Model.Title))
+        {
+            <p class="font-medium">@Model.Title</p>
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Message))
+        {
+            <p class="text-gray-600 dark:text-gray-300 @(string.IsNullOrWhiteSpace(Model.Title) ? null : "mt-0.5")">@Model.Message</p>
+        }
+    </div>
+    @if (Model.Dismissible)
+    {
+        <button type="button"
+                class="-mr-1 inline-flex size-7 shrink-0 items-center justify-center rounded-lg opacity-70 transition-opacity hover:opacity-100"
+                x-on:click="show = false" aria-label="關閉提示">
+            <partial name="_Icon" model="@("close")" />
+        </button>
+    }
+</div>

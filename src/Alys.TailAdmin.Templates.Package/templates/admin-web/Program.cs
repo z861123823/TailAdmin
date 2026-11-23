@@ -30,16 +30,29 @@ builder.Services.AddAlysAdminUi(builder.Configuration);
 
 #if (sampleEnabled)
 // 示例菜单仅在 --sample true 时注册，避免指向不存在的演示页
-builder.Services.Configure<AdminUiOptions>(options => options.Menu.Items.Add(new AdminMenuItem
+builder.Services.Configure<AdminUiOptions>(options =>
 {
-    Key = "goods",
-    Title = "商品管理",
-    Icon = "goods",
-    Area = "Admin",
-    Controller = "Goods",
-    Action = "Index",
-    Permission = "goods"
-}));
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "goods",
+        Title = "商品管理",
+        Icon = "goods",
+        Area = "Admin",
+        Controller = "Goods",
+        Action = "Index",
+        Permission = "goods"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "components",
+        Title = "組件示例",
+        Icon = "components",
+        Area = "Admin",
+        Controller = "Components",
+        Action = "Index",
+        Permission = "components"
+    });
+});
 #endif
 
 #if (authCookie)

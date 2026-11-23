@@ -1,0 +1,36 @@
+@model TaButtonModel
+@{
+    var css = TaUiStyle.Button(Model.Variant, Model.Size);
+    var classes = string.Join(" ", new[] { css, Model.FullWidth ? "w-full" : null, Model.CssClass }
+        .Where(value => !string.IsNullOrWhiteSpace(value)));
+    var icon = Model.Icon ?? string.Empty;
+    var iconFirst = !string.IsNullOrWhiteSpace(icon) && !string.Equals(Model.IconPosition, "right", StringComparison.OrdinalIgnoreCase);
+}
+@if (!string.IsNullOrWhiteSpace(Model.Href))
+{
+    <a href="@Model.Href" target="@Model.Target" class="@classes" aria-label="@Model.AriaLabel" onclick="@Model.OnClick">
+        @if (iconFirst)
+        {
+            <partial name="_Icon" model="@icon" />
+        }
+        @Model.Text
+        @if (!iconFirst && !string.IsNullOrWhiteSpace(icon))
+        {
+            <partial name="_Icon" model="@icon" />
+        }
+    </a>
+}
+else
+{
+    <button type="@Model.Type" class="@classes" disabled="@Model.Disabled" aria-label="@Model.AriaLabel" onclick="@Model.OnClick">
+        @if (iconFirst)
+        {
+            <partial name="_Icon" model="@icon" />
+        }
+        @Model.Text
+        @if (!iconFirst && !string.IsNullOrWhiteSpace(icon))
+        {
+            <partial name="_Icon" model="@icon" />
+        }
+    </button>
+}

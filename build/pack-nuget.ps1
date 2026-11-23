@@ -6,7 +6,7 @@
   打包前强制校验前端产物存在且非空，避免发布「无样式」的包。
 #>
 param(
-    [string]$Version = '1.4.0'
+    [string]$Version = '1.5.0'
 )
 
 $ErrorActionPreference = 'Stop'

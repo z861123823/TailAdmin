@@ -1,0 +1,289 @@
+@{
+    var buttons = new List<TaButtonModel>
+    {
+        new() { Text = "主要按鈕", Icon = "plus" },
+        new() { Text = "次要按鈕", Variant = "outline" },
+        new() { Text = "成功", Variant = "success", Icon = "check" },
+        new() { Text = "危險", Variant = "danger", Icon = "trash" },
+        new() { Text = "幽靈", Variant = "ghost" },
+        new() { Text = "禁用", Variant = "primary", Disabled = true }
+    };
+
+    var buttonGroup = new TaButtonGroupModel
+    {
+        Size = "sm",
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "日", Variant = "primary" },
+            new() { Text = "週", Variant = "outline" },
+            new() { Text = "月", Variant = "outline" }
+        }
+    };
+
+    var badges = new List<TaBadgeModel>
+    {
+        new() { Text = "主要", Variant = "primary" },
+        new() { Text = "成功", Variant = "success", Dot = true },
+        new() { Text = "警告", Variant = "warning", Icon = "alert" },
+        new() { Text = "危險", Variant = "danger" },
+        new() { Text = "資訊", Variant = "info", Dot = true },
+        new() { Text = "淺色", Variant = "light" },
+        new() { Text = "深色", Variant = "dark" }
+    };
+
+    var alerts = new List<TaAlertModel>
+    {
+        new() { Variant = "info", Title = "提示", Message = "這是一條資訊提示，可放置操作說明。" },
+        new() { Variant = "success", Title = "保存成功", Message = "資料已寫入，列表將自動刷新。" },
+        new() { Variant = "warning", Title = "請注意", Message = "當前操作會影響已發佈的內容。" },
+        new() { Variant = "danger", Title = "操作失敗", Message = "網絡異常，請稍後重試。", Dismissible = true }
+    };
+
+    var avatars = new List<TaAvatarModel>
+    {
+        new() { Initials = "林", Alt = "林小姐", Size = "sm" },
+        new() { Initials = "王", Alt = "王先生", Size = "md", Status = "online" },
+        new() { Initials = "陳", Alt = "陳經理", Size = "lg", Status = "busy" },
+        new() { Initials = "李", Alt = "李專員", Size = "xl", Status = "offline" }
+    };
+
+    var avatarGroup = new TaAvatarGroupModel
+    {
+        Size = "md",
+        Max = 4,
+        Total = 12,
+        Items = new List<TaAvatarModel>
+        {
+            new() { Initials = "林", Alt = "林小姐" },
+            new() { Initials = "王", Alt = "王先生" },
+            new() { Initials = "陳", Alt = "陳經理" },
+            new() { Initials = "李", Alt = "李專員" }
+        }
+    };
+
+    var breadcrumb = new TaBreadcrumbModel
+    {
+        HomeUrl = "#",
+        Items = new List<TaBreadcrumbItemModel>
+        {
+            new() { Text = "商品中心", Url = "#" },
+            new() { Text = "商品管理", Url = "#" },
+            new() { Text = "編輯商品" }
+        }
+    };
+
+    var cards = new List<TaCardModel>
+    {
+        new()
+        {
+            Icon = "chart",
+            Title = "月度銷售",
+            Subtitle = "按售價 × 銷量估算",
+            Text = "本月累計銷售額較上月增長 12.5%，主要來自熱銷商品的帶動。",
+            FooterText = "資料更新於今日 09:30",
+            Href = "#",
+            LinkText = "查看詳情",
+            Hoverable = true
+        },
+        new()
+        {
+            Title = "卡片內容",
+            Subtitle = "支持標題、副標題與自定義正文",
+            Text = "卡片是最基礎的佈局單元，適合承載圖表、統計、說明等內容。",
+            Hoverable = true
+        }
+    };
+
+    var dropdown = new TaDropdownModel
+    {
+        TriggerText = "操作",
+        TriggerIcon = "dots",
+        Align = "right",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "個人資料", Icon = "user", Url = "#" },
+            new() { Text = "帳戶設定", Icon = "settings", Url = "#" },
+            new() { Text = "刪除帳戶", Icon = "trash", Danger = true, DividerBefore = true, OnClick = "Ta.toast.info('演示操作')" }
+        }
+    };
+
+    var carousel = new TaCarouselModel
+    {
+        Height = "md",
+        Items = new List<TaCarouselItemModel>
+        {
+            new() { Src = Swatch("#465fff", "#8192ff", 0), Alt = "幻燈片一", Caption = "春季新品", Description = "全場商品限時折扣" },
+            new() { Src = Swatch("#12b76a", "#6ce9a6", 1), Alt = "幻燈片二", Caption = "會員專享", Description = "積分兌換與專屬優惠" },
+            new() { Src = Swatch("#f79009", "#fdb022", 0), Alt = "幻燈片三", Caption = "店慶活動", Description = "滿 300 減 50" }
+        }
+    };
+
+    var images = new TaImagesModel
+    {
+        Columns = 4,
+        Ratio = "square",
+        Items = new List<TaImageItemModel>
+        {
+            new() { Src = Swatch("#465fff", "#b1bcff", 0), Alt = "示例一", Caption = "示例一" },
+            new() { Src = Swatch("#12b76a", "#a6f4c5", 1), Alt = "示例二", Caption = "示例二" },
+            new() { Src = Swatch("#f04438", "#fda29b", 0), Alt = "示例三", Caption = "示例三" },
+            new() { Src = Swatch("#0ba5ec", "#b9e6fe", 1), Alt = "示例四", Caption = "示例四" }
+        }
+    };
+
+    var links = new List<TaLinkModel>
+    {
+        new() { Text = "主要連結", Href = "#" },
+        new() { Text = "次要連結", Href = "#", Variant = "muted" },
+        new() { Text = "下劃線連結", Href = "#", Variant = "underline" },
+        new() { Text = "外部連結", Href = "https://tailadmin.com", External = true },
+        new() { Text = "帶圖標連結", Href = "#", Icon = "external-link" }
+    };
+
+    var list = new TaListModel
+    {
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "商品管理", Description = "分頁、排序與關鍵字查詢", Icon = "goods", Href = "#" },
+            new() { Text = "商品分類", Description = "分類維護與啟停用", Icon = "tag", Href = "#", Badge = "12" },
+            new() { Text = "系統設定", Description = "品牌、選單與權限配置", Icon = "settings", Active = true },
+            new() { Text = "操作日誌", Description = "最近 30 天的登入與變更記錄", Icon = "order", Href = "#" }
+        }
+    };
+}
+
+<div class="grid grid-cols-1 gap-4 xl:grid-cols-2 md:gap-6">
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">按鈕</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Button / ButtonGroup，支持圖標、尺寸與禁用態。</p>
+        <div class="mt-4 flex flex-wrap items-center gap-3">
+            @foreach (var button in buttons)
+            {
+                <partial name="_TaButton" model="button" />
+            }
+        </div>
+        <div class="mt-5">
+            <partial name="_TaButtonGroup" model="buttonGroup" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">徽章</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Badge，支持圓點、圖標與多種色彩。</p>
+        <div class="mt-4 flex flex-wrap items-center gap-2">
+            @foreach (var badge in badges)
+            {
+                <partial name="_TaBadge" model="badge" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">提示</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Alert，支持關閉與狀態圖標。</p>
+        <div class="mt-4 flex flex-col gap-3">
+            @foreach (var alert in alerts)
+            {
+                <partial name="_TaAlert" model="alert" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">頭像</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Avatar / AvatarGroup，支持尺寸、狀態與重疊分組。</p>
+        <div class="mt-4 flex flex-wrap items-end gap-4">
+            @foreach (var avatar in avatars)
+            {
+                <partial name="_TaAvatar" model="avatar" />
+            }
+        </div>
+        <div class="mt-6">
+            <partial name="_TaAvatarGroup" model="avatarGroup" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">麵包屑</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Breadcrumb，最後一項自動作為當前頁。</p>
+        <div class="mt-4">
+            <partial name="_TaBreadcrumb" model="breadcrumb" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">下拉選單</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Dropdown，支持分隔線、危險項與點擊外部關閉。</p>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="dropdown" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">卡片</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Card，統一圓角、邊框、內邊距與深色模式。</p>
+        <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+            @foreach (var card in cards)
+            {
+                <partial name="_TaCard" model="card" />
+            }
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">輪播</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Carousel，鍵盤可聚焦的左右切換與指示點。</p>
+        <div class="mt-4">
+            <partial name="_TaCarousel" model="carousel" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">圖片</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Images，自適應列數與比例。</p>
+        <div class="mt-4">
+            <partial name="_TaImages" model="images" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">連結</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">Link，統一連結色彩與外鏈標識。</p>
+        <div class="mt-4 flex flex-col items-start gap-3">
+            @foreach (var link in links)
+            {
+                <partial name="_TaLink" model="link" />
+            }
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="p-5 md:p-6">
+            <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">列表</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">List，支持圖標、描述、徽章與當前項高亮。</p>
+        </div>
+        <partial name="_TaList" model="list" />
+    </section>
+</div>
+
+@functions {
+    /// <summary>生成自包含的漸變 SVG 圖片，避免示例頁依賴外部圖床。</summary>
+    /// <param name="from">起始顏色。</param>
+    /// <param name="to">結束顏色。</param>
+    /// <param name="variant">圖形變體。</param>
+    /// <returns>可直接用於 img src 的 Data URI。</returns>
+    private static string Swatch(string from, string to, int variant)
+    {
+        var shape = variant % 2 == 0
+            ? "<circle cx='620' cy='180' r='210' fill='white' fill-opacity='0.14'/>"
+            : "<rect x='420' y='360' width='520' height='520' fill='white' fill-opacity='0.12' transform='rotate(18 680 620)'/>";
+        var svg = "<svg xmlns='http://www.w3.org/2000/svg' width='800' height='800'>"
+            + "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>"
+            + $"<stop offset='0' stop-color='{from}'/><stop offset='1' stop-color='{to}'/>"
+            + "</linearGradient></defs>"
+            + "<rect width='800' height='800' fill='url(#g)'/>"
+            + shape
+            + "</svg>";
+        return "data:image/svg+xml;utf8," + Uri.EscapeDataString(svg);
+    }
+}

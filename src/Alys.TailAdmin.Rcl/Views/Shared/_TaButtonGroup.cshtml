@@ -1,0 +1,51 @@
+@model TaButtonGroupModel
+@{
+    var sizing = (Model.Size ?? "md").ToLowerInvariant() switch
+    {
+        "sm" => "gap-1.5 px-3 py-2 text-theme-xs [&_svg]:size-4",
+        "lg" => "gap-2 px-5 py-3.5 text-theme-sm [&_svg]:size-5",
+        _ => "gap-2 px-4 py-2.5 text-theme-sm [&_svg]:size-4"
+    };
+}
+<div class="inline-flex items-center overflow-hidden rounded-lg border border-gray-300 bg-white shadow-theme-xs dark:border-gray-700 dark:bg-gray-800 @Model.CssClass">
+    @foreach (var item in Model.Items)
+    {
+        var active = !string.IsNullOrWhiteSpace(item.Variant)
+            && !string.Equals(item.Variant, "outline", StringComparison.OrdinalIgnoreCase)
+            && !string.Equals(item.Variant, "light", StringComparison.OrdinalIgnoreCase);
+        var tone = active
+            ? "bg-brand-500 text-white hover:bg-brand-600"
+            : "text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-white/5";
+        var itemClass = $"inline-flex items-center border-r border-gray-200 last:border-r-0 font-medium transition-colors dark:border-gray-700 {sizing} {tone}";
+        var icon = item.Icon ?? string.Empty;
+
+        if (!string.IsNullOrWhiteSpace(item.Href))
+        {
+            <a href="@item.Href" target="@item.Target" class="@itemClass">
+                @if (!string.IsNullOrWhiteSpace(icon) && !string.Equals(item.IconPosition, "right", StringComparison.OrdinalIgnoreCase))
+                {
+                    <partial name="_Icon" model="@icon" />
+                }
+                @item.Text
+                @if (!string.IsNullOrWhiteSpace(icon) && string.Equals(item.IconPosition, "right", StringComparison.OrdinalIgnoreCase))
+                {
+                    <partial name="_Icon" model="@icon" />
+                }
+            </a>
+        }
+        else
+        {
+            <button type="@item.Type" class="@itemClass" disabled="@item.Disabled" onclick="@item.OnClick">
+                @if (!string.IsNullOrWhiteSpace(icon) && !string.Equals(item.IconPosition, "right", StringComparison.OrdinalIgnoreCase))
+                {
+                    <partial name="_Icon" model="@icon" />
+                }
+                @item.Text
+                @if (!string.IsNullOrWhiteSpace(icon) && string.Equals(item.IconPosition, "right", StringComparison.OrdinalIgnoreCase))
+                {
+                    <partial name="_Icon" model="@icon" />
+                }
+            </button>
+        }
+    }
+</div>

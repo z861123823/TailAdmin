@@ -1,0 +1,29 @@
+@model TaLinkModel
+@{
+    var variant = (Model.Variant ?? "primary").ToLowerInvariant();
+    var tone = variant switch
+    {
+        "muted" => "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300",
+        "underline" => "text-brand-500 underline underline-offset-4 hover:text-brand-600 dark:text-brand-400",
+        _ => "text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300"
+    };
+    var hasIcon = !string.IsNullOrWhiteSpace(Model.Icon);
+}
+<a href="@Model.Href"
+   target="@(Model.External ? "_blank" : null)"
+   rel="@(Model.External ? "noopener noreferrer" : null)"
+   class="inline-flex items-center gap-1.5 text-theme-sm font-medium transition-colors @tone @Model.CssClass">
+    @if (hasIcon)
+    {
+        <span class="inline-flex [&_svg]:size-4">
+            <partial name="_Icon" model="@(Model.Icon ?? string.Empty)" />
+        </span>
+    }
+    @Model.Text
+    @if (Model.External)
+    {
+        <span class="inline-flex [&_svg]:size-3.5">
+            <partial name="_Icon" model="@("external-link")" />
+        </span>
+    }
+</a>

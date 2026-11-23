@@ -1,0 +1,41 @@
+@model TaImagesModel
+@{
+    var columns = Model.Columns switch
+    {
+        2 => "grid-cols-1 sm:grid-cols-2",
+        4 => "grid-cols-2 lg:grid-cols-4",
+        _ => "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    };
+    var ratio = (Model.Ratio ?? "square").ToLowerInvariant() switch
+    {
+        "video" => "aspect-video",
+        "portrait" => "aspect-[3/4]",
+        "wide" => "aspect-[16/6]",
+        "auto" => string.Empty,
+        _ => "aspect-square"
+    };
+    var rounded = Model.Rounded ? "rounded-xl" : string.Empty;
+}
+<div class="grid gap-4 @columns @Model.CssClass">
+    @foreach (var item in Model.Items)
+    {
+        <figure>
+            @if (!string.IsNullOrWhiteSpace(item.Href))
+            {
+                <a href="@item.Href" class="block overflow-hidden @rounded">
+                    <img src="@item.Src" alt="@(item.Alt ?? item.Caption ?? string.Empty)"
+                         class="w-full object-cover @ratio @rounded" loading="lazy" />
+                </a>
+            }
+            else
+            {
+                <img src="@item.Src" alt="@(item.Alt ?? item.Caption ?? string.Empty)"
+                     class="w-full object-cover @ratio @rounded" loading="lazy" />
+            }
+            @if (!string.IsNullOrWhiteSpace(item.Caption))
+            {
+                <figcaption class="mt-2 text-theme-xs text-gray-500 dark:text-gray-400">@item.Caption</figcaption>
+            }
+        </figure>
+    }
+</div>

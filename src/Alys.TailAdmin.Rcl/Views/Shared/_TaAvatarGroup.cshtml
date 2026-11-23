@@ -1,0 +1,44 @@
+@model TaAvatarGroupModel
+@{
+    var total = Model.Total ?? Model.Items.Count;
+    var max = Model.Max <= 0 ? Model.Items.Count : Model.Max;
+    var shown = Model.Items.Take(max).ToList();
+    var rest = Math.Max(0, total - shown.Count);
+    var size = (Model.Size ?? "md").ToLowerInvariant();
+    var box = size switch
+    {
+        "xs" => "size-6",
+        "sm" => "size-8",
+        "lg" => "size-12",
+        "xl" => "size-16",
+        "2xl" => "size-20",
+        _ => "size-10"
+    };
+    var textSize = size switch
+    {
+        "xs" => "text-[10px]",
+        "sm" => "text-theme-xs",
+        "lg" => "text-base",
+        _ => "text-theme-sm"
+    };
+}
+<div class="flex -space-x-2 rtl:space-x-reverse">
+    @foreach (var item in shown)
+    {
+        var avatar = new TaAvatarModel
+        {
+            Src = item.Src,
+            Alt = item.Alt,
+            Initials = item.Initials,
+            Size = (string.IsNullOrWhiteSpace(item.Size) ? Model.Size : item.Size) ?? "md",
+            Shape = item.Shape,
+            Status = item.Status,
+            CssClass = "ring-2 ring-white dark:ring-gray-900"
+        };
+        <partial name="_TaAvatar" model="avatar" />
+    }
+    @if (rest > 0)
+    {
+        <span class="inline-flex @box items-center justify-center rounded-full bg-gray-100 @textSize font-medium text-gray-600 ring-2 ring-white dark:bg-white/10 dark:text-gray-300 dark:ring-gray-900">+@rest</span>
+    }
+</div>
