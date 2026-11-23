@@ -1,0 +1,81 @@
+@{
+    var editUrl = Url.Action("EditForm", "Goods", new { area = "Admin" }) ?? string.Empty;
+    var deleteUrl = Url.Action("Delete", "Goods", new { area = "Admin" }) ?? string.Empty;
+
+    var onAction = string.Join("\n", new[]
+    {
+        "edit: function (row) { Ta.modal.load('goodsEdit', '" + editUrl + "', { Id: row.Id }); },",
+        "delete: function (row) {",
+        "    Ta.confirm({ title: '刪除確認', text: '刪除後不可恢復，確定繼續？', confirmText: '刪除', danger: true }).then(function (ok) {",
+        "        if (!ok) return;",
+        "        Ta.http.postForm('" + deleteUrl + "', { Id: row.Id }).then(function (res) {",
+        "            if (Ta.isOk(res)) {",
+        "                Ta.toast.success(res.Message);",
+        "                var table = Ta.tables && Ta.tables['goodsTable'];",
+        "                if (table) table.refresh();",
+        "            } else {",
+        "                Ta.toast.error(res.Message || '刪除失敗');",
+        "            }",
+        "        });",
+        "    });",
+        "}"
+    });
+
+    var table = new TaTableModel
+    {
+        Id = "goodsTable",
+        Url = Url.Action("List", "Goods", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 20,
+        EmptyText = "暫無商品，點擊右上角「新增商品」開始",
+        ReloadOn = new List<string> { "goodsEdit" },
+        OnAction = onAction,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "GoodsName", Label = "商品名稱", Sortable = true },
+            new() { Key = "PicUrl", Label = "圖片", Type = "image", Width = 72, Sortable = false },
+            new() { Key = "Price", Label = "價格", Type = "money", Align = "right", Sortable = true },
+            new() { Key = "TypeName", Label = "分類", Sortable = false },
+            new() { Key = "TagsText", Label = "標籤", Sortable = false },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = true },
+            new() { Key = "IsHot", Label = "熱銷", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "AddTime", Label = "上架時間", Type = "date", Sortable = true }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "編輯", Event = "edit", Variant = "primary" },
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        }
+    };
+
+    var toolbar = new TableToolbarModel
+    {
+        TableId = "goodsTable",
+        Description = "支援商品名稱 / 標籤 / 備註關鍵字查詢，點擊「查詢」輸入關鍵字（回車確認）",
+        Placeholder = "搜索商品名稱、標籤或備註"
+    };
+}
+
+@section PageActions {
+    <button type="button" class="btn btn-primary btn-sm gap-1"
+            x-on:click="Ta.modal.load('goodsEdit', '@editUrl', {})">
+        <partial name="_Icon" model="@("plus")" />
+        新增商品
+    </button>
+}
+
+<partial name="_TableToolbar" model="toolbar" />
+
+<partial name="_TaTable" model="table" />
+
+<dialog id="goodsEdit" class="modal"
+        x-data="taModal({ id: 'goodsEdit', title: '編輯商品', size: 'lg', destroyOnClose: true })">
+    <div class="modal-box max-w-2xl">
+        <h3 class="text-base font-semibold" x-text="title"></h3>
+        <div x-ref="body" class="py-4"></div>
+        <div class="modal-action">
+            <button type="button" class="btn btn-ghost btn-sm" x-on:click="close()">取消</button>
+            <button type="button" class="btn btn-primary btn-sm" x-bind:disabled="submitting" x-on:click="submit()">保存</button>
+        </div>
+    </div>
+</dialog>

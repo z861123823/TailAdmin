@@ -1,0 +1,12 @@
+bin/
+obj/
+.vs/
+*.user
+artifacts/
+frontend/node_modules/
+frontend/tools/
+frontend/dist/
+samples/TailAdmin.Demo.Web/wwwroot/Uploads/
+TestResults/
+*.nupkg
+*.snupkg

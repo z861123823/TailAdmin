@@ -1,0 +1,13 @@
+@model EmptyStateModel
+<div class="ta-table-empty">
+    <partial name="_Icon" model="@("empty")" />
+    <p class="text-base font-medium text-base-content/70">@Model.Title</p>
+    @if (!string.IsNullOrWhiteSpace(Model.Description))
+    {
+        <p>@Model.Description</p>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.ActionText) && !string.IsNullOrWhiteSpace(Model.ActionUrl))
+    {
+        <a href="@Model.ActionUrl" class="btn btn-primary btn-sm mt-1">@Model.ActionText</a>
+    }
+</div>

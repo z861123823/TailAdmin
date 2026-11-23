@@ -1,0 +1,54 @@
+@inject IOptions<AdminUiOptions> AdminUi
+@{
+    var ui = AdminUi.Value;
+    var pageTitle = ViewData["Title"] as string ?? "登錄";
+    var themeMode = (ui.DefaultTheme ?? "system").ToLowerInvariant();
+    var isDark = themeMode == "dark";
+    var themeName = isDark ? $"{ui.BrandName}-dark" : ui.BrandName;
+    var nonce = Context.Items["CspNonce"] as string;
+}
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="@themeName" class="@(isDark ? "theme-dark" : "theme-light")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@pageTitle · @ui.SiteName</title>
+    <script nonce="@nonce">
+        (function () {
+            var root = document.documentElement;
+            var brand = '@ui.BrandName';
+            var stored = null;
+            try { stored = localStorage.getItem('ta-theme'); } catch (e) { }
+            var mode = stored;
+            if (mode !== 'light' && mode !== 'dark') {
+                var preset = '@themeMode';
+                mode = preset === 'light' || preset === 'dark' ? preset
+                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            }
+            root.setAttribute('data-theme', mode === 'dark' ? brand + '-dark' : brand);
+            root.classList.toggle('theme-dark', mode === 'dark');
+            root.classList.toggle('theme-light', mode !== 'dark');
+        })();
+    </script>
+    <link rel="stylesheet" href="~/_content/TailAdmin.Templates.Rcl/css/tailadmin.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body class="ta-app ta-auth-shell" x-data>
+    <div class="fixed right-4 top-4 z-50" x-data="{ dark: document.documentElement.classList.contains('theme-dark') }">
+        <button type="button" class="btn btn-ghost btn-sm btn-square" aria-label="切換明暗主題"
+                x-on:click="dark = Ta.theme.toggle() === 'dark'">
+            <span x-show="!dark"><partial name="_Icon" model="@("moon")" /></span>
+            <span x-show="dark" x-cloak><partial name="_Icon" model="@("sun")" /></span>
+        </button>
+    </div>
+
+    <div class="w-full max-w-md">
+        @RenderBody()
+    </div>
+
+    @Html.AntiForgeryToken()
+    <partial name="_ToastHost" />
+    <partial name="_AdminScripts" model="ui" />
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

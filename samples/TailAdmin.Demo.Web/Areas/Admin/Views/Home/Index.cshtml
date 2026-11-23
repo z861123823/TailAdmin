@@ -1,0 +1,42 @@
+@model DashboardViewModel
+@{
+    var culture = System.Globalization.CultureInfo.GetCultureInfo("zh-CN");
+}
+<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+    @await Component.InvokeAsync("StatCard", new { title = "商品總數", value = Model.GoodsCount.ToString(culture), icon = "goods", variant = "primary", hint = "全部商品" })
+    @await Component.InvokeAsync("StatCard", new { title = "銷售額（元）", value = Model.SalesAmount.ToString("N2", culture), icon = "chart", variant = "success", hint = "按售價 × 銷量估算" })
+    @await Component.InvokeAsync("StatCard", new { title = "商品分類", value = Model.TypeCount.ToString(culture), icon = "tag", variant = "info", hint = "啟用與停用合計" })
+    @await Component.InvokeAsync("StatCard", new { title = "熱銷商品", value = Model.HotCount.ToString(culture), icon = "order", variant = "warning", hint = "標記為熱銷" })
+</div>
+
+<div class="ta-card mt-4">
+    <div class="flex items-center justify-between border-b border-base-300 px-4 py-3">
+        <h2 class="text-sm font-semibold">最近上架</h2>
+        <a asp-area="Admin" asp-controller="Goods" asp-action="Index" class="btn btn-ghost btn-xs">查看全部</a>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="table table-sm">
+            <thead class="bg-base-200/60">
+                <tr>
+                    <th>商品</th>
+                    <th>分類</th>
+                    <th class="text-right">價格</th>
+                    <th class="text-right">銷量</th>
+                    <th>上架時間</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.RecentGoods)
+                {
+                    <tr class="hover">
+                        <td class="font-medium">@item.GoodsName</td>
+                        <td>@item.TypeName</td>
+                        <td class="text-right">@item.Price.ToString("N2", culture)</td>
+                        <td class="text-right">@item.SalesVolume</td>
+                        <td class="text-base-content/60">@item.AddTime</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

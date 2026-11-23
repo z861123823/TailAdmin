@@ -1,0 +1,29 @@
+@inject IOptions<AdminUiOptions> AdminUi
+@{
+    var ui = AdminUi.Value;
+    var initial = string.IsNullOrWhiteSpace(ui.SiteName) ? "TA" : ui.SiteName.Substring(0, 1);
+}
+<aside class="ta-sidebar" x-cloak :class="{ 'ta-sidebar-open': $store.taUi.sidebarOpen, 'lg:w-20': $store.taUi.collapsed }">
+    <div class="ta-sidebar-brand">
+        @if (!string.IsNullOrWhiteSpace(ui.LogoUrl))
+        {
+            <img src="@ui.LogoUrl" alt="@ui.SiteName" class="h-9 w-9 rounded-btn object-contain" />
+        }
+        else
+        {
+            <span class="ta-logo-mark">@initial</span>
+        }
+        <span class="truncate text-base font-semibold" x-show="!$store.taUi.collapsed">@ui.SiteName</span>
+        <button type="button" class="btn btn-ghost btn-xs btn-square ml-auto lg:hidden" x-on:click="$store.taUi.closeSidebar()" aria-label="關閉菜單">
+            <partial name="_Icon" model="@("chevron-left")" />
+        </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-3">
+        @await Component.InvokeAsync("AdminMenu")
+    </div>
+
+    <div class="border-t border-base-300 p-3 text-xs text-base-content/50" x-show="!$store.taUi.collapsed">
+        TailAdmin 通用模板 v1.0.0
+    </div>
+</aside>

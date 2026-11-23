@@ -1,0 +1,16 @@
+{
+  "说明": "前端构建期工具与依赖版本锁定清单，升级需单独提交并附带产物 diff",
+  "node": "22.x（仅构建期，运行时不依赖）",
+  "tailwindcss": "3.4.19",
+  "daisyui": "4.12.24（必须与 Tailwind 3.4 成对升级）",
+  "alpinejs": "3.14.9",
+  "@tanstack/table-core": "8.21.3",
+  "flatpickr": "4.6.13",
+  "esbuild": "0.28.2",
+  "独立可执行文件": {
+    "说明": "内网/离线构建时可把 esbuild.exe 放入 frontend/tools，由 build-frontend.ps1 校验 SHA256 后优先使用；Tailwind 因需加载 daisyUI 插件，统一走本地 node_modules 中的 CLI。",
+    "targets": [
+      { "file": "esbuild.exe", "version": "0.28.2", "sha256": "" }
+    ]
+  }
+}

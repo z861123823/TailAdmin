@@ -1,0 +1,119 @@
+@model TaTableModel
+@{
+    var hasActions = Model.Actions.Any(action => action.Visible);
+    var columnCount = Model.Columns.Count + (hasActions ? 1 : 0) + (Model.Selectable ? 1 : 0);
+}
+<div class="w-full" x-cloak
+     x-data="taTable(@Model.BuildConfigJson())"
+     x-init="load()">
+    <div class="overflow-x-auto rounded-box border border-base-300 bg-base-100">
+        <table class="table table-zebra table-sm">
+            <thead class="bg-base-200/60">
+                <tr>
+                    @if (Model.Selectable)
+                    {
+                        <th class="w-10">
+                            <input type="checkbox" class="checkbox checkbox-xs" x-on:change="toggleAll($event)" aria-label="全選" />
+                        </th>
+                    }
+                    @foreach (var column in Model.Columns)
+                    {
+                        var alignClass = column.Align == "right" ? "text-right" : column.Align == "center" ? "text-center" : string.Empty;
+                        <th class="whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-base-content/60 @alignClass"
+                            style="@(column.Width.HasValue ? $"width:{column.Width}px" : null)">
+                            @if (column.Sortable)
+                            {
+                                <button type="button" class="inline-flex items-center gap-1 hover:text-base-content"
+                                        x-on:click="toggleSort({ key: '@column.Key' })">
+                                    @column.Label
+                                    <span class="text-base-content/40" x-text="sortIcon('@column.Key')"></span>
+                                </button>
+                            }
+                            else
+                            {
+                                <span>@column.Label</span>
+                            }
+                        </th>
+                    }
+                    @if (hasActions)
+                    {
+                        <th class="w-24 text-right text-xs font-semibold uppercase tracking-wide text-base-content/60">操作</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="i in 5" :key="'skeleton-' + i">
+                    <tr x-show="loading">
+                        <td colspan="@columnCount"><div class="skeleton h-4 w-full"></div></td>
+                    </tr>
+                </template>
+
+                <tr x-show="!loading && error">
+                    <td colspan="@columnCount">
+                        <div class="ta-table-empty">
+                            <partial name="_Icon" model="@("alert")" />
+                            <p class="text-error" x-text="error"></p>
+                            <button type="button" class="btn btn-sm btn-outline gap-1" x-on:click="refresh()">
+                                <partial name="_Icon" model="@("refresh")" />
+                                重試
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr x-show="!loading && !error && rows.length === 0">
+                    <td colspan="@columnCount">
+                        <div class="ta-table-empty">
+                            <partial name="_Icon" model="@("empty")" />
+                            <p x-text="emptyText"></p>
+                            <p class="text-xs">可調整查詢條件後重試</p>
+                        </div>
+                    </td>
+                </tr>
+
+                <template x-for="row in rows" :key="rowId(row)">
+                    <tr class="hover" x-show="!loading">
+                        @if (Model.Selectable)
+                        {
+                            <td><input type="checkbox" class="checkbox checkbox-xs" x-bind:checked="isSelected(row)" x-on:change="toggleRow(row)" /></td>
+                        }
+                        <template x-for="col in columns" :key="col.key">
+                            <td x-bind:class="cellClass(col)" x-bind:style="col.width ? 'width:' + col.width + 'px' : ''">
+                                <template x-if="col.type === 'image'">
+                                    <span>
+                                        <img x-show="imageUrl(row, col)" x-bind:src="imageUrl(row, col)"
+                                             class="h-9 w-9 cursor-zoom-in rounded object-cover" x-on:click="preview(imageUrl(row, col))" alt="" />
+                                        <span x-show="!imageUrl(row, col)"
+                                              class="flex h-9 w-9 items-center justify-center rounded bg-base-200 text-xs text-base-content/40">無圖</span>
+                                    </span>
+                                </template>
+                                <template x-if="col.type === 'tag' || col.type === 'bool'">
+                                    <span class="badge" x-bind:class="badgeClass(row, col)" x-text="cellText(row, col)"></span>
+                                </template>
+                                <template x-if="col.type === 'link'">
+                                    <a class="link link-primary" x-bind:href="linkHref(row, col)" target="_blank" rel="noopener" x-text="cellText(row, col)"></a>
+                                </template>
+                                <template x-if="col.type !== 'image' && col.type !== 'tag' && col.type !== 'bool' && col.type !== 'link'">
+                                    <span x-text="cellText(row, col)"></span>
+                                </template>
+                            </td>
+                        </template>
+                        @if (hasActions)
+                        {
+                            <td class="whitespace-nowrap text-right">
+                                <template x-for="action in actions.filter(a => a.visible !== false)" :key="action.event">
+                                    <button type="button" class="btn btn-xs"
+                                            x-bind:class="action.variant === 'error' ? 'btn-error' : action.variant === 'primary' ? 'btn-primary' : 'btn-ghost'"
+                                            x-on:click.stop="doAction(action.event, row)"
+                                            x-text="action.label"></button>
+                                </template>
+                            </td>
+                        }
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <partial name="_Pagination" />
+</div>

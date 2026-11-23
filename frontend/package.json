@@ -1,0 +1,19 @@
+{
+  "name": "tailadmin-admin-web",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TailAdmin 通用后台模板前端构建清单（仅用于构建期，运行时不依赖 Node）",
+  "scripts": {
+    "build:css": "tailwindcss -c tailwind.config.js -i src/css/tailwind.css -o ../src/TailAdmin.Templates.Rcl/wwwroot/css/tailadmin.css --minify",
+    "build:js": "esbuild src/js/index.js --bundle --minify --format=iife --target=es2019 --legal-comments=none --outfile=../src/TailAdmin.Templates.Rcl/wwwroot/js/tailadmin.js",
+    "build": "npm run build:css && npm run build:js"
+  },
+  "devDependencies": {
+    "@tanstack/table-core": "8.21.3",
+    "alpinejs": "3.14.9",
+    "daisyui": "4.12.24",
+    "esbuild": "0.28.2",
+    "flatpickr": "4.6.13",
+    "tailwindcss": "3.4.19"
+  }
+}

@@ -1,0 +1,78 @@
+@{
+    var editUrl = Url.Action("EditForm", "GoodsType", new { area = "Admin" }) ?? string.Empty;
+    var deleteUrl = Url.Action("Delete", "GoodsType", new { area = "Admin" }) ?? string.Empty;
+
+    var onAction = string.Join("\n", new[]
+    {
+        "edit: function (row) { Ta.modal.load('typeEdit', '" + editUrl + "', { Id: row.Id }); },",
+        "delete: function (row) {",
+        "    Ta.confirm({ title: '刪除確認', text: '刪除後不可恢復，確定繼續？', confirmText: '刪除', danger: true }).then(function (ok) {",
+        "        if (!ok) return;",
+        "        Ta.http.postForm('" + deleteUrl + "', { Id: row.Id }).then(function (res) {",
+        "            if (Ta.isOk(res)) {",
+        "                Ta.toast.success(res.Message);",
+        "                var table = Ta.tables && Ta.tables['typeTable'];",
+        "                if (table) table.refresh();",
+        "            } else {",
+        "                Ta.toast.error(res.Message || '刪除失敗');",
+        "            }",
+        "        });",
+        "    });",
+        "}"
+    });
+
+    var table = new TaTableModel
+    {
+        Id = "typeTable",
+        Url = Url.Action("List", "GoodsType", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 20,
+        EmptyText = "暫無分類，點擊右上角「新增分類」",
+        ReloadOn = new List<string> { "typeEdit" },
+        OnAction = onAction,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "Id", Label = "ID", Width = 70, Sortable = false },
+            new() { Key = "Name", Label = "分類名稱" },
+            new() { Key = "Sort", Label = "排序", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "GoodsCount", Label = "商品數", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "Enabled", Label = "狀態", Type = "bool", Align = "center", Sortable = false }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "編輯", Event = "edit", Variant = "primary" },
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        }
+    };
+
+    var toolbar = new TableToolbarModel
+    {
+        TableId = "typeTable",
+        Description = "一期遷移試點頁：標準 CRUD，與商品頁共用同一套表格與彈窗組件",
+        Placeholder = "搜索分類名稱"
+    };
+}
+
+@section PageActions {
+    <button type="button" class="btn btn-primary btn-sm gap-1"
+            x-on:click="Ta.modal.load('typeEdit', '@editUrl', {})">
+        <partial name="_Icon" model="@("plus")" />
+        新增分類
+    </button>
+}
+
+<partial name="_TableToolbar" model="toolbar" />
+
+<partial name="_TaTable" model="table" />
+
+<dialog id="typeEdit" class="modal"
+        x-data="taModal({ id: 'typeEdit', title: '編輯分類', size: 'md', destroyOnClose: true })">
+    <div class="modal-box max-w-lg">
+        <h3 class="text-base font-semibold" x-text="title"></h3>
+        <div x-ref="body" class="py-4"></div>
+        <div class="modal-action">
+            <button type="button" class="btn btn-ghost btn-sm" x-on:click="close()">取消</button>
+            <button type="button" class="btn btn-primary btn-sm" x-bind:disabled="submitting" x-on:click="submit()">保存</button>
+        </div>
+    </div>
+</dialog>

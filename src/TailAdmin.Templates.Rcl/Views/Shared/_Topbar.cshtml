@@ -1,0 +1,66 @@
+@inject IOptions<AdminUiOptions> AdminUi
+@inject ICurrentAdmin CurrentAdmin
+@{
+    var ui = AdminUi.Value;
+    var breadcrumb = ViewData["Breadcrumb"] as IEnumerable<string> ?? Array.Empty<string>();
+}
+<header class="ta-topbar">
+    <button type="button" class="btn btn-ghost btn-sm btn-square" x-on:click="$store.taUi.toggleSidebar()" aria-label="切換菜單">
+        <partial name="_Icon" model="@("menu")" />
+    </button>
+
+    @if (breadcrumb.Any())
+    {
+        <nav class="hidden min-w-0 items-center gap-1 text-sm text-base-content/60 md:flex" aria-label="麵包屑">
+            @foreach (var crumb in breadcrumb)
+            {
+                <span class="truncate">@crumb</span>
+                @if (crumb != breadcrumb.Last())
+                {
+                    <span class="text-base-content/30">/</span>
+                }
+            }
+        </nav>
+    }
+
+    <div class="ml-auto flex items-center gap-1.5">
+        @if (ui.EnableSearch && !string.IsNullOrWhiteSpace(ui.SearchUrl))
+        {
+            <form method="get" action="@ui.SearchUrl" class="hidden items-center md:flex">
+                <input type="search" name="keyword" class="input input-bordered input-sm w-52" placeholder="搜索..." aria-label="全局搜索" />
+            </form>
+        }
+
+        <div class="flex items-center gap-1" x-data="{ dark: document.documentElement.classList.contains('theme-dark') }">
+            <button type="button" class="btn btn-ghost btn-sm btn-square" aria-label="切換明暗主題"
+                    x-on:click="dark = Ta.theme.toggle() === 'dark'">
+                <span x-show="!dark"><partial name="_Icon" model="@("moon")" /></span>
+                <span x-show="dark" x-cloak><partial name="_Icon" model="@("sun")" /></span>
+            </button>
+        </div>
+
+        <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-ghost btn-sm gap-2 px-2">
+                <span class="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
+                    <partial name="_Icon" model="@("user")" />
+                </span>
+                <span class="hidden max-w-28 truncate text-sm md:inline">@(CurrentAdmin.DisplayName ?? CurrentAdmin.UserName ?? "管理員")</span>
+            </div>
+            <ul tabindex="0" class="dropdown-content menu z-50 mt-2 w-52 rounded-box border border-base-300 bg-base-100 p-2 shadow-card">
+                <li class="menu-title text-xs text-base-content/50">@(CurrentAdmin.UserName ?? "admin")</li>
+                @if (CurrentAdmin.IsAuthenticated)
+                {
+                    <li>
+                        <form method="post" action="@ui.LogoutPath" class="w-full">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="flex w-full items-center gap-2">
+                                <partial name="_Icon" model="@("logout")" />
+                                退出登錄
+                            </button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</header>

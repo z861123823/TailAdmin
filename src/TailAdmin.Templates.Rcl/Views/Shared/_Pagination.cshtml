@@ -1,0 +1,34 @@
+<div class="flex flex-wrap items-center justify-between gap-2 px-1 pt-3 text-sm">
+    <div class="text-base-content/60">
+        共 <span class="font-medium text-base-content" x-text="total"></span> 條
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+        <div class="join">
+            <button type="button" class="btn btn-sm join-item" x-bind:disabled="page <= 1" x-on:click="setPage(page - 1)" aria-label="上一頁">
+                <partial name="_Icon" model="@("chevron-left")" />
+            </button>
+            <template x-for="(p, idx) in pageList()" :key="idx">
+                <button type="button"
+                        class="btn btn-sm join-item"
+                        x-bind:class="{ 'btn-active': p === page }"
+                        x-bind:disabled="p === '...'"
+                        x-on:click="setPage(p)"
+                        x-text="p"></button>
+            </template>
+            <button type="button" class="btn btn-sm join-item" x-bind:disabled="page >= pageCount()" x-on:click="setPage(page + 1)" aria-label="下一頁">
+                <partial name="_Icon" model="@("chevron-right")" />
+            </button>
+        </div>
+
+        <label class="flex items-center gap-2 text-base-content/60">
+            每頁
+            <select class="select select-bordered select-sm w-20" x-model.number="limit" x-on:change="setLimit(limit)">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+        </label>
+    </div>
+</div>

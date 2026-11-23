@@ -1,0 +1,108 @@
+@model GoodsEditModel
+@using Microsoft.AspNetCore.Mvc.Rendering
+@{
+    var types = ViewBag.TypeList as IEnumerable<SelectListItem> ?? Enumerable.Empty<SelectListItem>();
+    var initialImages = Model.PicUrl is null ? "[]" : "['" + Model.PicUrl.Replace("'", "\\'") + "']";
+    var tagValues = "[" + string.Join(",", Model.Tags.Select(tag => "'" + tag.Replace("'", "\\'") + "'")) + "]";
+}
+
+<form method="post" asp-area="Admin" asp-controller="Goods" asp-action="Save"
+      x-data="taForm()" x-on:submit.prevent="submit($el)">
+    <input type="hidden" asp-for="Id" />
+
+    <ta-input asp-for="GoodsName" label="商品名稱" required placeholder="例如：無線藍牙耳機" />
+
+    <div class="grid grid-cols-1 gap-x-4 md:grid-cols-2">
+        <ta-input asp-for="Price" label="價格" type="number" step="0.01" min="0" required />
+        <ta-select asp-for="TypeId" label="商品分類" items="types" required />
+        <ta-input asp-for="SalesVolume" label="銷量" type="number" min="0" />
+        <ta-input asp-for="AddTime" label="上架日期" type="date" />
+    </div>
+
+    <div class="form-control mb-3">
+        <span class="ta-field-label">標籤（最多 3 個）</span>
+        <div class="relative" x-data="taMultiSelect({
+                    url: '@Url.Action("TagSearch", "Goods", new { area = "Admin" })',
+                    name: 'Tags',
+                    value: @tagValues,
+                    max: 3,
+                    placeholder: '選擇標籤'
+                 })"
+             x-init="init()" x-on:click.outside="open = false">
+            <div class="input input-bordered flex h-auto min-h-9 flex-wrap items-center gap-1 py-1" x-on:click="$refs.kw.focus()">
+                <template x-for="selectedItem in selected" :key="selectedItem.value">
+                    <span class="badge badge-sm gap-1">
+                        <span x-text="selectedItem.label"></span>
+                        <button type="button" class="text-base-content/50 hover:text-error"
+                                x-on:click.stop="remove(selectedItem.value)">×</button>
+                    </span>
+                </template>
+                <input type="text" x-ref="kw" x-model="keyword"
+                       x-on:input.debounce.250ms="search()" x-on:focus="onFocus()"
+                       class="min-w-24 flex-1 bg-transparent text-sm outline-none"
+                       placeholder="選擇標籤" />
+            </div>
+            <div class="absolute z-50 mt-1 max-h-52 w-full overflow-auto rounded-box border border-base-300 bg-base-100 p-1 shadow-card"
+                 x-show="open" x-cloak>
+                <div class="px-2 py-1 text-xs text-base-content/50" x-show="loading">搜索中…</div>
+                <template x-for="option in options" :key="option.Value">
+                    <button type="button" class="flex w-full items-center justify-between rounded px-2 py-1 text-left text-sm hover:bg-base-200"
+                            x-on:click="select(option)">
+                        <span x-text="option.Label"></span>
+                        <span class="text-primary" x-show="isSelected(option.Value)">✓</span>
+                    </button>
+                </template>
+                <div class="px-2 py-2 text-xs text-base-content/50" x-show="!loading && options.length === 0">無匹配項</div>
+            </div>
+            <template x-for="selectedItem in selected" :key="'hidden-' + selectedItem.value">
+                <input type="hidden" name="Tags" x-bind:value="selectedItem.value" />
+            </template>
+        </div>
+        <span class="ta-field-hint">輸入關鍵字遠程搜索，支持多選</span>
+    </div>
+
+    <div class="form-control mb-3">
+        <span class="ta-field-label">商品圖片</span>
+        <div x-data="taUploader({
+                    url: '@Url.Action("UploadImage", "Goods", new { area = "Admin" })',
+                    hiddenName: 'PicUrl',
+                    accept: 'image/png,image/jpeg,image/webp',
+                    maxSize: 2097152,
+                    max: 1
+                 })"
+             x-init="init(@initialImages)">
+            <input type="file" class="hidden" x-ref="file" x-on:change="onChange($event)" accept="image/png,image/jpeg,image/webp" />
+            <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn btn-sm btn-outline gap-1" x-on:click="choose()">
+                    <partial name="_Icon" model="@("upload")" />
+                    上傳圖片
+                </button>
+                <span class="text-xs text-base-content/50" x-show="uploading">上傳中…</span>
+            </div>
+            <p class="ta-field-error" x-text="error"></p>
+            <div class="mt-2 flex flex-wrap gap-2">
+                <template x-for="item in items" :key="item.uid">
+                    <div class="relative">
+                        <img x-show="preview && item.url" x-bind:src="item.url" class="h-16 w-16 rounded object-cover" alt="" />
+                        <button type="button" class="btn btn-error btn-circle btn-xs absolute -right-1 -top-1"
+                                x-on:click="remove(item.uid)">×</button>
+                        <progress class="progress progress-primary w-16" x-show="item.status === 'uploading'"
+                                  x-bind:value="item.progress" max="100"></progress>
+                    </div>
+                </template>
+            </div>
+            <template x-for="item in items" :key="'hidden-' + item.uid">
+                <input type="hidden" x-bind:name="hiddenName" x-bind:value="item.url" />
+            </template>
+        </div>
+        <span class="ta-field-hint">支援 png / jpeg / webp，單圖不超過 2MB</span>
+    </div>
+
+    <ta-toggle asp-for="IsHot" label="熱銷" hint="開啟後在列表中標記為熱銷" />
+    <ta-textarea asp-for="Remark" label="備註" rows="3" placeholder="選填" />
+
+    <div class="flex justify-end gap-2 pt-1">
+        <button type="button" class="btn btn-ghost btn-sm" x-on:click="Ta.modal.close('goodsEdit')">取消</button>
+        <button type="submit" class="btn btn-primary btn-sm" x-bind:disabled="submitting">保存</button>
+    </div>
+</form>

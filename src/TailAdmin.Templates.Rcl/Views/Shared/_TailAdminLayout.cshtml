@@ -1,0 +1,98 @@
+@inject IOptions<AdminUiOptions> AdminUi
+@inject IHostEnvironment HostEnvironment
+@inject ILogger<AdminMenuService> Logger
+@inject AdminMenuService MenuService
+@{
+    var ui = AdminUi.Value;
+    var pageTitle = ViewData["Title"] as string ?? "儀表盤";
+    var subtitle = ViewData["Subtitle"] as string;
+    var menuKey = ViewData["MenuKey"] as string;
+
+    if (!string.IsNullOrWhiteSpace(menuKey) && !MenuService.ContainsKey(menuKey))
+    {
+        if (HostEnvironment.IsDevelopment())
+        {
+            throw new InvalidOperationException($"菜单键「{menuKey}」未在 AdminUi:Menu 中配置。");
+        }
+
+        Logger.LogWarning("菜单键 {MenuKey} 未配置，侧边栏将不做高亮", menuKey);
+    }
+
+    var breadcrumb = (ViewData["Breadcrumb"] as IEnumerable<string> ?? Array.Empty<string>()).ToList();
+    var pageHeader = new PageHeaderModel { Title = pageTitle, Subtitle = subtitle, Breadcrumb = breadcrumb };
+
+    var themeMode = (ui.DefaultTheme ?? "system").ToLowerInvariant();
+    var isDark = themeMode == "dark";
+    var themeName = isDark ? $"{ui.BrandName}-dark" : ui.BrandName;
+    var useDatepicker = ViewData["UseDatepicker"] is true;
+    var nonce = Context.Items["CspNonce"] as string;
+}
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="@themeName" class="@(isDark ? "theme-dark" : "theme-light")">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@pageTitle · @ui.SiteName</title>
+    <script nonce="@nonce">
+        (function () {
+            var root = document.documentElement;
+            var brand = '@ui.BrandName';
+            var stored = null;
+            try { stored = localStorage.getItem('ta-theme'); } catch (e) { }
+            var mode = stored;
+            if (mode !== 'light' && mode !== 'dark') {
+                var preset = '@themeMode';
+                mode = preset === 'light' || preset === 'dark' ? preset
+                    : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            }
+            root.setAttribute('data-theme', mode === 'dark' ? brand + '-dark' : brand);
+            root.classList.toggle('theme-dark', mode === 'dark');
+            root.classList.toggle('theme-light', mode !== 'dark');
+        })();
+    </script>
+    <link rel="stylesheet" href="~/_content/TailAdmin.Templates.Rcl/css/tailadmin.css" asp-append-version="true" />
+    @if (useDatepicker)
+    {
+        <link rel="stylesheet" href="~/_content/TailAdmin.Templates.Rcl/css/vendor/flatpickr.min.css" asp-append-version="true" />
+    }
+    @await RenderSectionAsync("Styles", false)
+</head>
+<body class="ta-app ta-shell" x-data>
+    <div class="flex min-h-screen">
+        <partial name="_Sidebar" />
+
+        <div class="ta-sidebar-backdrop" x-show="$store.taUi.sidebarOpen" x-cloak x-on:click="$store.taUi.closeSidebar()"></div>
+
+        <div class="ta-main flex min-h-screen flex-1 flex-col" x-bind:class="{ 'ta-main-collapsed': $store.taUi.collapsed }">
+            <partial name="_Topbar" />
+
+            <main class="ta-content flex-1">
+                <div class="ta-page-header">
+                    <partial name="_PageHeader" model="pageHeader" />
+                    <div class="flex flex-wrap items-center gap-2">
+                        @await RenderSectionAsync("PageActions", false)
+                    </div>
+                </div>
+
+                @RenderBody()
+            </main>
+
+            <footer class="border-t border-base-300 px-4 py-3 text-center text-xs text-base-content/40 md:px-6">
+                @ui.SiteName · TailAdmin 通用模板
+            </footer>
+        </div>
+    </div>
+
+    @Html.AntiForgeryToken()
+    <partial name="_ToastHost" />
+
+    @if (useDatepicker)
+    {
+        <script src="~/_content/TailAdmin.Templates.Rcl/js/vendor/flatpickr.min.js" asp-append-version="true"></script>
+        <script src="~/_content/TailAdmin.Templates.Rcl/js/vendor/flatpickr.zh.js" asp-append-version="true"></script>
+    }
+
+    <partial name="_AdminScripts" model="ui" />
+    @await RenderSectionAsync("Scripts", false)
+</body>
+</html>

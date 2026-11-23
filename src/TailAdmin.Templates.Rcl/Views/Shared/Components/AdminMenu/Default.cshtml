@@ -1,0 +1,60 @@
+@model AdminMenuViewModel
+@{
+    var activeKey = Model.ActiveKey;
+    var controller = Model.CurrentController;
+    var action = Model.CurrentAction;
+
+    bool IsActive(AdminMenuItem item)
+    {
+        if (!string.IsNullOrWhiteSpace(activeKey))
+        {
+            return string.Equals(item.Key, activeKey, StringComparison.OrdinalIgnoreCase);
+        }
+        return !string.IsNullOrWhiteSpace(item.Controller)
+            && string.Equals(item.Controller, controller, StringComparison.OrdinalIgnoreCase)
+            && (string.IsNullOrWhiteSpace(item.Action) || string.Equals(item.Action, action, StringComparison.OrdinalIgnoreCase));
+    }
+
+    bool HasActiveChild(AdminMenuItem item) => item.Children.Any(IsActive);
+}
+
+@if (Model.Items.Count == 0)
+{
+    <p class="px-2 py-6 text-center text-xs text-base-content/50">暫無可用菜單</p>
+}
+else
+{
+    <nav class="space-y-1">
+        @foreach (var item in Model.Items)
+        {
+            var active = IsActive(item) || HasActiveChild(item);
+            var href = !string.IsNullOrWhiteSpace(item.Url)
+                ? item.Url
+                : Url.Action(item.Action ?? "Index", item.Controller, new { area = item.Area });
+
+            <a href="@href"
+               class="ta-sidebar-link @(active ? "ta-sidebar-link-active" : string.Empty)"
+               title="@item.Title"
+               target="@(item.NewWindow ? "_blank" : null)"
+               rel="@(item.NewWindow ? "noopener" : null)">
+                <partial name="_Icon" model="@item.Icon" />
+                <span class="truncate" x-show="!$store.taUi.collapsed">@item.Title</span>
+            </a>
+
+            @foreach (var child in item.Children)
+            {
+                var childActive = IsActive(child);
+                var childHref = !string.IsNullOrWhiteSpace(child.Url)
+                    ? child.Url
+                    : Url.Action(child.Action ?? "Index", child.Controller, new { area = child.Area });
+                <a href="@childHref"
+                   class="ta-sidebar-link ml-4 @(childActive ? "ta-sidebar-link-active" : string.Empty)"
+                   title="@child.Title"
+                   x-show="!$store.taUi.collapsed">
+                    <partial name="_Icon" model="@child.Icon" />
+                    <span class="truncate">@child.Title</span>
+                </a>
+            }
+        }
+    </nav>
+}

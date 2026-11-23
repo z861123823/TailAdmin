@@ -1,0 +1,29 @@
+@{
+    var table = new TaTableModel
+    {
+        Id = "goodsTable",
+        Url = Url.Action("List", "Goods", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 20,
+        EmptyText = "暫無商品數據",
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "GoodsName", Label = "商品名稱" },
+            new() { Key = "Price", Label = "價格", Type = "money", Align = "right" },
+            new() { Key = "TypeName", Label = "分類", Sortable = false },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right", Sortable = false },
+            new() { Key = "AddTime", Label = "上架時間", Type = "date", Sortable = false }
+        }
+    };
+
+    var toolbar = new TableToolbarModel
+    {
+        TableId = "goodsTable",
+        Description = "服務端分頁、排序與關鍵字查詢示例",
+        Placeholder = "搜索商品名稱"
+    };
+}
+
+<partial name="_TableToolbar" model="toolbar" />
+
+<partial name="_TaTable" model="table" />

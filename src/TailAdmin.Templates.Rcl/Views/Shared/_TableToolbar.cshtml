@@ -1,0 +1,40 @@
+@model TableToolbarModel
+@{
+    var placeholder = string.IsNullOrWhiteSpace(Model.Placeholder) ? "輸入關鍵字，留空查詢全部" : Model.Placeholder;
+}
+<div class="mb-3 flex flex-wrap items-center justify-between gap-2"
+     x-data="taSearch({ tableId: '@Model.TableId', placeholder: '@placeholder' })">
+    <p class="text-sm text-base-content/60">@Model.Description</p>
+
+    <div class="flex items-center gap-2">
+        <button type="button" class="btn btn-sm btn-outline gap-1" x-on:click="open()">
+            <partial name="_Icon" model="@("search")" />
+            查詢
+        </button>
+
+        @if (!string.IsNullOrWhiteSpace(Model.CreateText) && !string.IsNullOrWhiteSpace(Model.CreateModalId) && !string.IsNullOrWhiteSpace(Model.CreateUrl))
+        {
+            <button type="button" class="btn btn-sm btn-primary gap-1"
+                    x-on:click="Ta.modal.load('@Model.CreateModalId', '@Model.CreateUrl', {})">
+                <partial name="_Icon" model="@("plus")" />
+                @Model.CreateText
+            </button>
+        }
+    </div>
+
+    <dialog class="modal" x-ref="dlg" x-on:close="keyword = lastKeyword">
+        <div class="modal-box max-w-md">
+            <h3 class="text-base font-semibold">查詢</h3>
+            <form class="py-3" x-on:submit.prevent="confirm()">
+                <input type="text" class="input input-bordered input-sm w-full"
+                       x-ref="kw" x-model="keyword"
+                       x-on:keydown.enter.prevent="confirm()"
+                       placeholder="@placeholder" />
+            </form>
+            <div class="modal-action">
+                <button type="button" class="btn btn-ghost btn-sm" x-on:click="reset()">重置</button>
+                <button type="button" class="btn btn-primary btn-sm" x-on:click="confirm()">查詢</button>
+            </div>
+        </div>
+    </dialog>
+</div>

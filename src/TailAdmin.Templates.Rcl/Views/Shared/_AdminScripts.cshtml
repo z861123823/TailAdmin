@@ -1,0 +1,11 @@
+@model AdminUiOptions
+<script>
+    window.TaConfig = {
+        brandName: '@Model.BrandName',
+        defaultTheme: '@Model.DefaultTheme',
+        loginUrl: '@Model.LoginPath',
+        logoutUrl: '@Model.LogoutPath',
+        sidebarCollapsed: @(Model.SidebarCollapsed ? "true" : "false")
+    };
+</script>
+<script src="~/_content/TailAdmin.Templates.Rcl/js/tailadmin.js" defer></script>
