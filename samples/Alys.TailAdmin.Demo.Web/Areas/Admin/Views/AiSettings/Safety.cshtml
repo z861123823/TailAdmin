@@ -2,6 +2,7 @@
     const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
     const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
     const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
+    const string switchClass = "relative h-6 w-11 shrink-0 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700";
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12">
     <div class="space-y-4 md:space-y-6 xl:col-span-8">
@@ -15,7 +16,7 @@
                         <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">攔截描述暴力行為的內容</span>
                     </span>
                     <input type="checkbox" class="peer sr-only" checked />
-                    <span class="relative h-6 w-11 shrink-0 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+                    <span class="@switchClass"></span>
                 </label>
                 <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-100 p-4 dark:border-gray-800">
                     <span>
@@ -23,7 +24,7 @@
                         <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">攔截針對特定群體的攻擊性內容</span>
                     </span>
                     <input type="checkbox" class="peer sr-only" checked />
-                    <span class="relative h-6 w-11 shrink-0 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+                    <span class="@switchClass"></span>
                 </label>
                 <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-100 p-4 dark:border-gray-800">
                     <span>
@@ -31,18 +32,58 @@
                         <span class="mt-0.5 block text-theme-xs text-gray-500 dark:text-gray-400">自動遮罩身分證號、手機號等敏感資訊</span>
                     </span>
                     <input type="checkbox" class="peer sr-only" />
-                    <span class="relative h-6 w-11 shrink-0 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+                    <span class="@switchClass"></span>
                 </label>
+            </div>
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                    <label class="@labelClass" for="safety-level">攔截嚴格度</label>
+                    <select id="safety-level" class="@inputClass">
+                        <option>標準（建議）</option>
+                        <option>寬鬆</option>
+                        <option>嚴格</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="@labelClass" for="safety-action">命中後處理</label>
+                    <select id="safety-action" class="@inputClass">
+                        <option>直接拒絕請求</option>
+                        <option>替換為佔位符</option>
+                        <option>僅記錄不攔截</option>
+                    </select>
+                </div>
             </div>
         </section>
 
-        <section class="@cardClass">
-            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">敏感詞</h3>
-            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">每行一個，命中後將直接拒絕請求。</p>
-            <textarea rows="5"
-                      class="mt-4 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                      placeholder="例如：內部代碼、未公開價格">內部代碼
-未公開價格</textarea>
+        <section class="@cardClass" x-data="{ words: ['內部代碼', '未公開價格'], draft: '', add() { var v = this.draft.trim(); if (v && !this.words.includes(v)) { this.words.push(v); } this.draft = ''; } }">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                    <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">敏感詞</h3>
+                    <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">命中任一詞將按上方策略處理。</p>
+                </div>
+                <span class="text-theme-xs text-gray-500 dark:text-gray-400">共 <span class="font-medium text-gray-700 dark:text-gray-300" x-text="words.length"></span> 個</span>
+            </div>
+            <div class="mt-4 flex flex-wrap gap-2">
+                <template x-for="(word, wi) in words" :key="word">
+                    <span class="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-gray-50 py-1 pr-1 pl-2.5 text-theme-xs text-gray-700 dark:border-gray-700 dark:bg-white/5 dark:text-gray-300">
+                        <span x-text="word"></span>
+                        <button type="button" class="rounded p-0.5 text-gray-400 hover:bg-gray-200 hover:text-gray-600 dark:hover:bg-white/10 dark:hover:text-gray-200"
+                                x-on:click="words.splice(wi, 1)" aria-label="移除">
+                            <partial name="_Icon" model="@("close")" />
+                        </button>
+                    </span>
+                </template>
+                <span class="text-theme-xs text-gray-400 dark:text-gray-500" x-show="words.length === 0" x-cloak>尚未新增敏感詞</span>
+            </div>
+            <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+                <input type="text" x-model="draft" x-on:keydown.enter.prevent="add()" placeholder="輸入敏感詞後按 Enter 或點擊新增"
+                       class="h-11 flex-1 rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                <button type="button" class="inline-flex items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-theme-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                        x-on:click="add()">
+                    <partial name="_Icon" model="@("plus")" />
+                    新增
+                </button>
+            </div>
         </section>
     </div>
 
@@ -62,7 +103,29 @@
                     <label class="@labelClass" for="rate-daily">每日上限（USD）</label>
                     <input id="rate-daily" type="number" class="@inputClass" value="20" min="0" step="1" />
                 </div>
+                <div>
+                    <label class="@labelClass" for="rate-concurrent">並發上限</label>
+                    <input id="rate-concurrent" type="number" class="@inputClass" value="8" min="1" />
+                </div>
             </div>
+        </section>
+
+        <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">安全基線</h3>
+            <ul class="mt-3 space-y-2.5 text-theme-sm text-gray-600 dark:text-gray-400">
+                <li class="flex items-start gap-2">
+                    <span class="mt-0.5 text-green-500"><partial name="_Icon" model="@("check")" /></span>
+                    日誌敏感欄位自動脫敏
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="mt-0.5 text-green-500"><partial name="_Icon" model="@("check")" /></span>
+                    金鑰不落地，僅以雜湊儲存
+                </li>
+                <li class="flex items-start gap-2">
+                    <span class="mt-0.5 text-green-500"><partial name="_Icon" model="@("check")" /></span>
+                    異常流量自動熔斷
+                </li>
+            </ul>
         </section>
 
         <button type="button"

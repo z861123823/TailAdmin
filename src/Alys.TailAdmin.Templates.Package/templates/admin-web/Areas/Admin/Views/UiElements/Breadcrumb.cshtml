@@ -28,6 +28,18 @@
             new() { Text = "當前頁面" }
         }
     };
+    var deep = new TaBreadcrumbModel
+    {
+        HomeText = "工作台",
+        HomeUrl = "/Admin/Home/Index",
+        Items = new List<TaBreadcrumbItemModel>
+        {
+            new() { Text = "運營中心", Url = "#" },
+            new() { Text = "內容管理", Url = "#" },
+            new() { Text = "文章列表", Url = "#" },
+            new() { Text = "文章編輯" }
+        }
+    };
 }
 <div class="flex flex-col gap-4 md:gap-6">
     <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
@@ -48,6 +60,31 @@
         <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">單層路徑</h3>
         <div class="mt-4">
             <partial name="_TaBreadcrumb" model="simple" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">深層路徑</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">層級較深時僅最後一項為當前頁，其餘保持可點擊。</p>
+        <div class="mt-4">
+            <partial name="_TaBreadcrumb" model="deep" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">置於頁首卡片</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">與標題、操作按鈕組合，構成標準的頁首區塊。</p>
+        <div class="mt-4 flex flex-wrap items-start justify-between gap-4 rounded-xl border border-gray-100 bg-gray-50/60 p-4 dark:border-gray-800 dark:bg-white/[0.02]">
+            <div>
+                <partial name="_TaBreadcrumb" model="withHome" />
+                <h4 class="mt-2 text-lg font-semibold text-gray-800 dark:text-white/90">編輯商品</h4>
+                <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">更新商品資訊、規格與上架狀態</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">取消</button>
+                <button type="button" class="rounded-lg bg-brand-500 px-3 py-2 text-theme-xs font-medium text-white hover:bg-brand-600"
+                        onclick="Ta.toast.success('已保存（演示）')">保存</button>
+            </div>
         </div>
     </section>
 </div>

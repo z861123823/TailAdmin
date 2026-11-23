@@ -28,6 +28,25 @@
             new() { Text = "售後處理", Badge = "1" }
         }
     };
+    var notifications = new TaListModel
+    {
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "系統將於今晚 23:00 維護", Description = "預計 30 分鐘，期間無法登入", Icon = "alert", Badge = "新" },
+            new() { Text = "你有 3 筆退款申請待審核", Description = "最早一筆已等待 2 天", Icon = "order", Badge = "3", Href = "#" },
+            new() { Text = "本月帳單已生成", Description = "應付金額 $86.40，11-30 前繳納", Icon = "mail", Href = "#" }
+        }
+    };
+    var account = new TaListModel
+    {
+        Items = new List<TaListItemModel>
+        {
+            new() { Text = "個人資料", Icon = "user", Href = "#" },
+            new() { Text = "通知設定", Icon = "bell", Href = "#", Active = true },
+            new() { Text = "安全與登入", Icon = "settings", Href = "#" },
+            new() { Text = "登出", Icon = "logout", Href = "#" }
+        }
+    };
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
     <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
@@ -41,6 +60,20 @@
         <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">圖標與徽章</h3>
         <div class="mt-3">
             <partial name="_TaList" model="rich" />
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">通知列表</h3>
+        <div class="mt-3">
+            <partial name="_TaList" model="notifications" />
+        </div>
+    </section>
+
+    <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="px-5 pt-5 text-base font-semibold text-gray-800 md:px-6 md:pt-6 dark:text-white/90">設定選單</h3>
+        <div class="mt-3">
+            <partial name="_TaList" model="account" />
         </div>
     </section>
 

@@ -8,6 +8,7 @@
         new { Title = "競品分析", Category = "市場", Text = "對比 [競品 A] 與 [自家產品] 的定價、功能與目標客群，輸出三條差異化建議。" },
         new { Title = "會議紀要整理", Category = "協作", Text = "把以下會議記錄整理成紀要，輸出結論、待辦與負責人：[記錄]" }
     };
+    var categories = prompts.Select(p => p.Category).Distinct().ToArray();
 }
 <div class="flex flex-wrap items-center justify-between gap-3">
     <div>
@@ -21,22 +22,49 @@
     </button>
 </div>
 
-<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-2">
-    @foreach (var prompt in prompts)
-    {
-        var badge = new TaBadgeModel { Text = prompt.Category, Variant = "light" };
-        <article class="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-            <div class="flex items-start justify-between gap-3">
-                <h4 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">@prompt.Title</h4>
-                <partial name="_TaBadge" model="badge" />
+<div x-data="{ q: '', cat: '全部' }">
+    <div class="mt-4 rounded-2xl border border-gray-200 bg-white p-4 md:mt-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <div class="relative w-full md:max-w-xs">
+                <span class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">
+                    <partial name="_Icon" model="@("search")" />
+                </span>
+                <input type="search" x-model="q" placeholder="搜尋標題或內容"
+                       class="h-10 w-full rounded-lg border border-gray-300 bg-transparent pr-4 pl-9 text-theme-sm text-gray-800 placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
             </div>
-            <p class="mt-3 flex-1 rounded-xl bg-gray-50 p-4 text-theme-sm leading-6 text-gray-600 dark:bg-white/5 dark:text-gray-400">@prompt.Text</p>
-            <div class="mt-4 flex justify-end gap-2">
-                <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
-                        onclick="Ta.toast.success('已複製（演示）')">複製</button>
-                <button type="button" class="rounded-lg bg-brand-500 px-3 py-2 text-theme-xs font-medium text-white hover:bg-brand-600"
-                        onclick="Ta.toast.info('已帶入 AI 助手（演示）')">使用</button>
+            <div class="flex flex-wrap items-center gap-2">
+                <button type="button" x-on:click="cat = '全部'"
+                        x-bind:class="cat === '全部' ? 'bg-brand-500 text-white border-brand-500' : 'bg-white text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700'"
+                        class="rounded-full border px-3 py-1.5 text-theme-xs font-medium transition-colors">全部</button>
+                @foreach (var category in categories)
+                {
+                    <button type="button" x-on:click="cat = '@category'"
+                            x-bind:class="cat === '@category' ? 'bg-brand-500 text-white border-brand-500' : 'bg-white text-gray-700 border-gray-300 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700'"
+                            class="rounded-full border px-3 py-1.5 text-theme-xs font-medium transition-colors">@category</button>
+                }
             </div>
-        </article>
-    }
+        </div>
+    </div>
+
+    <div class="mt-4 grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+        @foreach (var prompt in prompts)
+        {
+            var badge = new TaBadgeModel { Text = prompt.Category, Variant = "light" };
+            var haystack = prompt.Title + " " + prompt.Text;
+            <article class="flex flex-col rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]"
+                     x-show="(cat === '全部' || cat === '@prompt.Category') && '@haystack'.toLowerCase().includes(q.toLowerCase())">
+                <div class="flex items-start justify-between gap-3">
+                    <h4 class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">@prompt.Title</h4>
+                    <partial name="_TaBadge" model="badge" />
+                </div>
+                <p class="mt-3 flex-1 rounded-xl bg-gray-50 p-4 text-theme-sm leading-6 text-gray-600 dark:bg-white/5 dark:text-gray-400">@prompt.Text</p>
+                <div class="mt-4 flex justify-end gap-2">
+                    <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5"
+                            onclick="Ta.toast.success('已複製（演示）')">複製</button>
+                    <button type="button" class="rounded-lg bg-brand-500 px-3 py-2 text-theme-xs font-medium text-white hover:bg-brand-600"
+                            onclick="Ta.toast.info('已帶入 AI 助手（演示）')">使用</button>
+                </div>
+            </article>
+        }
+    </div>
 </div>

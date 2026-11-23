@@ -27,26 +27,82 @@
             new() { Text = "草稿" }
         }
     };
+    var interval = new TaButtonGroupModel
+    {
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "近 7 天", Icon = "calendar" },
+            new() { Text = "近 30 天", Icon = "calendar", Variant = "primary" },
+            new() { Text = "近 90 天", Icon = "calendar" },
+            new() { Text = "自定義", Icon = "settings" }
+        }
+    };
+    var withDisabled = new TaButtonGroupModel
+    {
+        Size = "sm",
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "草稿", Variant = "primary" },
+            new() { Text = "待審核", Disabled = true },
+            new() { Text = "歸檔", Disabled = true }
+        }
+    };
+    var viewSwitch = new TaButtonGroupModel
+    {
+        Size = "sm",
+        Items = new List<TaButtonModel>
+        {
+            new() { Text = "表格", Icon = "menu", Variant = "primary" },
+            new() { Text = "卡片", Icon = "components" },
+            new() { Text = "看板", Icon = "order" }
+        }
+    };
 }
 <div class="flex flex-col gap-4 md:gap-6">
+    <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基礎用法</h3>
+            <div class="mt-4">
+                <partial name="_TaButtonGroup" model="basic" />
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帶圖標（Small）</h3>
+            <div class="mt-4">
+                <partial name="_TaButtonGroup" model="small" />
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">Large</h3>
+            <div class="mt-4">
+                <partial name="_TaButtonGroup" model="large" />
+            </div>
+        </section>
+
+        <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">含禁用項</h3>
+            <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">禁用項不響應點擊，適合流程未流轉到的階段。</p>
+            <div class="mt-4">
+                <partial name="_TaButtonGroup" model="withDisabled" />
+            </div>
+        </section>
+    </div>
+
     <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基礎用法</h3>
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">區間切換（四段）</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">儀表盤常用：以分段按鈕切換統計區間，當前項使用品牌色。</p>
         <div class="mt-4">
-            <partial name="_TaButtonGroup" model="basic" />
+            <partial name="_TaButtonGroup" model="interval" />
         </div>
     </section>
 
     <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">帶圖標（Small）</h3>
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">視圖切換</h3>
+        <p class="mt-1 text-theme-sm text-gray-500 dark:text-gray-400">列表頁右上角的表格 / 卡片 / 看板切換。</p>
         <div class="mt-4">
-            <partial name="_TaButtonGroup" model="small" />
-        </div>
-    </section>
-
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">Large</h3>
-        <div class="mt-4">
-            <partial name="_TaButtonGroup" model="large" />
+            <partial name="_TaButtonGroup" model="viewSwitch" />
         </div>
     </section>
 </div>

@@ -22,11 +22,38 @@
         Subtitle = "Body 支持受信任的 HTML 片段",
         Body = Html.Raw("<div class=\"flex items-center gap-3\"><span class=\"inline-flex size-10 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400\">✓</span><div><p class=\"text-theme-sm font-medium text-gray-800 dark:text-white/90\">檢查完成</p><p class=\"text-theme-xs text-gray-500 dark:text-gray-400\">所有欄位均已通過校驗</p></div></div>")
     };
+    var stat = new TaCardModel
+    {
+        Icon = "order",
+        Title = "本月訂單",
+        Subtitle = "含待付款與售後",
+        Body = Html.Raw("<div class=\"mt-1 flex items-end gap-3\"><p class=\"text-3xl font-semibold text-gray-800 dark:text-white/90\">2,846</p><span class=\"mb-1.5 inline-flex items-center gap-0.5 rounded-full bg-green-50 px-2 py-0.5 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-400\">↑ 18.2%</span></div><p class=\"mt-2 text-theme-xs text-gray-500 dark:text-gray-400\">較上月增加 438 筆，退款率 1.2%</p>"),
+        FooterText = "統計週期：11-01 至 11-23"
+    };
+    var imageCard = new TaCardModel
+    {
+        Padding = false,
+        Body = Html.Raw("<div class=\"h-36 w-full rounded-t-2xl bg-gradient-to-br from-brand-500 to-brand-700\"></div><div class=\"p-5 md:p-6\"><h3 class=\"text-base font-semibold text-gray-800 dark:text-white/90\">春季新品企劃</h3><p class=\"mt-2 text-theme-sm leading-6 text-gray-500 dark:text-gray-400\">以「輕盈通勤」為主題，覆蓋數碼、服飾與家居三條產品線。</p><a href=\"#\" class=\"mt-3 inline-flex items-center gap-1 text-theme-sm font-medium text-brand-500 hover:text-brand-600\">查看企劃<svg class=\"size-4\" fill=\"none\" viewBox=\"0 0 24 24\" stroke-width=\"1.5\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" d=\"m8.25 4.5 7.5 7.5-7.5 7.5\"/></svg></a></div>"),
+        Hoverable = true
+    };
+    var actionCard = new TaCardModel
+    {
+        Title = "待處理審核",
+        Subtitle = "共 7 筆申請等待處理",
+        Text = "包含 3 筆退款申請、2 筆商家入駐與 2 筆優惠券審批。",
+        Body = Html.Raw("<div class=\"mt-4 flex flex-wrap gap-2\"><button type=\"button\" class=\"rounded-lg bg-brand-500 px-3 py-2 text-theme-xs font-medium text-white hover:bg-brand-600\" onclick=\"Ta.toast.success('已同意（演示）')\">全部同意</button><button type=\"button\" class=\"rounded-lg border border-gray-300 px-3 py-2 text-theme-xs font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5\" onclick=\"Ta.toast.info('已稍後處理（演示）')\">稍後處理</button></div>"),
+        FooterText = "請於今日 18:00 前完成"
+    };
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
     <partial name="_TaCard" model="basic" />
     <partial name="_TaCard" model="withLink" />
+    <partial name="_TaCard" model="stat" />
+    <partial name="_TaCard" model="imageCard" />
     <div class="xl:col-span-2">
         <partial name="_TaCard" model="customBody" />
+    </div>
+    <div class="xl:col-span-2">
+        <partial name="_TaCard" model="actionCard" />
     </div>
 </div>

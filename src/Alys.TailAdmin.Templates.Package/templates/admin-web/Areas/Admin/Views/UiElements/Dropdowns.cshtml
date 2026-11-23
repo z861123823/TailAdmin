@@ -33,6 +33,33 @@
             new() { Text = "匯出 Excel", Icon = "upload", OnClick = "Ta.toast.info('匯出 Excel')" }
         }
     };
+    var wide = new TaDropdownModel
+    {
+        TriggerText = "批次操作",
+        TriggerIcon = "components",
+        Width = "lg",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "批次上架", Icon = "check", OnClick = "Ta.toast.success('已批次上架（演示）')" },
+            new() { Text = "批次下架", Icon = "close", OnClick = "Ta.toast.info('已批次下架（演示）')" },
+            new() { Text = "匯出所選", Icon = "upload", DividerBefore = true, OnClick = "Ta.toast.info('已匯出（演示）')" },
+            new() { Text = "歸檔（需管理員權限）", Icon = "empty", Disabled = true }
+        }
+    };
+    var light = new TaDropdownModel
+    {
+        TriggerText = "篩選",
+        TriggerIcon = "search",
+        Variant = "light",
+        Size = "sm",
+        Items = new List<TaDropdownItemModel>
+        {
+            new() { Text = "全部訂單", Url = "#" },
+            new() { Text = "待付款", Url = "#" },
+            new() { Text = "待發貨", Url = "#" },
+            new() { Text = "已完成", Url = "#" }
+        }
+    };
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
     <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
@@ -44,7 +71,7 @@
 
     <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
         <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">右對齊</h3>
-        <div class="mt-4">
+        <div class="mt-4 flex justify-end">
             <partial name="_TaDropdown" model="rightAligned" />
         </div>
     </section>
@@ -53,6 +80,20 @@
         <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">主要按鈕觸發</h3>
         <div class="mt-4">
             <partial name="_TaDropdown" model="primary" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">寬選單 + 禁用項</h3>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="wide" />
+        </div>
+    </section>
+
+    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
+        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">淺色觸發器</h3>
+        <div class="mt-4">
+            <partial name="_TaDropdown" model="light" />
         </div>
     </section>
 
