@@ -1,236 +1,1841 @@
-@{
-    const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
-    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
-    const string hintClass = "mt-1.5 text-theme-xs text-gray-500 dark:text-gray-400";
+<div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
+  <div class="space-y-6">
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      默認輸入
+    </h3>
+  </div>
 
-    var categorySelect = new TaSelectModel
-    {
-        Name = "demo-select",
-        Id = "demo-select",
-        Placeholder = "請選擇分類",
-        Options = new()
-        {
-            new() { Value = "1", Text = "數碼" },
-            new() { Value = "2", Text = "服飾" },
-            new() { Value = "3", Text = "家居" }
-        }
-    };
-}
-<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-2">
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">文字輸入</h3>
-        <div class="mt-4 space-y-4">
-            <div>
-                <label class="@labelClass" for="demo-text">姓名</label>
-                <input id="demo-text" type="text" class="@inputClass" placeholder="請輸入姓名" />
-            </div>
-            <div>
-                <label class="@labelClass" for="demo-email">郵箱</label>
-                <input id="demo-email" type="email" class="@inputClass" placeholder="you@example.com" />
-                <p class="@hintClass">我們不會向第三方分享你的郵箱。</p>
-            </div>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="@labelClass" for="demo-password">密碼</label>
-                    <input id="demo-password" type="password" class="@inputClass" placeholder="至少 6 位字元" />
-                </div>
-                <div>
-                    <label class="@labelClass" for="demo-number">數量</label>
-                    <input id="demo-number" type="number" class="@inputClass" value="10" min="1" />
-                </div>
-            </div>
-            <div>
-                <label class="@labelClass" for="demo-disabled">禁用狀態</label>
-                <input id="demo-disabled" type="text" class="@inputClass cursor-not-allowed opacity-60" value="不可編輯" disabled />
-            </div>
-        </div>
-    </section>
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        Input
+      </label>
+      <input
+        type="text"
+        class="h-11 w-full min-w-0 rounded-[10px] border border-gray-300 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-500 dark:focus:border-brand-500/40"
+      />
+    </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">下拉與日期</h3>
-        <div class="mt-4 space-y-4">
-            <div>
-                <label class="@labelClass" for="demo-select">所屬分類</label>
-                <partial name="_TaSelect" model="categorySelect" />
-            </div>
-            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                    <label class="@labelClass" for="demo-date">日期</label>
-                    <input id="demo-date" type="text" class="@inputClass" x-datepicker autocomplete="off" placeholder="選擇日期" />
-                </div>
-                <div>
-                    <label class="@labelClass" for="demo-time">時間</label>
-                    <input id="demo-time" type="text" class="@inputClass" autocomplete="off" placeholder="選擇時間"
-                           x-datepicker="{ enableTime: true, noCalendar: true, time_24hr: true, dateFormat: 'H:i' }" />
-                </div>
-            </div>
-            <div>
-                <label class="@labelClass" for="demo-file">附件</label>
-                <input id="demo-file" type="file"
-                       class="block w-full cursor-pointer rounded-lg border border-gray-300 bg-transparent text-theme-sm text-gray-500 shadow-theme-xs file:mr-4 file:border-0 file:bg-gray-50 file:px-4 file:py-2.5 file:text-theme-sm file:font-medium file:text-gray-700 hover:file:bg-gray-100 dark:border-gray-700 dark:text-gray-400 dark:file:bg-white/5 dark:file:text-gray-300" />
-                <p class="@hintClass">支援 PNG、JPG，單檔不超過 5MB。</p>
-            </div>
-        </div>
-    </section>
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        帶佔位提示
+      </label>
+      <input
+        type="text"
+        placeholder="info@@gmail.com"
+        class="h-11 w-full min-w-0 rounded-[10px] border border-gray-300 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-500 dark:focus:border-brand-500/40"
+      />
+    </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">文字域</h3>
-        <div class="mt-4">
-            <label class="@labelClass" for="demo-textarea">備註</label>
-            <textarea id="demo-textarea" rows="5"
-                      class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
-                      placeholder="請輸入備註內容"></textarea>
-            <p class="@hintClass">最多 500 字。</p>
+    
+    <div
+      x-data="{ isOpen: false, selected: '', options: ['Option 1', 'Option 2', 'Option 3'] }"
+      class="relative"
+    >
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        下拉選擇
+      </label>
+      <div class="relative">
+        <button
+          type="button"
+          x-on:click="isOpen = !isOpen"
+          x-on:click.outside="isOpen = false"
+          class="flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-[10px] border border-gray-300 bg-white py-2.5 ps-4 pe-3.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-all duration-200 select-none hover:border-gray-400 hover:bg-gray-50/50 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:hover:border-gray-600 dark:hover:bg-gray-800/50 dark:focus:border-brand-500/40"
+        >
+          <span
+            :class="selected ? 'text-gray-800 dark:text-white/90' : 'text-gray-400 dark:text-gray-500'"
+            x-text="selected || 'Select Option'"
+            >Select Option</span
+          >
+          <svg
+            class="size-4 text-gray-500 transition-transform duration-200 dark:text-gray-400"
+            :class="isOpen ? 'rotate-180' : ''"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="isOpen"
+          x-cloak
+          x-transition
+          class="absolute top-full left-0 z-50 mt-2 flex max-h-60 w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635]"
+        >
+          <template x-for="option in options" :key="option">
+            <button
+              type="button"
+              x-on:click="selected = option; isOpen = false"
+              class="relative flex w-full cursor-pointer items-center justify-between rounded-lg py-2.5 ps-3 pe-8 text-sm font-medium text-gray-700 outline-hidden transition-colors duration-200 select-none hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5"
+            >
+              <span x-text="option"></span>
+              <span
+                x-show="selected === option"
+                class="absolute inset-e-3 flex items-center justify-center text-brand-500 dark:text-brand-400"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3334 4L6.00008 11.3333L2.66675 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </template>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">複選框與單選框</h3>
-        <div class="mt-4 space-y-4">
-            <label class="flex items-center gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
-                <input type="checkbox" checked
-                       class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
-                接收訂單通知
-            </label>
-            <label class="flex items-center gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
-                <input type="checkbox"
-                       class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
-                接收行銷郵件
-            </label>
-            <div class="border-t border-gray-100 pt-4 dark:border-gray-800">
-                <p class="@labelClass">配送方式</p>
-                <div class="flex flex-wrap items-center gap-5">
-                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="demo-shipping" checked
-                               class="size-4 border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
-                        標準配送
-                    </label>
-                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
-                        <input type="radio" name="demo-shipping"
-                               class="size-4 border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
-                        次日達
-                    </label>
-                </div>
-            </div>
+    
+    <div x-data="{ showPassword: false }">
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        密碼輸入
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <input
+          :type="showPassword ? 'text' : 'password'"
+          placeholder="••••••••"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+        <div class="flex items-center pe-3.5">
+          <button
+            type="button"
+            x-on:click="showPassword = !showPassword"
+            class="flex size-7 items-center justify-center rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            :aria-label="showPassword ? 'Hide password' : 'Show password'"
+          >
+            <template x-if="showPassword">
+              <svg
+                class="size-5"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 4.375C6.66039 4.375 3.78157 6.35442 2.4656 9.20764C2.2338 9.71023 2.2338 10.2899 2.4656 10.7925C3.78157 13.6458 6.66039 15.6252 10 15.6252C13.3397 15.6252 16.2185 13.6458 17.5345 10.7925C17.7663 10.2899 17.7663 9.71024 17.5345 9.20765C16.2185 6.35442 13.3397 4.375 10 4.375ZM13.0209 10C13.0209 11.6684 11.6684 13.0208 10.0001 13.0208C8.33172 13.0208 6.97925 11.6684 6.97925 10C6.97925 8.33164 8.33172 6.97917 10.0001 6.97917C11.6684 6.97917 13.0209 8.33164 13.0209 10Z"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke="currentColor"
+                />
+              </svg>
+            </template>
+            <template x-if="!showPassword">
+              <svg
+                class="size-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M4.638 3.577a.75.75 0 00-1.06 1.06l1.275 1.277a8.03 8.03 0 00-2.437 3.545.75.75 0 000 .487 8.019 8.019 0 0011.083 4.614l1.864 1.863a.75.75 0 101.06-1.06L4.638 3.576zm7.723 9.844l-1.914-1.913c-.14.034-.289.053-.44.053h-.015a1.858 1.858 0 01-1.803-2.312l-2.27-2.27a6.532 6.532 0 00-1.996 2.723 6.518 6.518 0 008.438 3.72zm3.716-3.719a6.516 6.516 0 01-1.257 2.03l1.061 1.06a8.012 8.012 0 001.704-2.846.75.75 0 000-.487A8.019 8.019 0 007.522 4.433l1.23 1.23a6.519 6.519 0 017.326 4.04z"
+                />
+              </svg>
+            </template>
+          </button>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 xl:col-span-2 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">開關</h3>
-        <div class="mt-4 flex flex-wrap items-center gap-8">
-            <label class="inline-flex cursor-pointer items-center gap-3">
-                <input type="checkbox" class="peer sr-only" checked />
-                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
-                <span class="text-theme-sm text-gray-700 dark:text-gray-300">啟用通知</span>
-            </label>
-            <label class="inline-flex cursor-pointer items-center gap-3">
-                <input type="checkbox" class="peer sr-only" />
-                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
-                <span class="text-theme-sm text-gray-700 dark:text-gray-300">自動續訂</span>
-            </label>
-            <label class="inline-flex cursor-not-allowed items-center gap-3 opacity-50">
-                <input type="checkbox" class="peer sr-only" disabled />
-                <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
-                <span class="text-theme-sm text-gray-700 dark:text-gray-300">禁用狀態</span>
-            </label>
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        日期選擇
+      </label>
+      <div class="relative">
+        <input
+          type="text"
+          placeholder="選擇日期"
+          x-datepicker autocomplete="off" class="h-11 w-full min-w-0 rounded-[10px] border border-gray-300 bg-white py-2.5 ps-4 pe-10 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-500 dark:focus:border-brand-500/40"
+        />
+        <span
+          class="pointer-events-none absolute inset-e-3.5 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
+        >
+          <svg
+            class="size-5"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M8 2a.75.75 0 01.75.75v1h6.5v-1a.75.75 0 011.5 0v1h1.75A2.25 2.25 0 0120.75 6v13a2.25 2.25 0 01-2.25 2.25h-13A2.25 2.25 0 013.25 19V6A2.25 2.25 0 015.5 3.75h1.75v-1A.75.75 0 018 2zm0 3.25H5.5a.75.75 0 00-.75.75v2.25h14.5V6a.75.75 0 00-.75-.75H8zm11.25 4.5H4.75V19c0 .414.336.75.75.75h13a.75.75 0 00.75-.75V9.75z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        時間選擇
+      </label>
+      <div class="relative">
+        <input 
+          type="text"
+          placeholder="選擇時間" x-datepicker="{ enableTime: true, noCalendar: true, time_24hr: true, dateFormat: 'H:i' }"
+          class="h-11 w-full min-w-0 rounded-[10px] border border-gray-300 bg-white py-2.5 ps-4 pe-10 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-500 dark:focus:border-brand-500/40"
+        />
+        <span
+          class="pointer-events-none absolute inset-e-3.5 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
+        >
+          <svg
+            class="size-5"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.042 10a6.958 6.958 0 1113.916 0 6.958 6.958 0 01-13.916 0zM10 1.542a8.458 8.458 0 100 16.916 8.458 8.458 0 000-16.916zm0 9.208a.75.75 0 01-.75-.75V5.417a.75.75 0 011.5 0V9.25h2.583a.75.75 0 010 1.5H10z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </div>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        支付卡輸入
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <div
+          class="flex h-auto items-center justify-center self-stretch border-e border-gray-200 ps-3.5 pe-3 dark:border-gray-800"
+        >
+          <svg
+            class="h-5 w-auto"
+            width="32"
+            height="32"
+            viewBox="0 0 32 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="10" cy="16" r="9" fill="#E80B26" />
+            <circle cx="22" cy="16" r="9" fill="#F59D31" />
+            <path
+              d="M16 22.7085C17.8413 21.0605 19 18.6658 19 16.0002C19 13.3347 17.8413 10.9399 16 9.29199C14.1587 10.9399 13 13.3347 13 16.0002C13 18.6658 14.1587 21.0605 16 22.7085Z"
+              fill="#FC6020"
+            />
+          </svg>
         </div>
-    </section>
+        <input
+          type="text"
+          placeholder="Card number"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="mt-4 grid grid-cols-1 gap-4 md:mt-6 md:gap-6 xl:grid-cols-2">
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">進階輸入</h3>
-        <div class="mt-4 space-y-4">
-            <div>
-                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-icon">帶圖標</label>
-                <div class="relative">
-                    <span class="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-gray-400 dark:text-gray-500">
-                        <partial name="_Icon" model="@("search")" />
-                    </span>
-                    <input id="input-icon" type="text" placeholder="搜索訂單或客戶"
-                           class="h-11 w-full rounded-lg border border-gray-300 bg-transparent pr-4 pl-11 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                </div>
-            </div>
-            <div x-data="{ show: false }">
-                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-password">密碼（可切換顯示）</label>
-                <div class="relative">
-                    <input id="input-password" x-bind:type="show ? 'text' : 'password'" value="Alys@2026" autocomplete="off"
-                           class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 pr-12 text-theme-sm text-gray-800 shadow-theme-xs transition-colors focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-brand-800" />
-                    <button type="button" class="absolute top-1/2 right-2 -translate-y-1/2 rounded px-2 py-1 text-theme-xs font-medium text-brand-500 hover:bg-brand-50 dark:text-brand-400 dark:hover:bg-brand-500/10"
-                            x-on:click="show = !show" x-text="show ? '隱藏' : '顯示'" aria-label="切換密碼顯示"></button>
-                </div>
-            </div>
-            <div>
-                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-error">錯誤狀態</label>
-                <input id="input-error" type="email" value="manager@@"
-                       class="h-11 w-full rounded-lg border border-red-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-red-400 focus:ring-3 focus:ring-red-500/20 focus:outline-hidden dark:border-red-500/50 dark:bg-gray-900 dark:text-white/90" />
-                <p class="mt-1.5 text-theme-xs text-red-600 dark:text-red-400">請輸入完整的郵箱地址。</p>
-            </div>
-            <div>
-                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-success">成功狀態</label>
-                <input id="input-success" type="text" value="SKU-1042"
-                       class="h-11 w-full rounded-lg border border-green-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs focus:border-green-400 focus:ring-3 focus:ring-green-500/20 focus:outline-hidden dark:border-green-500/50 dark:bg-gray-900 dark:text-white/90" />
-                <p class="mt-1.5 text-theme-xs text-green-600 dark:text-green-400">SKU 可使用。</p>
-            </div>
-            <div>
-                <label class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400" for="input-disabled">禁用狀態</label>
-                <input id="input-disabled" type="text" value="不可編輯" disabled
-                       class="h-11 w-full cursor-not-allowed rounded-lg border border-gray-200 bg-gray-50 px-4 py-2.5 text-theme-sm text-gray-400 dark:border-gray-800 dark:bg-gray-900/60 dark:text-gray-600" />
-            </div>
-        </div>
-    </section>
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      下拉輸入
+    </h3>
+  </div>
 
-    <section class="rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]">
-        <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">選項與組合</h3>
-        <div class="mt-4 space-y-5">
-            <div>
-                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">方案選擇（卡片式單選）</span>
-                <div class="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
-                        <input type="radio" name="plan-card" class="peer sr-only" />
-                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">基礎版</span>
-                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$99 / 月</span>
-                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
-                    </label>
-                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
-                        <input type="radio" name="plan-card" class="peer sr-only" checked />
-                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">專業版</span>
-                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$299 / 月</span>
-                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
-                    </label>
-                    <label class="cursor-pointer rounded-xl border border-gray-200 p-4 transition-colors hover:border-brand-300 dark:border-gray-700">
-                        <input type="radio" name="plan-card" class="peer sr-only" />
-                        <span class="block text-theme-sm font-medium text-gray-800 peer-checked:text-brand-600 dark:text-gray-300">企業版</span>
-                        <span class="mt-1 block text-theme-xs text-gray-500 dark:text-gray-400">$999 / 月</span>
-                        <span class="mt-2 block size-4 rounded-full border border-gray-300 peer-checked:border-4 peer-checked:border-brand-500 dark:border-gray-600"></span>
-                    </label>
-                </div>
-            </div>
-            <div>
-                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">通知渠道（多選）</span>
-                <div class="space-y-2">
-                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" checked />
-                        站內通知
-                    </label>
-                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" checked />
-                        電子郵件
-                    </label>
-                    <label class="flex items-center gap-2 text-theme-sm text-gray-700 dark:text-gray-300">
-                        <input type="checkbox" class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900" />
-                        SMS 簡訊
-                    </label>
-                </div>
-            </div>
-            <div>
-                <span class="mb-2 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">尺寸對比</span>
-                <div class="flex flex-wrap items-center gap-3">
-                    <input type="text" placeholder="小尺寸" class="h-9 w-32 rounded-lg border border-gray-300 bg-transparent px-3 text-theme-xs text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    <input type="text" placeholder="預設尺寸" class="h-11 w-40 rounded-lg border border-gray-300 bg-transparent px-4 text-theme-sm text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                    <input type="text" placeholder="大尺寸" class="h-12 w-48 rounded-xl border border-gray-300 bg-transparent px-4 text-theme-sm text-gray-800 focus:border-brand-300 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90" />
-                </div>
-            </div>
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div
+      x-data="{ isOpen: false, selected: '', options: ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'] }"
+      class="relative"
+    >
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        下拉選擇
+      </label>
+      <div class="relative">
+        <button
+          type="button"
+          x-on:click="isOpen = !isOpen"
+          x-on:click.outside="isOpen = false"
+          class="flex h-11 w-full min-w-0 items-center justify-between gap-2 rounded-[10px] border border-gray-300 bg-white py-2.5 ps-4 pe-3.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-all duration-200 select-none hover:border-gray-400 hover:bg-gray-50/50 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:hover:border-gray-600 dark:hover:bg-gray-800/50 dark:focus:border-brand-500/40"
+        >
+          <span
+            :class="selected ? 'text-gray-800 dark:text-white/90' : 'text-gray-400 dark:text-gray-500'"
+            x-text="selected || 'Select Option'"
+            >Select Option</span
+          >
+          <svg
+            class="size-4 text-gray-500 transition-transform duration-200 dark:text-gray-400"
+            :class="isOpen ? 'rotate-180' : ''"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+        <div
+          x-show="isOpen"
+          x-cloak
+          x-transition
+          class="absolute top-full left-0 z-50 mt-2 flex max-h-60 w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635]"
+        >
+          <template x-for="option in options" :key="option">
+            <button
+              type="button"
+              x-on:click="selected = option; isOpen = false"
+              class="relative flex w-full cursor-pointer items-center justify-between rounded-lg py-2.5 ps-3 pe-8 text-sm font-medium text-gray-700 outline-hidden transition-colors duration-200 select-none hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5"
+            >
+              <span x-text="option"></span>
+              <span
+                x-show="selected === option"
+                class="absolute inset-e-3 flex items-center justify-center text-brand-500 dark:text-brand-400"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3334 4L6.00008 11.3333L2.66675 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </template>
         </div>
-    </section>
+      </div>
+    </div>
+
+    
+    <div
+      x-data="{
+        isOpen: false,
+        selected: ['Blue', 'Green'],
+        options: ['Blue', 'Green', 'Red', 'Yellow', 'Purple', 'Orange'],
+        toggle(option) {
+          if (this.selected.includes(option)) {
+            this.selected = this.selected.filter(item => item !== option);
+          } else {
+            this.selected.push(option);
+          }
+        },
+        remove(option) {
+          this.selected = this.selected.filter(item => item !== option);
+        }
+      }"
+      class="relative"
+    >
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        多選選項
+      </label>
+      <div class="relative">
+        <div
+          x-on:click="isOpen = !isOpen"
+          x-on:click.outside="isOpen = false"
+          class="flex h-auto min-h-11 w-full min-w-0 cursor-pointer items-center justify-between gap-2 rounded-[10px] border border-gray-300 bg-white py-1.5 ps-3 pe-3.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-all duration-200 focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 hover:border-gray-400 hover:bg-gray-50/50 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus-within:border-brand-500/40 dark:hover:border-gray-600 dark:hover:bg-gray-800/50"
+        >
+          <div class="flex flex-1 flex-wrap items-center gap-2">
+            <template x-if="selected.length === 0">
+              <span class="text-gray-400 dark:text-gray-500"
+                >Select Option</span
+              >
+            </template>
+            <template x-for="item in selected" :key="item">
+              <span
+                class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-100 py-1 ps-2.5 pe-1.5 text-sm font-normal text-gray-800 dark:border-gray-800 dark:bg-white/5 dark:text-white/90"
+              >
+                <span x-text="item"></span>
+                <button
+                  type="button"
+                  x-on:click.stop="remove(item)"
+                  class="inline-flex size-3.5 cursor-pointer items-center justify-center rounded-full text-gray-400 transition-colors hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  <svg
+                    class="size-3"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 4L4 12M4 4L12 12"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </span>
+            </template>
+          </div>
+          <svg
+            class="size-4 shrink-0 text-gray-500 transition-transform duration-200 dark:text-gray-400"
+            :class="isOpen ? 'rotate-180' : ''"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <div
+          x-show="isOpen"
+          x-cloak
+          x-transition
+          class="absolute top-full left-0 z-50 mt-2 flex max-h-60 w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635]"
+        >
+          <template x-for="option in options" :key="option">
+            <button
+              type="button"
+              x-on:click.stop="toggle(option)"
+              class="relative flex w-full cursor-pointer items-center justify-between rounded-lg py-2.5 ps-3 pe-8 text-sm font-medium text-gray-700 outline-hidden transition-colors duration-200 select-none hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5"
+            >
+              <span x-text="option"></span>
+              <span
+                x-show="selected.includes(option)"
+                class="absolute inset-e-3 flex items-center justify-center text-brand-500 dark:text-brand-400"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3334 4L6.00008 11.3333L2.66675 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </template>
+        </div>
+      </div>
+    </div>
+
+    
+    <div
+      x-data="{
+        isOpen: false,
+        search: '',
+        selected: '',
+        items: ['Next.js', 'React', 'Vue.js', 'Svelte', 'Angular', 'Nuxt.js', 'Remix', 'Astro', 'Gatsby'],
+        get filteredItems() {
+          if (!this.search) return this.items;
+          return this.items.filter(item => item.toLowerCase().includes(this.search.toLowerCase()));
+        },
+        selectItem(item) {
+          this.selected = item;
+          this.search = item;
+          this.isOpen = false;
+        },
+        clear() {
+          this.selected = '';
+          this.search = '';
+        }
+      }"
+      class="relative"
+    >
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        可搜索下拉
+      </label>
+      <div class="relative">
+        <div
+          class="relative flex h-11 w-full min-w-0 items-center rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+        >
+          <input
+            type="text"
+            x-model="search"
+            x-on:focus="isOpen = true"
+            x-on:click="isOpen = true"
+            x-on:click.outside="isOpen = false"
+            placeholder="請選擇框架…"
+            class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+          />
+          <div class="flex items-center gap-1 pe-3">
+            <button
+              x-show="search"
+              x-on:click.stop="clear()"
+              type="button"
+              class="flex size-5 items-center justify-center rounded-full text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+            >
+              <svg
+                class="size-3.5"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M12 4L4 12M4 4L12 12"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              type="button"
+              x-on:click="isOpen = !isOpen"
+              class="flex size-6 items-center justify-center text-gray-500 dark:text-gray-400"
+            >
+              <svg
+                class="size-4 transition-transform duration-200"
+                :class="isOpen ? 'rotate-180' : ''"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div
+          x-show="isOpen"
+          x-cloak
+          x-transition
+          class="absolute top-full left-0 z-50 mt-2 flex max-h-60 w-full flex-col gap-1 overflow-y-auto rounded-2xl border border-gray-200 bg-white p-3 shadow-theme-lg dark:border-gray-800 dark:bg-[#1E2635]"
+        >
+          <template x-if="filteredItems.length === 0">
+            <div class="px-3 py-2.5 text-sm text-gray-500 dark:text-gray-400">
+              No framework found.
+            </div>
+          </template>
+          <template x-for="item in filteredItems" :key="item">
+            <button
+              type="button"
+              x-on:click="selectItem(item)"
+              class="relative flex w-full cursor-pointer items-center justify-between rounded-lg py-2.5 ps-3 pe-8 text-sm font-medium text-gray-700 outline-hidden transition-colors duration-200 select-none hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-white/5"
+            >
+              <span x-text="item"></span>
+              <span
+                x-show="selected === item"
+                class="absolute inset-e-3 flex items-center justify-center text-brand-500 dark:text-brand-400"
+              >
+                <svg
+                  class="size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3334 4L6.00008 11.3333L2.66675 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      文字域
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        描述
+      </label>
+      <textarea
+        placeholder="請輸入描述…"
+        rows="6"
+        class="w-full min-w-0 rounded-[10px] border border-gray-300 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs outline-hidden transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-gray-500 dark:focus:border-brand-500/40"
+      ></textarea>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-400 dark:text-gray-500"
+      >
+        描述
+      </label>
+      <textarea
+        placeholder="請輸入描述…"
+        rows="6"
+        disabled
+        class="w-full min-w-0 cursor-not-allowed rounded-[10px] border border-gray-200 bg-gray-100/50 px-4 py-2.5 text-sm font-normal text-gray-400 shadow-none outline-hidden dark:border-gray-800 dark:bg-gray-800/50 dark:text-gray-500"
+      ></textarea>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        描述
+      </label>
+      <textarea
+        placeholder="請輸入描述…"
+        rows="6"
+        aria-invalid="true"
+        class="w-full min-w-0 rounded-[10px] border border-red-500 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs ring-3 ring-red-500/20 outline-hidden transition-colors placeholder:text-gray-400 focus:border-red-500 focus:ring-3 focus:ring-red-500/20 dark:border-red-500/50 dark:bg-gray-900 dark:text-white/90 dark:ring-red-500/40 dark:placeholder:text-gray-500"
+      ></textarea>
+      <p class="mt-1 text-xs text-red-500 dark:text-red-400">
+        Please enter a message in the textarea.
+      </p>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        帶操作的消息
+      </label>
+      <div
+        class="relative flex w-full min-w-0 flex-col overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <textarea
+          placeholder="輸入消息或評論…"
+          rows="4"
+          class="w-full flex-1 resize-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        ></textarea>
+        <div
+          class="flex w-full items-center justify-between border-t border-gray-200 px-3.5 py-2.5 dark:border-gray-800"
+        >
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              aria-label="Attach file"
+            >
+              <svg
+                class="size-4"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M8.582 1.542a3.587 3.587 0 013.587 3.587v8.325a2.17 2.17 0 01-4.337 0V5.13a.75.75 0 011.5 0v8.325a.669.669 0 001.337 0v-1.4l-.001-.019V5.13a2.087 2.087 0 00-4.173 0v8.325a3.506 3.506 0 007.01 0v-5.49a.75.75 0 011.5 0v5.49a5.006 5.006 0 01-10.01 0V5.13a3.587 3.587 0 013.587-3.587z"
+                  fill="currentColor"
+                />
+              </svg>
+            </button>
+            <span class="text-xs text-gray-400"> Markdown supported </span>
+          </div>
+          <button
+            type="button"
+            class="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white shadow-theme-xs transition-all outline-none select-none hover:bg-brand-600 focus-visible:ring-3 focus-visible:ring-brand-500/20 active:translate-y-px"
+          >
+            <svg
+              class="size-3.5"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M4.985 2.444c-1.872-.873-3.832 1.026-3.02 2.924l1.856 4.337a.75.75 0 010 .59l-1.856 4.337c-.812 1.899 1.148 3.797 3.02 2.925l11.833-5.517c1.733-.808 1.733-3.271 0-4.079L4.985 2.444zm-1.64 2.334c-.271-.633.382-1.265 1.006-.975l11.834 5.518a.75.75 0 010 1.359L4.35 16.197c-.624.29-1.277-.342-1.006-.975L5.2 10.885a2.28 2.28 0 00.054-.138h3.864a.75.75 0 000-1.5H5.252a2.253 2.253 0 00-.052-.132L3.345 4.778z"
+                fill="currentColor"
+              />
+            </svg>
+            <span>Send</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      輸入狀態
+    </h3>
+    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+      Validation styles for error, success and disabled states on form controls.
+    </p>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        郵箱
+      </label>
+      <input
+        type="email"
+        placeholder="demo-email@@tailadmin.com"
+        aria-invalid="true"
+        class="h-11 w-full min-w-0 rounded-[10px] border border-red-500 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs ring-3 ring-red-500/20 outline-hidden transition-colors placeholder:text-gray-400 focus:border-red-500 focus:ring-3 focus:ring-red-500/20 dark:border-red-500/50 dark:bg-gray-900 dark:text-white/90 dark:ring-red-500/40 dark:placeholder:text-gray-500"
+      />
+      <p class="mt-1 text-xs text-red-500 dark:text-red-400">
+        Clear guidance for users.
+      </p>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        郵箱
+      </label>
+      <input
+        type="email"
+        value="demoemail@@gmail.com"
+        data-success="true"
+        class="h-11 w-full min-w-0 rounded-[10px] border border-green-500 bg-white px-4 py-2.5 text-sm font-normal text-gray-800 shadow-theme-xs ring-3 ring-green-500/20 outline-hidden transition-colors placeholder:text-gray-400 focus:border-green-500 focus:ring-3 focus:ring-green-500/20 dark:border-green-500/50 dark:bg-gray-900 dark:text-white/90 dark:ring-green-500/40 dark:placeholder:text-gray-500"
+      />
+      <p class="mt-1 text-xs text-green-600 dark:text-green-400">
+        This is an success message.
+      </p>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-400 dark:text-gray-500"
+      >
+        郵箱
+      </label>
+      <input
+        type="email"
+        value="info@@tailadmin.com"
+        disabled
+        class="h-11 w-full min-w-0 cursor-not-allowed rounded-[10px] border border-gray-200 bg-gray-100/50 px-4 py-2.5 text-sm font-normal text-gray-400 shadow-none outline-hidden dark:border-gray-800 dark:bg-gray-800/50 dark:text-gray-500"
+      />
+    </div>
+  </div>
+</div>
+  </div>
+  <div class="space-y-6">
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      輸入組
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        郵箱
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <span
+          class="flex h-auto items-center justify-center self-stretch border-e border-gray-200 ps-3.5 pe-3 text-gray-500 dark:border-gray-800 dark:text-gray-400"
+        >
+          <svg
+            class="size-5"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.042 7.062v7.313a.5.5 0 00.5.5h12.916a.5.5 0 00.5-.5V7.062l-5.814 4.055a2 2 0 01-2.288 0L3.042 7.062zm13.916-1.87V5.2a.072.072 0 01-.03.055l-6.642 4.631a.5.5 0 01-.572 0L3.072 5.255a.071.071 0 01.041-.13h13.774c.038 0 .07.03.071.068zm1.5.022v9.161a2 2 0 01-2 2H3.542a2 2 0 01-2-2v-9.18-.03a1.571 1.571 0 011.571-1.54h13.774c.868 0 1.571.703 1.571 1.571v.018z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+        <input
+          type="email"
+          placeholder="info@@gmail.com"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        電話
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <div
+          class="relative flex h-full items-center border-e border-gray-200 dark:border-gray-800"
+        >
+          <select
+            class="h-full cursor-pointer appearance-none border-0 border-none bg-transparent bg-none py-0 ps-3.5 pe-8 text-sm font-medium text-gray-700 shadow-none outline-hidden focus:border-0 focus:ring-0 focus:outline-hidden dark:text-gray-300 dark:hover:text-white dark:focus:text-white"
+          >
+            <option
+              value="US"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              US
+            </option>
+            <option
+              value="GB"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              GB
+            </option>
+            <option
+              value="CA"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              CA
+            </option>
+            <option
+              value="AU"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              AU
+            </option>
+          </select>
+          <svg
+            class="pointer-events-none absolute inset-e-2.5 size-4 text-gray-500 dark:text-gray-400"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <input
+          type="tel"
+          placeholder="+1 (555) 000-0000"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        電話
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <input
+          type="tel"
+          placeholder="+1 (555) 000-0000"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+        <div
+          class="relative flex h-full items-center border-s border-gray-200 dark:border-gray-800"
+        >
+          <select
+            class="h-full cursor-pointer appearance-none border-0 border-none bg-transparent bg-none py-0 ps-3.5 pe-8 text-sm font-medium text-gray-700 shadow-none outline-hidden focus:border-0 focus:ring-0 focus:outline-hidden dark:text-gray-300 dark:hover:text-white dark:focus:text-white"
+          >
+            <option
+              value="US"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              US
+            </option>
+            <option
+              value="GB"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              GB
+            </option>
+            <option
+              value="CA"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              CA
+            </option>
+            <option
+              value="AU"
+              class="text-gray-700 dark:bg-gray-900 dark:text-gray-300"
+            >
+              AU
+            </option>
+          </select>
+          <svg
+            class="pointer-events-none absolute inset-e-2.5 size-4 text-gray-500 dark:text-gray-400"
+            viewBox="0 0 20 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.83325 7.91666L9.99992 12.0833L14.1666 7.91666"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        網址
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <span
+          class="flex h-auto items-center justify-center self-stretch border-e border-gray-200 ps-3.5 pe-3 text-sm font-normal text-gray-500 dark:border-gray-800 dark:text-gray-400"
+        >
+          http://
+        </span>
+        <input
+          type="text"
+          placeholder="www.tailadmin.com"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+      </div>
+    </div>
+
+    
+    <div
+      x-data="{
+        value: 'www.tailadmin.com',
+        copied: false,
+        async copy() {
+          try {
+            await navigator.clipboard.writeText(this.value);
+            this.copied = true;
+            setTimeout(() => this.copied = false, 2000);
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      }"
+    >
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        網站
+      </label>
+      <div
+        class="relative flex h-11 w-full min-w-0 items-center overflow-hidden rounded-[10px] border border-gray-300 bg-white shadow-theme-xs outline-hidden transition-colors focus-within:border-brand-300 focus-within:ring-3 focus-within:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900 dark:focus-within:border-brand-500/40"
+      >
+        <input
+          type="text"
+          x-model="value"
+          placeholder="www.tailadmin.com"
+          class="h-full flex-1 rounded-none border-0 bg-transparent px-4 py-2.5 text-sm font-normal text-gray-800 shadow-none placeholder:text-gray-400 focus:border-transparent focus:ring-0 focus:outline-hidden dark:text-white/90 dark:placeholder:text-gray-500"
+        />
+        <div class="self-stretch border-s border-gray-200 dark:border-gray-800">
+          <button
+            type="button"
+            x-on:click="copy()"
+            class="flex h-full cursor-pointer items-center gap-1.5 rounded-e-[10px] px-3.5 text-sm font-medium text-gray-700 transition-all select-none hover:bg-gray-50 hover:text-gray-900 focus:outline-hidden active:translate-y-px dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
+          >
+            <template x-if="copied">
+              <span class="inline-flex items-center gap-1.5 text-green-500">
+                <svg
+                  class="size-4"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M13.3334 4L6.00008 11.3333L2.66675 8"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+                <span>Copied!</span>
+              </span>
+            </template>
+            <template x-if="!copied">
+              <span class="inline-flex items-center gap-1.5">
+                <svg
+                  class="size-4 text-gray-500 dark:text-gray-400"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M6.588 4.584a.5.5 0 01.5-.5h8.327a.5.5 0 01.5.5v8.329a.5.5 0 01-.5.5H7.088a.5.5 0 01-.5-.5V4.584zm.5-2a2 2 0 00-2 2v.51h-.503a2 2 0 00-2 2v8.322a2 2 0 002 2h8.322a2 2 0 002-2v-.503h.508a2 2 0 002-2V4.584a2 2 0 00-2-2H7.088zm6.319 12.329H7.088a2 2 0 01-2-2V6.594h-.503a.5.5 0 00-.5.5v8.322a.5.5 0 00.5.5h8.322a.5.5 0 00.5-.5v-.503z"
+                    fill="currentColor"
+                  />
+                </svg>
+                <span>Copy</span>
+              </span>
+            </template>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      文件上傳
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    <div>
+      <label
+        class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400"
+      >
+        上傳文件
+      </label>
+      <input
+        type="file"
+        class="h-11 w-full min-w-0 cursor-pointer overflow-hidden rounded-[10px] border border-gray-300 bg-transparent text-sm text-gray-500 shadow-theme-xs transition-colors file:me-4 file:h-full file:cursor-pointer file:border-0 file:border-e file:border-solid file:border-gray-200 file:bg-gray-50 file:px-3.5 file:py-2.5 file:text-sm file:font-medium file:text-gray-700 hover:file:bg-gray-100 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-gray-400 dark:file:border-gray-800 dark:file:bg-white/5 dark:file:text-gray-300 dark:hover:file:bg-white/10 dark:focus:border-brand-500/40"
+      />
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      複選框
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div
+      x-data="{ isCheckedOne: false, isCheckedTwo: true }"
+      class="flex flex-row items-center gap-6"
+    >
+      
+      <label
+        class="group relative flex cursor-pointer items-center"
+        aria-label="Default unchecked checkbox"
+      >
+        <input type="checkbox" class="peer sr-only" x-model="isCheckedOne" />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="isCheckedOne ? 'border-brand-500 bg-brand-500 text-white hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="isCheckedOne"
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+      </label>
+
+      
+      <label
+        class="group relative flex cursor-pointer items-center"
+        aria-label="Checked checkbox"
+      >
+        <input type="checkbox" class="peer sr-only" x-model="isCheckedTwo" />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="isCheckedTwo ? 'border-brand-500 bg-brand-500 text-white hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="isCheckedTwo"
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+      </label>
+
+      
+      <div
+        class="relative flex items-center"
+        aria-label="Disabled checked checkbox"
+      >
+        <span
+          class="relative flex size-4 shrink-0 cursor-not-allowed items-center justify-center rounded-md border border-gray-200 bg-transparent text-gray-300 shadow-none dark:border-gray-800 dark:text-gray-600"
+        >
+          <span
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+      </div>
+    </div>
+
+    
+    <div
+      x-data="{ isCheckedDefault: false, isChecked: true }"
+      class="flex flex-wrap items-center gap-6 sm:gap-8"
+    >
+      
+      <label class="group flex cursor-pointer items-center gap-2.5">
+        <input
+          type="checkbox"
+          class="peer sr-only"
+          x-model="isCheckedDefault"
+        />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="isCheckedDefault ? 'border-brand-500 bg-brand-500 text-white hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="isCheckedDefault"
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+        <span
+          class="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Default
+        </span>
+      </label>
+
+      
+      <label class="group flex cursor-pointer items-center gap-2.5">
+        <input type="checkbox" class="peer sr-only" x-model="isChecked" />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-md border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="isChecked ? 'border-brand-500 bg-brand-500 text-white hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="isChecked"
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+        <span
+          class="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Checked
+        </span>
+      </label>
+
+      
+      <div class="flex items-center gap-2.5">
+        <span
+          class="relative flex size-4 shrink-0 cursor-not-allowed items-center justify-center rounded-md border border-gray-200 bg-transparent text-gray-300 shadow-none dark:border-gray-800 dark:text-gray-600"
+        >
+          <span
+            class="grid place-content-center text-current transition-none [&>svg]:size-3"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M20 6L9 17l-5-5"></path>
+            </svg>
+          </span>
+        </span>
+        <span
+          class="cursor-not-allowed text-sm font-medium text-gray-400 dark:text-gray-600"
+        >
+          Disabled
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      單選框
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    
+    <div x-data="{ value: 'option1' }" class="flex flex-row items-center gap-6">
+      <label
+        class="group relative flex cursor-pointer items-center"
+        aria-label="Option 1"
+      >
+        <input
+          type="radio"
+          name="default-radio"
+          value="option1"
+          x-model="value"
+          class="peer sr-only"
+        />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="value === 'option1' ? 'border-brand-500 bg-brand-500 hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="value === 'option1'"
+            class="flex size-4 items-center justify-center"
+          >
+            <span class="size-2 rounded-full bg-white"></span>
+          </span>
+        </span>
+      </label>
+
+      <label
+        class="group relative flex cursor-pointer items-center"
+        aria-label="Option 2"
+      >
+        <input
+          type="radio"
+          name="default-radio"
+          value="option2"
+          x-model="value"
+          class="peer sr-only"
+        />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="value === 'option2' ? 'border-brand-500 bg-brand-500 hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="value === 'option2'"
+            class="flex size-4 items-center justify-center"
+          >
+            <span class="size-2 rounded-full bg-white"></span>
+          </span>
+        </span>
+      </label>
+
+      <div class="relative flex items-center" aria-label="Option 3 (disabled)">
+        <span
+          class="relative flex size-4 shrink-0 cursor-not-allowed items-center justify-center rounded-full border border-gray-200 bg-gray-100/50 shadow-none dark:border-gray-800 dark:bg-gray-800/50"
+        ></span>
+      </div>
+    </div>
+
+    
+    <div
+      x-data="{ value: 'selected' }"
+      class="flex flex-wrap items-center gap-6 sm:gap-8"
+    >
+      
+      <label class="group flex cursor-pointer items-center gap-2.5">
+        <input
+          type="radio"
+          name="labeled-radio"
+          value="default"
+          x-model="value"
+          class="peer sr-only"
+        />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="value === 'default' ? 'border-brand-500 bg-brand-500 hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="value === 'default'"
+            class="flex size-4 items-center justify-center"
+          >
+            <span class="size-2 rounded-full bg-white"></span>
+          </span>
+        </span>
+        <span
+          class="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Default
+        </span>
+      </label>
+
+      
+      <label class="group flex cursor-pointer items-center gap-2.5">
+        <input
+          type="radio"
+          name="labeled-radio"
+          value="selected"
+          x-model="value"
+          class="peer sr-only"
+        />
+        <span
+          class="peer relative flex size-4 shrink-0 cursor-pointer items-center justify-center rounded-full border shadow-theme-xs outline-hidden transition-colors peer-focus-visible:border-brand-500 peer-focus-visible:ring-3 peer-focus-visible:ring-brand-500/20 dark:peer-focus-visible:border-brand-400 dark:peer-focus-visible:ring-brand-500/30"
+          :class="value === 'selected' ? 'border-brand-500 bg-brand-500 hover:border-brand-600 hover:bg-brand-600 dark:border-brand-500 dark:bg-brand-500 dark:hover:border-brand-600 dark:hover:bg-brand-600' : 'border-gray-300 bg-white hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-400'"
+        >
+          <span
+            x-show="value === 'selected'"
+            class="flex size-4 items-center justify-center"
+          >
+            <span class="size-2 rounded-full bg-white"></span>
+          </span>
+        </span>
+        <span
+          class="cursor-pointer text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Selected
+        </span>
+      </label>
+
+      
+      <div class="flex items-center gap-2.5">
+        <span
+          class="relative flex size-4 shrink-0 cursor-not-allowed items-center justify-center rounded-full border border-gray-200 bg-gray-100/50 shadow-none dark:border-gray-800 dark:bg-gray-800/50"
+        ></span>
+        <span
+          class="cursor-not-allowed text-sm font-medium text-gray-400 dark:text-gray-600"
+        >
+          Disabled
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      開關
+    </h3>
+  </div>
+
+  
+  <div
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    <div
+      x-data="{ activeSwitch: true, inactiveSwitch: false }"
+      class="flex items-center gap-7"
+    >
+      
+      <button
+        type="button"
+        role="switch"
+        :aria-checked="activeSwitch.toString()"
+        x-on:click="activeSwitch = !activeSwitch"
+        aria-label="Active switch"
+        class="relative inline-flex h-5 w-11 shrink-0 cursor-pointer items-center rounded-full p-[1.5px] outline-hidden transition-colors select-none focus-visible:ring-2 focus-visible:ring-brand-500/20 dark:focus-visible:ring-brand-500/30"
+        :class="activeSwitch ? 'bg-brand-500 hover:bg-brand-600 dark:bg-brand-500 dark:hover:bg-brand-600' : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'"
+      >
+        <span
+          class="pointer-events-none block h-[17px] w-[26px] shrink-0 rounded-full bg-white shadow-theme-sm ring-0 transition-transform duration-150 ease-linear"
+          :class="activeSwitch ? 'translate-x-[15px] rtl:-translate-x-[15px]' : 'translate-x-0 rtl:translate-x-0'"
+        ></span>
+      </button>
+
+      
+      <button
+        type="button"
+        role="switch"
+        :aria-checked="inactiveSwitch.toString()"
+        x-on:click="inactiveSwitch = !inactiveSwitch"
+        aria-label="Inactive switch"
+        class="relative inline-flex h-5 w-11 shrink-0 cursor-pointer items-center rounded-full p-[1.5px] outline-hidden transition-colors select-none focus-visible:ring-2 focus-visible:ring-brand-500/20 dark:focus-visible:ring-brand-500/30"
+        :class="inactiveSwitch ? 'bg-brand-500 hover:bg-brand-600 dark:bg-brand-500 dark:hover:bg-brand-600' : 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600'"
+      >
+        <span
+          class="pointer-events-none block h-[17px] w-[26px] shrink-0 rounded-full bg-white shadow-theme-sm ring-0 transition-transform duration-150 ease-linear"
+          :class="inactiveSwitch ? 'translate-x-[15px] rtl:-translate-x-[15px]' : 'translate-x-0 rtl:translate-x-0'"
+        ></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/3"
+>
+  
+  <div class="px-6 py-5">
+    <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
+      拖拽上傳
+    </h3>
+  </div>
+
+  
+  <div
+    x-data="{
+      files: [],
+      isDragActive: false,
+      isPreviewOpen: false,
+      previewFile: null,
+      handleFiles(fileList) {
+        for (let i = 0; i < fileList.length; i++) {
+          const file = fileList[i];
+          if (file.type.startsWith('image/')) {
+            const preview = 網址.createObject網址(file);
+            this.files.push({
+              name: file.name,
+              size: file.size,
+              preview: preview
+            });
+          }
+        }
+      },
+      handleDrop(e) {
+        this.isDragActive = false;
+        if (e.dataTransfer && e.dataTransfer.files) {
+          this.handleFiles(e.dataTransfer.files);
+        }
+      },
+      removeFile(index) {
+        if (this.files[index] && this.files[index].preview) {
+          網址.revokeObject網址(this.files[index].preview);
+        }
+        this.files.splice(index, 1);
+      },
+      clearAll() {
+        this.files.forEach(f => {
+          if (f.preview) 網址.revokeObject網址(f.preview);
+        });
+        this.files = [];
+      },
+      openPreview(file) {
+        this.previewFile = file;
+        this.isPreviewOpen = true;
+      },
+      formatSize(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+      }
+    }"
+    class="space-y-6 border-t border-gray-100 p-4 sm:p-6 dark:border-gray-800"
+  >
+    <div class="w-full">
+      
+      <div
+        x-on:click="$refs.fileInput.click()"
+        x-on:dragover.prevent="isDragActive = true"
+        x-on:dragleave.prevent="isDragActive = false"
+        x-on:drop.prevent="handleDrop($event)"
+        class="relative flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed p-7 text-center outline-hidden transition-all duration-200 lg:p-10"
+        :class="isDragActive ? 'border-brand-500 bg-brand-50/60 dark:bg-brand-950/20' : 'border-gray-300 bg-gray-50 hover:border-brand-500 dark:border-gray-700 dark:bg-gray-900 dark:hover:border-brand-500'"
+      >
+        <input
+          type="file"
+          x-ref="fileInput"
+          x-on:change="handleFiles($event.target.files); $event.target.value = ''"
+          multiple
+          accept="image/png, image/jpeg, image/webp, image/svg+xml"
+          class="hidden"
+        />
+
+        <div class="flex flex-col items-center">
+          
+          <div
+            class="mb-4 flex size-17 items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-300"
+          >
+            <svg
+              class="size-7 text-current"
+              xmlns="http://www.w3.org/2000/svg"
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+            >
+              <path
+                d="M15 11.25a.75.75 0 01.75.75v1.5a2.25 2.25 0 01-2.25 2.25h-9a2.25 2.25 0 01-2.25-2.25V12a.75.75 0 011.5 0v1.5c0 .414.335.75.75.75h9a.75.75 0 00.75-.75V12a.75.75 0 01.75-.75zm-5.998-9a.744.744 0 01.547.241L13 5.937A.75.75 0 0111.938 7L9.752 4.813V12a.75.75 0 01-1.5 0V4.809l-2.19 2.19A.75.75 0 015 5.938l3.468-3.466a.745.745 0 01.532-.222z"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
+
+          
+          <h4
+            class="mb-2 text-xl font-semibold text-gray-800 dark:text-white/90"
+          >
+            <span x-text="isDragActive ? 'Drop files here' : '拖拽文件到此處'"
+              >拖拽文件到此處</span
+            >
+          </h4>
+
+          
+          <p class="mb-4 max-w-72.5 text-sm text-gray-700 dark:text-gray-400">
+            Drag and drop your PNG, JPG, WebP, SVG images here or browse
+          </p>
+
+          
+          <span
+            class="text-sm font-medium text-brand-500 underline hover:text-brand-600"
+          >
+            瀏覽文件
+          </span>
+        </div>
+      </div>
+
+      
+      <div x-show="files.length > 0" x-cloak class="mt-6 space-y-4">
+        <div class="flex items-center justify-between">
+          <h5 class="text-sm font-medium text-gray-700 dark:text-gray-300">
+            已上傳圖片（<span x-text="files.length"></span>)
+          </h5>
+          <button
+            type="button"
+            x-on:click="clearAll()"
+            class="text-xs font-medium text-red-500 transition-colors select-none hover:text-red-600 active:translate-y-px dark:text-red-400"
+          >
+            清除全部
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+          <template x-for="(file, index) in files" :key="index">
+            <div
+              class="group relative overflow-hidden rounded-xl border border-gray-200 bg-white shadow-theme-xs transition hover:shadow-theme-sm dark:border-gray-800 dark:bg-gray-900"
+            >
+              
+              <div
+                class="relative aspect-4/3 w-full overflow-hidden bg-gray-100 dark:bg-gray-800"
+              >
+                <img
+                  :src="file.preview"
+                  :alt="file.name"
+                  class="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+
+                
+                <div
+                  class="absolute inset-0 flex items-center justify-center gap-2 bg-gray-900/60 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+                >
+                  <button
+                    type="button"
+                    x-on:click.stop="openPreview(file)"
+                    class="flex size-8 items-center justify-center rounded-full bg-white/90 text-gray-800 backdrop-blur-xs transition-all outline-none select-none hover:bg-white active:translate-y-px dark:bg-gray-800/90 dark:text-white dark:hover:bg-gray-800"
+                    title="Preview image"
+                    :aria-label="'Preview ' + file.name"
+                  >
+                    <svg
+                      class="size-4"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M10 4.375C6.66039 4.375 3.78157 6.35442 2.4656 9.20764C2.2338 9.71023 2.2338 10.2899 2.4656 10.7925C3.78157 13.6458 6.66039 15.6252 10 15.6252C13.3397 15.6252 16.2185 13.6458 17.5345 10.7925C17.7663 10.2899 17.7663 9.71024 17.5345 9.20765C16.2185 6.35442 13.3397 4.375 10 4.375ZM13.0209 10C13.0209 11.6684 11.6684 13.0208 10.0001 13.0208C8.33172 13.0208 6.97925 11.6684 6.97925 10C6.97925 8.33164 8.33172 6.97917 10.0001 6.97917C11.6684 6.97917 13.0209 8.33164 13.0209 10Z"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </button>
+                  <button
+                    type="button"
+                    x-on:click.stop="removeFile(index)"
+                    class="flex size-8 items-center justify-center rounded-full bg-white/90 text-red-500 backdrop-blur-xs transition-all outline-none select-none hover:bg-white active:translate-y-px dark:bg-gray-800/90 dark:text-red-400 dark:hover:bg-gray-800"
+                    title="Remove image"
+                    :aria-label="'Remove ' + file.name"
+                  >
+                    <svg
+                      class="size-4"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M6.541 3.792a2.25 2.25 0 012.25-2.25h2.417a2.25 2.25 0 012.25 2.25v.25H16.666a.75.75 0 010 1.5h-.29v10.666a2.25 2.25 0 01-2.25 2.25h-8.25a2.25 2.25 0 01-2.25-2.25V5.541h-.292a.75.75 0 110-1.5H6.54v-.25zm8.334 9.454V5.541h-9.75v10.667c0 .414.336.75.75.75h8.25a.75.75 0 00.75-.75v-2.962zM8.041 4.041h3.917v-.25a.75.75 0 00-.75-.75H8.791a.75.75 0 00-.75.75v.25zM8.334 8a.75.75 0 01.75.75v5a.75.75 0 11-1.5 0v-5a.75.75 0 01.75-.75zm4.083.75a.75.75 0 00-1.5 0v5a.75.75 0 101.5 0v-5z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              
+              <div class="p-3">
+                <p
+                  class="truncate text-xs font-medium text-gray-800 dark:text-white/90"
+                  x-text="file.name"
+                  :title="file.name"
+                ></p>
+                <p
+                  class="mt-0.5 text-[11px] text-gray-500 dark:text-gray-400"
+                  x-text="formatSize(file.size)"
+                ></p>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      
+      <div
+        x-show="isPreviewOpen"
+        x-cloak
+        x-on:keydown.escape.window="isPreviewOpen = false"
+        class="fixed inset-0 z-99999 flex items-center justify-center overflow-y-auto p-4 sm:p-5"
+        style="display: none"
+      >
+        <div
+          x-on:click="isPreviewOpen = false"
+          x-show="isPreviewOpen"
+          x-transition.opacity
+          class="fixed inset-0 bg-gray-400/50 backdrop-blur-[32px] dark:bg-black/80"
+        ></div>
+
+        <div
+          x-show="isPreviewOpen"
+          x-transition
+          x-on:click.outside="isPreviewOpen = false"
+          class="relative w-full max-w-2xl rounded-3xl bg-white p-6 sm:p-8 dark:bg-gray-900"
+        >
+          <button
+            x-on:click="isPreviewOpen = false"
+            type="button"
+            class="absolute top-5 right-5 z-20 flex size-9 items-center justify-center rounded-full bg-gray-100 text-gray-400 transition-all outline-none select-none hover:bg-gray-200 hover:text-gray-600 active:translate-y-px dark:bg-white/5 dark:text-gray-400 dark:hover:bg-white/10 dark:hover:text-gray-300"
+            aria-label="Close"
+          >
+            <svg
+              class="size-5 fill-current"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M6.04289 16.5418C5.65237 16.9323 5.65237 17.5655 6.04289 17.956C6.43342 18.3465 7.06658 18.3465 7.45711 17.956L11.9987 13.4144L16.5408 17.9565C16.9313 18.347 17.5645 18.347 17.955 17.9565C18.3455 17.566 18.3455 16.9328 17.955 16.5423L13.4129 12.0002L17.955 7.45808C18.3455 7.06756 18.3455 6.43439 17.955 6.04387C17.5645 5.65335 16.9313 5.65335 16.5408 6.04387L11.9987 10.586L7.45711 6.04439C7.06658 5.65386 6.43342 5.65386 6.04289 6.04439C5.65237 6.43491 5.65237 7.06808 6.04289 7.4586L10.5845 12.0002L6.04289 16.5418Z"
+              />
+            </svg>
+          </button>
+
+          <template x-if="previewFile">
+            <div>
+              <div class="mb-4 pe-10">
+                <h4
+                  class="text-lg font-semibold text-gray-800 dark:text-white/90"
+                >
+                  圖片預覽
+                </h4>
+                <p
+                  class="text-xs text-gray-500 dark:text-gray-400"
+                  x-text="previewFile.name + ' • ' + formatSize(previewFile.size)"
+                ></p>
+              </div>
+
+              <div
+                class="relative aspect-video w-full overflow-hidden rounded-xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-800"
+              >
+                <img
+                  :src="previewFile.preview"
+                  :alt="previewFile.name"
+                  class="h-full w-full object-contain"
+                />
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
 </div>
