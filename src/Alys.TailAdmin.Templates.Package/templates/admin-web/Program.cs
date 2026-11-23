@@ -157,6 +157,60 @@ builder.Services.Configure<AdminUiOptions>(options =>
         Action = "Index",
         Permission = "onboarding"
     });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "ecommerce",
+        Title = "電子商務",
+        Icon = "goods",
+        Permission = "ecommerce",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "ecommerce-products", Title = "商品列表", Area = "Admin", Controller = "Ecommerce", Action = "Products", Permission = "ecommerce" },
+            new() { Key = "ecommerce-add", Title = "新增商品", Area = "Admin", Controller = "Ecommerce", Action = "AddProduct", Permission = "ecommerce" },
+            new() { Key = "ecommerce-billing", Title = "帳單", Area = "Admin", Controller = "Ecommerce", Action = "Billing", Permission = "ecommerce" },
+            new() { Key = "ecommerce-invoices", Title = "發票", Area = "Admin", Controller = "Ecommerce", Action = "Invoices", Permission = "ecommerce" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "support",
+        Title = "客服工單",
+        Icon = "bell",
+        Area = "Admin",
+        Controller = "Support",
+        Action = "Tickets",
+        Permission = "support"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "email",
+        Title = "郵件",
+        Icon = "mail",
+        Area = "Admin",
+        Controller = "Email",
+        Action = "Inbox",
+        Permission = "email"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "chat",
+        Title = "聊天",
+        Icon = "chat",
+        Area = "Admin",
+        Controller = "Chat",
+        Action = "Index",
+        Permission = "chat"
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "tasks",
+        Title = "任務看板",
+        Icon = "check",
+        Area = "Admin",
+        Controller = "Tasks",
+        Action = "Kanban",
+        Permission = "tasks"
+    });
 });
 #endif
 

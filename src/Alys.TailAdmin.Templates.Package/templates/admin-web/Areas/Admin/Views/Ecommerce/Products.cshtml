@@ -1,0 +1,43 @@
+@{
+    var table = new TaTableModel
+    {
+        Id = "ecommerceProducts",
+        Url = Url.Action("List", "Goods", new { area = "Admin" }) ?? string.Empty,
+        RowKey = "Id",
+        PageSize = 10,
+        EmptyText = "暫無商品",
+        FixedSelectable = true,
+        Columns = new List<TaColumnModel>
+        {
+            new() { Key = "GoodsName", Label = "商品名稱", Fixed = "left", Width = 200 },
+            new() { Key = "TypeName", Label = "分類", Sortable = false },
+            new() { Key = "Price", Label = "價格", Type = "money", Align = "right" },
+            new() { Key = "SalesVolume", Label = "銷量", Type = "number", Align = "right" },
+            new() { Key = "IsHot", Label = "熱銷", Type = "bool", Align = "center", Sortable = false },
+            new() { Key = "AddTime", Label = "上架時間", Type = "date" }
+        },
+        Actions = new List<TaActionModel>
+        {
+            new() { Label = "查看", Event = "view", Variant = "primary" },
+            new() { Label = "編輯", Event = "edit", Variant = "ghost" },
+            new() { Label = "刪除", Event = "delete", Variant = "error" }
+        },
+        OnAction = "view: function(row){ Ta.toast.info('查看：' + row.GoodsName); }, edit: function(row){ Ta.toast.info('編輯：' + row.GoodsName); }, delete: function(row){ Ta.confirm({ title: '刪除確認', text: '確定刪除 ' + row.GoodsName + '？', confirmText: '刪除', danger: true }).then(function(ok){ if (ok) Ta.toast.success('已刪除（演示）'); }); }"
+    };
+    var toolbar = new TableToolbarModel
+    {
+        TableId = "ecommerceProducts",
+        Description = "支援關鍵字查詢、分頁與固定列",
+        Placeholder = "搜索商品名稱"
+    };
+}
+@section PageActions {
+    <a asp-area="Admin" asp-controller="Ecommerce" asp-action="AddProduct"
+       class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+        <partial name="_Icon" model="@("plus")" />
+        新增商品
+    </a>
+}
+
+<partial name="_TableToolbar" model="toolbar" />
+<partial name="_TaTable" model="table" />

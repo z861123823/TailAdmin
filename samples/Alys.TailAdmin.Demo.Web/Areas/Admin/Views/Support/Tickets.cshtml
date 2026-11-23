@@ -1,0 +1,85 @@
+@{
+    var tickets = new[]
+    {
+        new { No = "TK-1042", Subject = "訂單付款成功但狀態未更新", Requester = "陳小明", Initials = "陳", Priority = "高", State = "open", Status = "待處理", Updated = "5 分鐘前" },
+        new { No = "TK-1041", Subject = "如何批次匯出商品資料？", Requester = "林小姐", Initials = "林", Priority = "中", State = "open", Status = "待處理", Updated = "22 分鐘前" },
+        new { No = "TK-1040", Subject = "發票抬頭需要修改", Requester = "王先生", Initials = "王", Priority = "低", State = "open", Status = "待處理", Updated = "1 小時前" },
+        new { No = "TK-1039", Subject = "後台登入驗證碼收不到", Requester = "李專員", Initials = "李", Priority = "高", State = "resolved", Status = "已解決", Updated = "昨天" },
+        new { No = "TK-1038", Subject = "商品圖片上傳失敗", Requester = "張經理", Initials = "張", Priority = "中", State = "resolved", Status = "已解決", Updated = "昨天" },
+        new { No = "TK-1037", Subject = "希望增加庫存預警", Requester = "黃小姐", Initials = "黃", Priority = "低", State = "resolved", Status = "已解決", Updated = "2 天前" }
+    };
+    TaBadgeModel PriorityBadge(string priority) => priority switch
+    {
+        "高" => new TaBadgeModel { Text = "高", Variant = "danger" },
+        "中" => new TaBadgeModel { Text = "中", Variant = "warning" },
+        _ => new TaBadgeModel { Text = "低", Variant = "light" }
+    };
+}
+<div x-data="{ filter: 'all' }">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap gap-2">
+            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="filter === 'all' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="filter = 'all'">全部 <span class="ml-1 text-theme-xs">6</span></button>
+            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="filter === 'open' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="filter = 'open'">待處理 <span class="ml-1 text-theme-xs">3</span></button>
+            <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                    x-bind:class="filter === 'resolved' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                    x-on:click="filter = 'resolved'">已解決 <span class="ml-1 text-theme-xs">3</span></button>
+        </div>
+        <button type="button" class="inline-flex items-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600"
+                onclick="Ta.toast.info('建立工單（演示）')">
+            <partial name="_Icon" model="@("plus")" />
+            建立工單
+        </button>
+    </div>
+
+    <section class="mt-4 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="max-w-full overflow-x-auto custom-scrollbar">
+            <table class="min-w-full">
+                <thead class="border-b border-gray-100 dark:border-gray-800">
+                    <tr>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">工單</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">主題</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">提出人</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">優先級</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">狀態</th>
+                        <th class="px-5 py-3 text-start text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">更新時間</th>
+                        <th class="px-5 py-3 text-end text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400">操作</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                    @foreach (var ticket in tickets)
+                    {
+                        var priorityBadge = PriorityBadge(ticket.Priority);
+                        var avatar = new TaAvatarModel { Initials = ticket.Initials, Size = "xs" };
+                        var statusBadge = string.Equals(ticket.Status, "已解決", StringComparison.Ordinal)
+                            ? new TaBadgeModel { Text = "已解決", Variant = "success", Dot = true }
+                            : new TaBadgeModel { Text = "待處理", Variant = "warning", Dot = true };
+                        <tr class="transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]"
+                            x-show="filter === 'all' || filter === '@ticket.State'">
+                            <td class="px-5 py-4 text-theme-sm font-medium whitespace-nowrap text-gray-800 dark:text-white/90">@ticket.No</td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-800 dark:text-gray-300">@ticket.Subject</td>
+                            <td class="px-5 py-4">
+                                <div class="flex items-center gap-2">
+                                    <partial name="_TaAvatar" model="avatar" />
+                                    <span class="text-theme-sm whitespace-nowrap text-gray-600 dark:text-gray-400">@ticket.Requester</span>
+                                </div>
+                            </td>
+                            <td class="px-5 py-4"><partial name="_TaBadge" model="priorityBadge" /></td>
+                            <td class="px-5 py-4"><partial name="_TaBadge" model="statusBadge" /></td>
+                            <td class="px-5 py-4 text-theme-sm whitespace-nowrap text-gray-500 dark:text-gray-400">@ticket.Updated</td>
+                            <td class="px-5 py-4">
+                                <div class="flex justify-end">
+                                    <button type="button" class="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-theme-xs font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400"
+                                            onclick="Ta.toast.info('查看 @ticket.No（演示）')">查看</button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>

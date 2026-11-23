@@ -68,6 +68,11 @@
             "Areas/Admin/Controllers/ProfileController.cs",
             "Areas/Admin/Controllers/EmptyStateController.cs",
             "Areas/Admin/Controllers/OnboardingController.cs",
+            "Areas/Admin/Controllers/EcommerceController.cs",
+            "Areas/Admin/Controllers/SupportController.cs",
+            "Areas/Admin/Controllers/EmailController.cs",
+            "Areas/Admin/Controllers/ChatController.cs",
+            "Areas/Admin/Controllers/TasksController.cs",
             "Areas/Admin/Views/Goods/**",
             "Areas/Admin/Views/UiElements/**",
             "Areas/Admin/Views/Pages/**",
@@ -77,7 +82,12 @@
             "Areas/Admin/Views/Calendar/**",
             "Areas/Admin/Views/Profile/**",
             "Areas/Admin/Views/EmptyState/**",
-            "Areas/Admin/Views/Onboarding/**"
+            "Areas/Admin/Views/Onboarding/**",
+            "Areas/Admin/Views/Ecommerce/**",
+            "Areas/Admin/Views/Support/**",
+            "Areas/Admin/Views/Email/**",
+            "Areas/Admin/Views/Chat/**",
+            "Areas/Admin/Views/Tasks/**"
           ]
         }
       ]

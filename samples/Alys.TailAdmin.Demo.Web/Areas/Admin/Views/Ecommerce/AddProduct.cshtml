@@ -1,0 +1,100 @@
+@{
+    const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
+    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
+    const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
+}
+<form class="grid grid-cols-12 gap-4 md:gap-6" onsubmit="event.preventDefault(); Ta.toast.success('商品已保存（演示）')">
+    <div class="col-span-12 space-y-4 md:space-y-6 xl:col-span-8">
+        <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">基本資訊</h3>
+            <div class="mt-4 space-y-4">
+                <div>
+                    <label class="@labelClass" for="product-name">商品名稱</label>
+                    <input id="product-name" type="text" class="@inputClass" placeholder="例如：無線藍牙耳機" />
+                </div>
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div>
+                        <label class="@labelClass" for="product-category">分類</label>
+                        <select id="product-category" class="@inputClass">
+                            <option value="">請選擇分類</option>
+                            <option>數碼</option>
+                            <option>服飾</option>
+                            <option>家居</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="@labelClass" for="product-sku">SKU</label>
+                        <input id="product-sku" type="text" class="@inputClass" placeholder="SKU-0001" />
+                    </div>
+                </div>
+                <div>
+                    <label class="@labelClass" for="product-desc">商品描述</label>
+                    <textarea id="product-desc" rows="5"
+                              class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"
+                              placeholder="簡要描述商品賣點與規格"></textarea>
+                </div>
+            </div>
+        </section>
+
+        <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">價格與庫存</h3>
+            <div class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div>
+                    <label class="@labelClass" for="product-price">售價</label>
+                    <input id="product-price" type="number" min="0" step="0.01" class="@inputClass" placeholder="0.00" />
+                </div>
+                <div>
+                    <label class="@labelClass" for="product-compare">原價</label>
+                    <input id="product-compare" type="number" min="0" step="0.01" class="@inputClass" placeholder="0.00" />
+                </div>
+                <div>
+                    <label class="@labelClass" for="product-stock">庫存</label>
+                    <input id="product-stock" type="number" min="0" class="@inputClass" placeholder="0" />
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="col-span-12 space-y-4 md:space-y-6 xl:col-span-4">
+        <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">商品圖片</h3>
+            <label class="mt-4 flex cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-gray-300 px-4 py-10 text-center transition-colors hover:border-brand-300 hover:bg-brand-50/40 dark:border-gray-700 dark:hover:border-brand-800 dark:hover:bg-brand-500/5">
+                <span class="flex size-11 items-center justify-center rounded-full bg-gray-100 text-gray-400 dark:bg-white/5 dark:text-gray-500">
+                    <partial name="_Icon" model="@("upload")" />
+                </span>
+                <span class="text-theme-sm font-medium text-gray-700 dark:text-gray-300">點擊上傳圖片</span>
+                <span class="text-theme-xs text-gray-500 dark:text-gray-400">PNG / JPG，單檔 5MB 以內</span>
+                <input type="file" class="sr-only" accept="image/*" />
+            </label>
+        </section>
+
+        <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">發佈設定</h3>
+            <div class="mt-4 space-y-4">
+                <div>
+                    <label class="@labelClass" for="product-status">狀態</label>
+                    <select id="product-status" class="@inputClass">
+                        <option>立即上架</option>
+                        <option>草稿</option>
+                        <option>定時上架</option>
+                    </select>
+                </div>
+                <label class="flex items-center justify-between gap-3 text-theme-sm text-gray-700 dark:text-gray-300">
+                    首頁推薦
+                    <input type="checkbox" class="peer sr-only" checked />
+                    <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+                </label>
+            </div>
+        </section>
+
+        <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+            <a asp-area="Admin" asp-controller="Ecommerce" asp-action="Products"
+               class="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">取消</a>
+            <button type="submit"
+                    class="inline-flex items-center justify-center gap-2 rounded-lg bg-brand-500 px-4 py-2.5 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+                <partial name="_Icon" model="@("check")" />
+                保存商品
+            </button>
+        </div>
+    </div>
+</form>
