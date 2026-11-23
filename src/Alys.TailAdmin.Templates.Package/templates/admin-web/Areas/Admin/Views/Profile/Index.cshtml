@@ -3,6 +3,25 @@
     const string cardClass = "rounded-2xl border border-gray-200 bg-white p-5 md:p-6 dark:border-gray-800 dark:bg-white/[0.03]";
     const string labelClass = "mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400";
     var avatar = new TaAvatarModel { Initials = "林", Alt = "林經理", Size = "2xl", Status = "online" };
+    var teams = new[]
+    {
+        new { Name = "陳小明", Initials = "陳", Role = "數據分析" },
+        new { Name = "王先生", Initials = "王", Role = "供應鏈" },
+        new { Name = "李專員", Initials = "李", Role = "客服" }
+    };
+    var sessions = new[]
+    {
+        new { Device = "Chrome · Windows", Place = "台北", Time = "目前使用中", Current = true },
+        new { Device = "Safari · iPhone", Place = "台北", Time = "2 小時前", Current = false },
+        new { Device = "Edge · MacBook", Place = "台中", Time = "昨天 18:20", Current = false }
+    };
+    var activities = new[]
+    {
+        new { Time = "今天 10:32", Text = "更新了「雙十一預熱」活動的排期", Tone = "bg-brand-500" },
+        new { Time = "昨天 16:48", Text = "完成季度總結並提交給部門負責人", Tone = "bg-green-500" },
+        new { Time = "昨天 11:05", Text = "邀請李專員加入運營工作區", Tone = "bg-amber-500" },
+        new { Time = "11-20", Text = "修改了帳號的兩步驗證設定", Tone = "bg-gray-400" }
+    };
 }
 <div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12">
     <div class="space-y-4 md:space-y-6 xl:col-span-8">
@@ -26,6 +45,16 @@
                         編輯資料
                     </button>
                 </div>
+                <div class="mt-5 border-t border-gray-100 pt-4 dark:border-gray-800">
+                    <div class="flex items-center justify-between text-theme-sm">
+                        <span class="text-gray-600 dark:text-gray-400">資料完整度</span>
+                        <span class="font-medium text-gray-800 dark:text-white/90">82%</span>
+                    </div>
+                    <div class="mt-2 h-2 rounded-full bg-gray-100 dark:bg-white/10">
+                        <div class="h-2 rounded-full bg-brand-500" style="width:82%"></div>
+                    </div>
+                    <p class="mt-2 text-theme-xs text-gray-500 dark:text-gray-400">補全頭像與社交連結可提升至 100%。</p>
+                </div>
             </div>
         </section>
 
@@ -48,13 +77,16 @@
             <div class="flex flex-wrap gap-2 border-b border-gray-100 pb-3 dark:border-gray-800">
                 <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
                         x-bind:class="tab === 'profile' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
-                        x-on:click="tab = 'profile'">個人資料</button>
+                        x-on:click="tab = 'profile'">概覽</button>
                 <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
                         x-bind:class="tab === 'account' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
-                        x-on:click="tab = 'account'">帳號設定</button>
+                        x-on:click="tab = 'account'">帳號安全</button>
                 <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
                         x-bind:class="tab === 'notice' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
                         x-on:click="tab = 'notice'">通知</button>
+                <button type="button" class="rounded-lg px-3 py-2 text-theme-sm font-medium transition-colors"
+                        x-bind:class="tab === 'activity' ? 'bg-brand-50 text-brand-600 dark:bg-brand-500/15 dark:text-brand-400' : 'text-gray-500 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-white/5'"
+                        x-on:click="tab = 'activity'">活動</button>
             </div>
 
             <div class="mt-4" x-show="tab === 'profile'">
@@ -65,7 +97,7 @@
                     </div>
                     <div>
                         <label class="@labelClass" for="profile-email">郵箱</label>
-                        <input id="profile-email" type="email" class="@inputClass" value="manager@example.com" />
+                        <input id="profile-email" type="email" class="@inputClass" value="manager@@example.com" />
                     </div>
                     <div>
                         <label class="@labelClass" for="profile-phone">電話</label>
@@ -79,6 +111,15 @@
                         <label class="@labelClass" for="profile-bio">個人簡介</label>
                         <textarea id="profile-bio" rows="4"
                                   class="w-full rounded-lg border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800">負責商城日常運營、商品規劃與數據分析。</textarea>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <span class="@labelClass">技能標籤</span>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="rounded-full bg-brand-50 px-2.5 py-1 text-theme-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">商品運營</span>
+                        <span class="rounded-full bg-green-50 px-2.5 py-1 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-400">數據分析</span>
+                        <span class="rounded-full bg-amber-50 px-2.5 py-1 text-theme-xs font-medium text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">活動策劃</span>
+                        <span class="rounded-full bg-gray-100 px-2.5 py-1 text-theme-xs font-medium text-gray-600 dark:bg-white/10 dark:text-gray-400">團隊協作</span>
                     </div>
                 </div>
                 <div class="mt-5 flex justify-end">
@@ -103,6 +144,29 @@
                     </div>
                     <span class="rounded-full bg-amber-50 px-2.5 py-1 text-theme-xs font-medium text-amber-600 dark:bg-amber-500/15 dark:text-amber-400">未開啟</span>
                 </div>
+                <div>
+                    <p class="mb-2 text-theme-sm font-medium text-gray-800 dark:text-white/90">登入裝置</p>
+                    <ul class="divide-y divide-gray-100 rounded-xl border border-gray-100 dark:divide-gray-800 dark:border-gray-800">
+                        @foreach (var session in sessions)
+                        {
+                            <li class="flex items-center justify-between gap-3 p-4">
+                                <div>
+                                    <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">@session.Device</p>
+                                    <p class="mt-0.5 text-theme-xs text-gray-500 dark:text-gray-400">@session.Place · @session.Time</p>
+                                </div>
+                                @if (session.Current)
+                                {
+                                    <span class="rounded-full bg-green-50 px-2.5 py-1 text-theme-xs font-medium text-green-600 dark:bg-green-500/15 dark:text-green-400">本機</span>
+                                }
+                                else
+                                {
+                                    <button type="button" class="text-theme-xs font-medium text-red-600 hover:text-red-700 dark:text-red-400"
+                                            onclick="Ta.toast.success('已登出該裝置（演示）')">登出</button>
+                                }
+                            </li>
+                        }
+                    </ul>
+                </div>
             </div>
 
             <div class="mt-4 space-y-3" x-show="tab === 'notice'" x-cloak>
@@ -116,6 +180,34 @@
                     <input type="checkbox" class="peer sr-only" checked />
                     <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
                 </label>
+                <label class="flex items-center justify-between gap-4 rounded-xl border border-gray-100 p-4 dark:border-gray-800">
+                    <span class="text-theme-sm text-gray-700 dark:text-gray-300">庫存預警</span>
+                    <input type="checkbox" class="peer sr-only" />
+                    <span class="relative h-6 w-11 rounded-full bg-gray-200 transition-colors after:absolute after:top-0.5 after:left-0.5 after:size-5 after:rounded-full after:bg-white after:transition-transform after:content-[''] peer-checked:bg-brand-500 peer-checked:after:translate-x-5 dark:bg-gray-700"></span>
+                </label>
+                <div class="rounded-xl border border-gray-100 p-4 dark:border-gray-800">
+                    <label class="@labelClass" for="digest">週報發送時間</label>
+                    <select id="digest" class="@inputClass">
+                        <option>每週一 09:00</option>
+                        <option>每週五 18:00</option>
+                        <option>每月 1 日 09:00</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="mt-4" x-show="tab === 'activity'" x-cloak>
+                <ul class="space-y-4">
+                    @foreach (var item in activities)
+                    {
+                        <li class="flex gap-3">
+                            <span class="mt-1.5 size-2 shrink-0 rounded-full @item.Tone"></span>
+                            <div>
+                                <p class="text-theme-sm leading-5 text-gray-700 dark:text-gray-300">@item.Text</p>
+                                <p class="mt-0.5 text-theme-xs text-gray-400 dark:text-gray-500">@item.Time</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
             </div>
         </section>
     </div>
@@ -143,13 +235,32 @@
         </section>
 
         <section class="@cardClass">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">團隊成員</h3>
+            <ul class="mt-4 space-y-3">
+                @foreach (var member in teams)
+                {
+                    var memberAvatar = new TaAvatarModel { Initials = member.Initials, Size = "md" };
+                    <li class="flex items-center gap-3">
+                        <partial name="_TaAvatar" model="memberAvatar" />
+                        <div class="min-w-0 flex-1">
+                            <p class="truncate text-theme-sm font-medium text-gray-800 dark:text-white/90">@member.Name</p>
+                            <p class="text-theme-xs text-gray-500 dark:text-gray-400">@member.Role</p>
+                        </div>
+                        <button type="button" class="text-theme-xs font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400"
+                                onclick="Ta.toast.info('發送訊息（演示）')">訊息</button>
+                    </li>
+                }
+            </ul>
+        </section>
+
+        <section class="@cardClass">
             <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">聯絡方式</h3>
             <ul class="mt-3 space-y-3 text-theme-sm">
                 <li class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                     <span class="flex size-9 items-center justify-center rounded-lg bg-brand-50 text-brand-500 dark:bg-brand-500/15 dark:text-brand-400">
-                        <partial name="_Icon" model="@("user")" />
+                        <partial name="_Icon" model="@("mail")" />
                     </span>
-                    manager@example.com
+                    manager@@example.com
                 </li>
                 <li class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                     <span class="flex size-9 items-center justify-center rounded-lg bg-green-50 text-green-600 dark:bg-green-500/15 dark:text-green-400">

@@ -1,93 +1,130 @@
-@{
-    var contacts = new[]
-    {
-        new { Name = "林經理", Initials = "林", Last = "明天的評審資料我來準備", Time = "10:32", Unread = 2, Online = true },
-        new { Name = "陳小明", Initials = "陳", Last = "促銷排期已確認", Time = "09:48", Unread = 0, Online = true },
-        new { Name = "王先生", Initials = "王", Last = "合約條款我再核對一下", Time = "昨天", Unread = 0, Online = false },
-        new { Name = "客服小組", Initials = "客", Last = "有 3 張高優先級工單", Time = "昨天", Unread = 5, Online = false },
-        new { Name = "李專員", Initials = "李", Last = "收到，謝謝！", Time = "週一", Unread = 0, Online = false }
-    };
-    var headerAvatar = new TaAvatarModel { Initials = "林", Size = "md", Status = "online" };
-}
-<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12">
+<div class="grid grid-cols-1 gap-4 md:gap-6 xl:grid-cols-12"
+     x-data="{
+        active: 0,
+        draft: '',
+        conversations: [
+            { name: '林經理', initials: '林', role: '運營負責人', online: true, unread: 2, time: '10:32',
+              messages: [
+                { me: false, text: '明天的評審資料準備得怎麼樣了？', time: '10:20' },
+                { me: true, text: '數據部分已完成，還差競品分析。', time: '10:26' },
+                { me: false, text: '好的，我來補充競品部分，下午 3 點前發你。', time: '10:32' },
+                { me: true, text: '收到，辛苦！', time: '10:33' }
+              ] },
+            { name: '陳小明', initials: '陳', role: '數據分析', online: true, unread: 0, time: '09:48',
+              messages: [
+                { me: false, text: '促銷排期已確認，附件是最終版。', time: '09:42' },
+                { me: true, text: '好，我同步給設計。', time: '09:48' }
+              ] },
+            { name: '王先生', initials: '王', role: '供應鏈', online: false, unread: 0, time: '昨天',
+              messages: [
+                { me: false, text: '合約條款我再核對一下，明天回覆。', time: '昨天 16:10' }
+              ] },
+            { name: '客服小組', initials: '客', role: '客服團隊', online: false, unread: 5, time: '昨天',
+              messages: [
+                { me: false, text: '有 3 張高優先級工單等待處理。', time: '昨天 11:05' }
+              ] }
+        ],
+        send() {
+            if (!this.draft.trim()) return;
+            this.conversations[this.active].messages.push({ me: true, text: this.draft, time: '剛剛' });
+            this.draft = '';
+            this.$nextTick(() => {
+                const el = this.$refs.scroller;
+                if (el) el.scrollTop = el.scrollHeight;
+            });
+        }
+     }">
     <section class="overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-4 dark:border-gray-800 dark:bg-white/[0.03]">
+        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-3 dark:border-gray-800">
+            <h3 class="text-base font-semibold text-gray-800 dark:text-white/90">訊息</h3>
+            <button type="button" class="inline-flex size-8 items-center justify-center rounded-lg bg-brand-50 text-brand-500 hover:bg-brand-100 dark:bg-brand-500/15 dark:text-brand-400" aria-label="新對話"
+                    onclick="Ta.toast.info('建立新對話（演示）')">
+                <partial name="_Icon" model="@("plus")" />
+            </button>
+        </div>
         <div class="border-b border-gray-100 p-4 dark:border-gray-800">
             <input type="text" placeholder="搜索聯絡人"
                    class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
+            <div class="mt-3 flex gap-2">
+                <button type="button" class="rounded-full bg-brand-50 px-3 py-1.5 text-theme-xs font-medium text-brand-600 dark:bg-brand-500/15 dark:text-brand-400">全部</button>
+                <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5">未讀</button>
+                <button type="button" class="rounded-full border border-gray-300 px-3 py-1.5 text-theme-xs font-medium text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-white/5">群組</button>
+            </div>
         </div>
         <ul class="divide-y divide-gray-100 dark:divide-gray-800">
-            @for (var index = 0; index < contacts.Length; index++)
-            {
-                var contact = contacts[index];
-                var avatar = new TaAvatarModel { Initials = contact.Initials, Size = "md", Status = contact.Online ? "online" : "offline" };
+            <template x-for="(c, index) in conversations" :key="index">
                 <li>
-                    <button type="button" class="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-gray-50 @(index == 0 ? "bg-brand-50/60 dark:bg-brand-500/5" : null) dark:hover:bg-white/[0.02]">
-                        <partial name="_TaAvatar" model="avatar" />
-                        <div class="min-w-0 flex-1">
-                            <div class="flex items-center justify-between gap-2">
-                                <span class="truncate text-theme-sm font-medium text-gray-800 dark:text-white/90">@contact.Name</span>
-                                <span class="shrink-0 text-theme-xs text-gray-400 dark:text-gray-500">@contact.Time</span>
-                            </div>
-                            <p class="mt-0.5 truncate text-theme-xs text-gray-500 dark:text-gray-400">@contact.Last</p>
-                        </div>
-                        @if (contact.Unread > 0)
-                        {
-                            <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-500 text-[10px] font-semibold text-white">@contact.Unread</span>
-                        }
+                    <button type="button" class="flex w-full items-center gap-3 px-4 py-3.5 text-left transition-colors hover:bg-gray-50 dark:hover:bg-white/[0.02]"
+                            x-bind:class="active === index ? 'bg-brand-50/60 dark:bg-brand-500/5' : ''"
+                            x-on:click="active = index; c.unread = 0">
+                        <span class="relative shrink-0">
+                            <span class="flex size-10 items-center justify-center rounded-full bg-brand-50 text-theme-sm font-semibold text-brand-600 dark:bg-brand-500/15 dark:text-brand-400" x-text="c.initials"></span>
+                            <span class="absolute right-0 bottom-0 size-2.5 rounded-full border-2 border-white dark:border-gray-900"
+                                  x-bind:class="c.online ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'"></span>
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="flex items-center justify-between gap-2">
+                                <span class="truncate text-theme-sm font-medium text-gray-800 dark:text-white/90" x-text="c.name"></span>
+                                <span class="shrink-0 text-theme-xs text-gray-400 dark:text-gray-500" x-text="c.time"></span>
+                            </span>
+                            <span class="mt-0.5 block truncate text-theme-xs text-gray-500 dark:text-gray-400"
+                                  x-text="c.messages[c.messages.length - 1].text"></span>
+                        </span>
+                        <span class="flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-500 text-[10px] font-semibold text-white"
+                              x-show="c.unread > 0" x-text="c.unread"></span>
                     </button>
                 </li>
-            }
+            </template>
         </ul>
     </section>
 
-    <section class="flex min-h-125 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
+    <section class="flex min-h-[520px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white xl:col-span-8 dark:border-gray-800 dark:bg-white/[0.03]">
         <div class="flex items-center justify-between gap-3 border-b border-gray-100 px-5 py-4 dark:border-gray-800">
             <div class="flex items-center gap-3">
-                <partial name="_TaAvatar" model="headerAvatar" />
+                <span class="flex size-10 items-center justify-center rounded-full bg-brand-50 text-theme-sm font-semibold text-brand-600 dark:bg-brand-500/15 dark:text-brand-400" x-text="conversations[active].initials"></span>
                 <div>
-                    <p class="text-theme-sm font-semibold text-gray-800 dark:text-white/90">林經理</p>
-                    <p class="text-theme-xs text-green-600 dark:text-green-400">在線</p>
+                    <p class="text-theme-sm font-semibold text-gray-800 dark:text-white/90" x-text="conversations[active].name"></p>
+                    <p class="text-theme-xs" x-bind:class="conversations[active].online ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'"
+                       x-text="conversations[active].online ? '在線' : '離線'"></p>
                 </div>
             </div>
-            <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
-                    onclick="Ta.toast.info('通話（演示）')" aria-label="通話">
-                <partial name="_Icon" model="@("bell")" />
-            </button>
+            <div class="flex items-center gap-1">
+                <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        onclick="Ta.toast.info('語音通話（演示）')" aria-label="通話">
+                    <partial name="_Icon" model="@("bell")" />
+                </button>
+                <button type="button" class="inline-flex size-9 items-center justify-center rounded-lg text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        onclick="Ta.toast.info('聯絡人資料（演示）')" aria-label="資料">
+                    <partial name="_Icon" model="@("user")" />
+                </button>
+            </div>
         </div>
 
-        <div class="flex-1 space-y-4 overflow-y-auto px-5 py-5 custom-scrollbar">
-            <div class="flex justify-start">
-                <div class="max-w-[78%] rounded-2xl rounded-tl-md bg-gray-100 px-4 py-2.5 text-theme-sm text-gray-700 dark:bg-white/5 dark:text-gray-300">
-                    明天的評審資料準備得怎麼樣了？
-                    <span class="mt-1 block text-[10px] text-gray-400">10:20</span>
-                </div>
+        <div class="flex-1 space-y-4 overflow-y-auto px-5 py-5 custom-scrollbar" x-ref="scroller">
+            <div class="flex justify-center">
+                <span class="rounded-full bg-gray-100 px-2.5 py-1 text-[10px] text-gray-500 dark:bg-white/5 dark:text-gray-400">今天</span>
             </div>
-            <div class="flex justify-end">
-                <div class="max-w-[78%] rounded-2xl rounded-tr-md bg-brand-500 px-4 py-2.5 text-theme-sm text-white">
-                    數據部分已完成，還差競品分析。
-                    <span class="mt-1 block text-[10px] text-white/70">10:26</span>
+            <template x-for="(m, mi) in conversations[active].messages" :key="mi">
+                <div class="flex" x-bind:class="m.me ? 'justify-end' : 'justify-start'">
+                    <div class="max-w-[78%] rounded-2xl px-4 py-2.5 text-theme-sm leading-6"
+                         x-bind:class="m.me ? 'rounded-tr-md bg-brand-500 text-white' : 'rounded-tl-md bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-gray-300'">
+                        <p x-text="m.text"></p>
+                        <span class="mt-1 block text-[10px]" x-bind:class="m.me ? 'text-white/70' : 'text-gray-400'" x-text="m.time"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="flex justify-start">
-                <div class="max-w-[78%] rounded-2xl rounded-tl-md bg-gray-100 px-4 py-2.5 text-theme-sm text-gray-700 dark:bg-white/5 dark:text-gray-300">
-                    好的，我來補充競品部分，下午 3 點前發你。
-                    <span class="mt-1 block text-[10px] text-gray-400">10:32</span>
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <div class="max-w-[78%] rounded-2xl rounded-tr-md bg-brand-500 px-4 py-2.5 text-theme-sm text-white">
-                    收到，辛苦！
-                    <span class="mt-1 block text-[10px] text-white/70">10:33</span>
-                </div>
-            </div>
+            </template>
         </div>
 
         <div class="border-t border-gray-100 p-4 dark:border-gray-800">
-            <div class="flex items-center gap-3">
-                <input type="text" placeholder="輸入訊息…"
-                       class="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
-                <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-lg bg-brand-500 text-white shadow-theme-xs transition-colors hover:bg-brand-600"
-                        onclick="Ta.toast.success('訊息已發送（演示）')" aria-label="發送">
+            <div class="flex items-end gap-2">
+                <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-lg text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:hover:bg-white/5 dark:hover:text-gray-300"
+                        onclick="Ta.toast.info('附加檔案（演示）')" aria-label="附件">
+                    <partial name="_Icon" model="@("upload")" />
+                </button>
+                <textarea rows="1" placeholder="輸入訊息，Enter 發送…" x-model="draft" x-on:keydown.enter.prevent="send()"
+                          class="max-h-28 min-h-11 w-full resize-none rounded-xl border border-gray-300 bg-transparent px-4 py-3 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800"></textarea>
+                <button type="button" class="inline-flex size-11 shrink-0 items-center justify-center rounded-xl bg-brand-500 text-white shadow-theme-xs hover:bg-brand-600 disabled:opacity-50"
+                        x-bind:disabled="!draft.trim()" x-on:click="send()" aria-label="發送">
                     <partial name="_Icon" model="@("chevron-right")" />
                 </button>
             </div>
