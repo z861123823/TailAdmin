@@ -289,6 +289,7 @@ export function createTaTable(Ta) {
         if (!el) return;
         this.canScrollLeft = el.scrollLeft > 0;
         this.canScrollRight = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+        el.classList.toggle('is-stuck', el.scrollTop > 0);
       },
 
       badgeClass(row, column) {

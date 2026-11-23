@@ -83,6 +83,15 @@ public sealed class TaTableModel
     /// <summary>是否固定操作列（吸附右侧）。</summary>
     public bool FixedActions { get; set; }
 
+    /// <summary>是否启用表头吸顶（需配合纵向滚动容器，默认关闭）。</summary>
+    public bool StickyHeader { get; set; }
+
+    /// <summary>吸顶时的纵向滚动容器高度（CSS 长度，如 520px / 70vh）；为空时使用 70vh。</summary>
+    public string? ScrollHeight { get; set; }
+
+    /// <summary>吸顶表头底部是否显示柔和投影，默认开启。</summary>
+    public bool StickyHeaderShadow { get; set; } = true;
+
     /// <summary>空态文案。</summary>
     public string? EmptyText { get; set; }
 

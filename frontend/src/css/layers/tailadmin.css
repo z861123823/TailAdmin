@@ -35,11 +35,13 @@
   :root {
     --ta-fixed-surface: #ffffff;
     --ta-fixed-surface-hover: #f9fafb;
+    --ta-head-shadow: 0 8px 12px -10px rgba(15, 23, 42, 0.14);
   }
 
   .dark {
     --ta-fixed-surface: #17202e;
     --ta-fixed-surface-hover: #1a2231;
+    --ta-head-shadow: 0 8px 14px -10px rgba(4, 10, 22, 0.6);
   }
 
   .ta-sticky-cell {
@@ -51,26 +53,27 @@
     background-color: var(--ta-fixed-surface-hover);
   }
 
-  /* 左固定区右缘：内侧细高光 + 贴边投影 + 中距扩散 + 远距衰减（由内向外递减） */
+  /* 侧向多层投影放入变量，便于与吸顶表头底部投影叠加 */
   .ta-sticky-edge-left {
-    box-shadow:
+    --ta-side-shadow:
       inset -1px 0 0 rgba(15, 23, 42, 0.06),
       1px 0 3px rgba(15, 23, 42, 0.1),
       6px 0 14px rgba(15, 23, 42, 0.08),
       16px 0 32px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--ta-side-shadow);
   }
 
   .ta-sticky-edge-right {
-    box-shadow:
+    --ta-side-shadow:
       inset 1px 0 0 rgba(15, 23, 42, 0.06),
       -1px 0 3px rgba(15, 23, 42, 0.1),
       -6px 0 14px rgba(15, 23, 42, 0.08),
       -16px 0 32px rgba(15, 23, 42, 0.06);
+    box-shadow: var(--ta-side-shadow);
   }
 
-  /* 暗色：用冷调深蓝而非死黑，内侧加一道浅色高光勾边 */
   .dark .ta-sticky-edge-left {
-    box-shadow:
+    --ta-side-shadow:
       inset -1px 0 0 rgba(255, 255, 255, 0.08),
       1px 0 3px rgba(4, 10, 22, 0.55),
       8px 0 16px rgba(4, 10, 22, 0.38),
@@ -78,16 +81,15 @@
   }
 
   .dark .ta-sticky-edge-right {
-    box-shadow:
+    --ta-side-shadow:
       inset 1px 0 0 rgba(255, 255, 255, 0.08),
       -1px 0 3px rgba(4, 10, 22, 0.55),
       -8px 0 16px rgba(4, 10, 22, 0.38),
       -20px 0 36px rgba(4, 10, 22, 0.22);
   }
 
-  /* 可继续横向滚动时整体加强，厚度更明显 */
   .can-scroll-left .ta-sticky-edge-left {
-    box-shadow:
+    --ta-side-shadow:
       inset -1px 0 0 rgba(15, 23, 42, 0.08),
       2px 0 4px rgba(15, 23, 42, 0.14),
       8px 0 18px rgba(15, 23, 42, 0.1),
@@ -95,7 +97,7 @@
   }
 
   .can-scroll-right .ta-sticky-edge-right {
-    box-shadow:
+    --ta-side-shadow:
       inset 1px 0 0 rgba(15, 23, 42, 0.08),
       -2px 0 4px rgba(15, 23, 42, 0.14),
       -8px 0 18px rgba(15, 23, 42, 0.1),
@@ -103,7 +105,7 @@
   }
 
   .dark .can-scroll-left .ta-sticky-edge-left {
-    box-shadow:
+    --ta-side-shadow:
       inset -1px 0 0 rgba(255, 255, 255, 0.12),
       2px 0 5px rgba(4, 10, 22, 0.6),
       10px 0 20px rgba(4, 10, 22, 0.42),
@@ -111,11 +113,34 @@
   }
 
   .dark .can-scroll-right .ta-sticky-edge-right {
-    box-shadow:
+    --ta-side-shadow:
       inset 1px 0 0 rgba(255, 255, 255, 0.12),
       -2px 0 5px rgba(4, 10, 22, 0.6),
       -10px 0 20px rgba(4, 10, 22, 0.42),
       -24px 0 44px rgba(4, 10, 22, 0.25);
+  }
+
+  /* 表头吸顶：限定纵向滚动高度（由 --ta-table-height 控制），背景不透明避免内容透出 */
+  .ta-table-scroll--sticky {
+    max-height: var(--ta-table-height, 70vh);
+    overflow-y: auto;
+  }
+
+  .ta-thead-cell {
+    background-color: var(--ta-fixed-surface);
+  }
+
+  /* 吸顶后表头底部柔和投影；固定列交汇单元格叠加侧向多层投影 */
+  .is-stuck .ta-thead-shadow th {
+    box-shadow: var(--ta-head-shadow);
+  }
+
+  .is-stuck .ta-thead-shadow th.ta-sticky-edge-left {
+    box-shadow: var(--ta-side-shadow), var(--ta-head-shadow);
+  }
+
+  .is-stuck .ta-thead-shadow th.ta-sticky-edge-right {
+    box-shadow: var(--ta-side-shadow), var(--ta-head-shadow);
   }
 
   .ta-toast-host {

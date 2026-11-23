@@ -7,22 +7,24 @@
     var columnCount = Model.Columns.Count + (hasActions ? 1 : 0) + (Model.Selectable ? 1 : 0);
     var selectableFixed = Model.FixedSelectable;
     var actionsFixed = Model.FixedActions && hasActions;
+    var stickyHeader = Model.StickyHeader;
 }
 <div class="w-full" x-cloak
      x-data="taTable(@Model.BuildConfigJson())"
      x-init="load()"
      x-on:resize.window="updateScroll(); applyFixedOffsets()">
     <div class="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-        <div class="max-w-full overflow-x-auto custom-scrollbar"
+        <div class="max-w-full overflow-x-auto custom-scrollbar @(stickyHeader ? "ta-table-scroll--sticky" : null)"
+             style="@(stickyHeader && !string.IsNullOrWhiteSpace(Model.ScrollHeight) ? $"--ta-table-height:{Model.ScrollHeight}" : null)"
              x-ref="scroller"
              x-on:scroll="updateScroll()"
              x-bind:class="{ 'can-scroll-left': canScrollLeft, 'can-scroll-right': canScrollRight }">
             <table class="min-w-full">
-                <thead class="border-y border-gray-100 dark:border-gray-800">
+                <thead class="border-y border-gray-100 dark:border-gray-800 @(stickyHeader ? "ta-thead-sticky" : null) @(stickyHeader && Model.StickyHeaderShadow ? "ta-thead-shadow" : null)">
                     <tr>
                         @if (Model.Selectable)
                         {
-                            <th data-fixed="left" data-col-key="__select" class="w-12 px-5 py-3 text-start @(selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
+                            <th data-fixed="left" data-col-key="__select" class="w-12 px-5 py-3 text-start @(stickyHeader ? (selectableFixed ? "sticky top-0 left-0 z-40 ta-sticky-cell ta-thead-cell" : "sticky top-0 z-30 ta-thead-cell") : (selectableFixed ? "sticky left-0 z-20 ta-sticky-cell" : null)) @(selectableFixed && !hasLeftFixed ? "ta-sticky-edge-left" : null)">
                                 <input type="checkbox"
                                        class="size-4 rounded border-gray-300 text-brand-500 focus:ring-3 focus:ring-brand-500/20 dark:border-gray-700 dark:bg-gray-900"
                                        x-on:change="toggleAll($event)" aria-label="全選" />
@@ -40,13 +42,17 @@
                             }
                             if (item.FixedLeft)
                             {
-                                thClasses.Add("sticky z-20 ta-sticky-cell");
+                                thClasses.Add(stickyHeader ? "sticky top-0 z-40 ta-sticky-cell ta-thead-cell" : "sticky z-20 ta-sticky-cell");
                                 thStyles.Add($"left:{item.Left ?? 0}px");
                             }
-                            if (item.FixedRight)
+                            else if (item.FixedRight)
                             {
-                                thClasses.Add("sticky z-20 ta-sticky-cell");
+                                thClasses.Add(stickyHeader ? "sticky top-0 z-40 ta-sticky-cell ta-thead-cell" : "sticky z-20 ta-sticky-cell");
                                 thStyles.Add($"right:{item.Right ?? 0}px");
+                            }
+                            else if (stickyHeader)
+                            {
+                                thClasses.Add("sticky top-0 z-30 ta-thead-cell");
                             }
                             if (item.EdgeLeft)
                             {
@@ -75,7 +81,7 @@
                         }
                         @if (hasActions)
                         {
-                            <th data-fixed="right" data-col-key="__actions" class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? "sticky right-0 z-20 ta-sticky-cell" : null) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
+                            <th data-fixed="right" data-col-key="__actions" class="w-28 px-5 py-3 text-right text-theme-xs font-medium whitespace-nowrap text-gray-500 dark:text-gray-400 @(actionsFixed ? (stickyHeader ? "sticky top-0 right-0 z-40 ta-sticky-cell ta-thead-cell" : "sticky right-0 z-20 ta-sticky-cell") : (stickyHeader ? "sticky top-0 z-30 ta-thead-cell" : null)) @(actionsFixed && !hasRightFixed ? "ta-sticky-edge-right" : null)">操作</th>
                         }
                     </tr>
                 </thead>
