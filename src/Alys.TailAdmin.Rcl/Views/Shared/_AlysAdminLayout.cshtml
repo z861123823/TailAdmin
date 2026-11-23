@@ -25,6 +25,16 @@
     var useDatepicker = ViewData["UseDatepicker"] is true;
     var nonce = Context.Items["CspNonce"] as string;
 
+    var sidebarCollapsed = ViewData["AdminSidebarCollapsed"] is bool collapsedFlag ? collapsedFlag : ui.SidebarCollapsed;
+    var hideSidebar = ViewData["AdminHideSidebar"] is true;
+    var hideHeader = ViewData["AdminHideHeader"] is true;
+    var containerClass = (ViewData["AdminContentWidth"] as string) switch
+    {
+        "full" => "w-full p-4 pb-20 md:p-6 md:pb-6",
+        "narrow" => "mx-auto max-w-4xl p-4 pb-20 md:p-6 md:pb-6",
+        _ => "mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6"
+    };
+
     var firstMenu = ui.Menu.Items.FirstOrDefault();
     var homeUrl = firstMenu?.Url;
     if (string.IsNullOrWhiteSpace(homeUrl) && firstMenu is not null)
@@ -64,18 +74,24 @@
     @await RenderSectionAsync("Styles", false)
 </head>
 <body class="ta-app"
-      x-data="{ page: '@menuKey', loaded: true, darkMode: document.documentElement.classList.contains('dark'), stickyMenu: false, sidebarToggle: @(ui.SidebarCollapsed ? "true" : "false"), scrollTop: false }"
+      x-data="{ page: '@menuKey', loaded: true, darkMode: document.documentElement.classList.contains('dark'), stickyMenu: false, sidebarToggle: @(sidebarCollapsed ? "true" : "false"), scrollTop: false }"
       x-init="$watch('darkMode', value => { document.documentElement.classList.toggle('dark', value); document.documentElement.setAttribute('data-color-scheme', value ? 'dark' : 'light'); try { localStorage.setItem('darkMode', JSON.stringify(value)); } catch (e) { } })"
       :class="{ 'bg-gray-900': darkMode }">
 
     <div class="flex h-screen overflow-hidden">
-        <partial name="_Sidebar" model="ui" />
+        @if (!hideSidebar)
+        {
+            <partial name="_Sidebar" model="ui" />
+        }
 
         <div class="relative flex flex-1 flex-col overflow-x-hidden overflow-y-auto">
-            <partial name="_Topbar" model="ui" />
+            @if (!hideHeader)
+            {
+                <partial name="_Topbar" model="ui" />
+            }
 
             <main id="main-content">
-                <div class="mx-auto max-w-(--breakpoint-2xl) p-4 pb-20 md:p-6 md:pb-6">
+                <div class="@containerClass">
                     <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <partial name="_PageHeader" model="pageHeader" />
 

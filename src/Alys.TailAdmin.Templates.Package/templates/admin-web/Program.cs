@@ -82,6 +82,34 @@ builder.Services.Configure<AdminUiOptions>(options =>
     });
     options.Menu.Items.Add(new AdminMenuItem
     {
+        Key = "layouts",
+        Title = "佈局",
+        Icon = "components",
+        Permission = "layouts",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "layout-default", Title = "預設佈局", Area = "Admin", Controller = "Layouts", Action = "Default", Permission = "layouts" },
+            new() { Key = "layout-collapsed", Title = "側欄收合", Area = "Admin", Controller = "Layouts", Action = "Collapsed", Permission = "layouts" },
+            new() { Key = "layout-hidden-sidebar", Title = "無側欄", Area = "Admin", Controller = "Layouts", Action = "HiddenSidebar", Permission = "layouts" },
+            new() { Key = "layout-hidden-header", Title = "無頂欄", Area = "Admin", Controller = "Layouts", Action = "HiddenHeader", Permission = "layouts" },
+            new() { Key = "layout-full", Title = "全寬內容", Area = "Admin", Controller = "Layouts", Action = "FullWidth", Permission = "layouts" },
+            new() { Key = "layout-narrow", Title = "窄內容", Area = "Admin", Controller = "Layouts", Action = "Narrow", Permission = "layouts" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
+        Key = "auth",
+        Title = "認證",
+        Icon = "user",
+        Permission = "auth",
+        Children = new List<AdminMenuItem>
+        {
+            new() { Key = "auth-2fa", Title = "兩步驗證", Area = "Admin", Controller = "Account", Action = "TwoStepVerification", Permission = "auth" },
+            new() { Key = "auth-lock", Title = "鎖屏", Area = "Admin", Controller = "Account", Action = "LockScreen", Permission = "auth" }
+        }
+    });
+    options.Menu.Items.Add(new AdminMenuItem
+    {
         Key = "forms",
         Title = "表單",
         Icon = "pencil",

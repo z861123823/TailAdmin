@@ -139,6 +139,24 @@ public sealed class AccountController : Controller
         return RedirectToAction(nameof(Login));
     }
 
+    /// <summary>两步验证页。</summary>
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult TwoStepVerification()
+    {
+        ViewData["Title"] = "兩步驗證";
+        return View();
+    }
+
+    /// <summary>锁屏页。</summary>
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult LockScreen()
+    {
+        ViewData["Title"] = "鎖屏";
+        return View();
+    }
+
     /// <summary>登出。</summary>
     [Authorize]
     [HttpPost]

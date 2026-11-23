@@ -1,0 +1,27 @@
+@{
+    Layout = "~/Views/Shared/_AlysAdminAuthLayout.cshtml";
+    var avatar = new TaAvatarModel { Initials = "林", Alt = "林經理", Size = "2xl", Status = "online" };
+    const string inputClass = "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-theme-sm text-gray-800 shadow-theme-xs transition-colors placeholder:text-gray-400 focus:border-brand-300 focus:ring-3 focus:ring-brand-500/20 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800";
+}
+<div class="text-center">
+    <div class="mx-auto inline-flex">
+        <partial name="_TaAvatar" model="avatar" />
+    </div>
+    <h1 class="mt-4 text-title-sm font-semibold text-gray-800 sm:text-title-md dark:text-white/90">林經理</h1>
+    <p class="mt-2 text-theme-sm text-gray-500 dark:text-gray-400">工作階段已鎖定，請輸入密碼解鎖。</p>
+</div>
+
+<form class="mt-7" onsubmit="event.preventDefault(); window.location.href='/Admin'">
+    <label for="lock-password" class="mb-1.5 block text-theme-sm font-medium text-gray-700 dark:text-gray-400">密碼</label>
+    <input id="lock-password" type="password" class="@inputClass" placeholder="請輸入密碼" autocomplete="current-password" autofocus />
+    <button type="submit"
+            class="mt-5 flex w-full items-center justify-center rounded-lg bg-brand-500 px-4 py-3 text-theme-sm font-medium text-white shadow-theme-xs transition-colors hover:bg-brand-600">
+        解鎖
+    </button>
+</form>
+
+<p class="mt-5 text-center text-theme-sm text-gray-500 dark:text-gray-400">
+    不是本人？
+    <a asp-area="Admin" asp-controller="Account" asp-action="Login"
+       class="font-medium text-brand-500 hover:text-brand-600 dark:text-brand-400">切換帳號</a>
+</p>
